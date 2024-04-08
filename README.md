@@ -1,4 +1,21 @@
-FPGA-based Videogame
+main will contain all files the will be used in our PacMan project henceforth.
+
+<h2>Some notes: </h2>
+
+- `/impl` contains the constraints.
+- `/rtl` contains all .vhd design sources.
+- `/rtl/joystick` contains drivers for button debouncing, score counting, and username selection.
+- `/rtl/seven-segment` contains the display driver and decoder, as well as a 1khz internal clock divider.
+- `/rtl/graphics` contains VGA level graphics signals for game objects.
+- `/rtl/graphics/hdmi` contains the VGA-to-HDMI converter files created by fcayci
+-  `/rtl/game-logic/` contains movement logic for game objects.
+
+I hope this helps us organize our contributions and enables our team to work on different facets of the project.
+
+
+
+
+<h2> FPGA-based Videogame </h2>
 Objective
 
     Present the proposal of a videogame implementation using the FPGA selected for this course
