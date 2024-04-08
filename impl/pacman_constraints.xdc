@@ -1,11 +1,14 @@
 
 # clk input is from the 100 MHz oscillator on Boolean board
 #create_clock -period 10.000 -name gclk [get_ports clk_100MHz]
-set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk}]
+
+#clock made in other constraints file
+#set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk}]
 
 
 # On-board Buttons
-set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports {rst}]
+# change from pin J2 (BTN0) to pin V2 (SW0)
+set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {rst}]
 
 #LED's to register the right, left, up, and down inputs
 set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33} [get_ports led_right]
@@ -14,10 +17,11 @@ set_property -dict {PACKAGE_PIN F1 IOSTANDARD LVCMOS33} [get_ports led_up]
 set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports led_down]
 
 # Input Pins for external joystick buttons
-set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports left_raw]
-set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports right_raw]
-set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports down_raw]
-set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
+# change L/R/U/D (pins P5/R5/R6/T6) to onboard buttons for testing purposes
+set_property -dict {PACKAGE_PIN H2 IOSTANDARD LVCMOS33} [get_ports left_raw]
+set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports right_raw]
+set_property -dict {PACKAGE_PIN J1 IOSTANDARD LVCMOS33} [get_ports down_raw]
+set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports up_raw]
 
 #On board button for score counter
 set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports {score_raw}]
