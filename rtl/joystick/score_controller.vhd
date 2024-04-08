@@ -10,9 +10,9 @@ entity score_controller is
             clk : in STD_LOGIC;
             rst : in STD_LOGIC;
             --Anodes of 7seg Display
-            D1_AN : out std_logic_vector (3 downto 0):= "1111";
+            score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            D1_SEG : out std_logic_vector (7 downto 0));
+            score_segment : out std_logic_vector (7 downto 0));
 end score_controller;
 
 architecture Behavioral of score_controller is
@@ -56,5 +56,5 @@ begin
     dig_3: place_value_driver port map(button => nD2, value => hex_val_3, next_digit => nD3);           --thousands
     --compoent call for displaying the data
     display: sev_seg_driver port map(data_0 => hex_val_3, data_1 => hex_val_2, data_2 => hex_val_1, data_3 => hex_val_0, 
-                                     clk => clk, rst => rst, display_data => D1_SEG, display_digit => D1_AN); 
+                                     clk => clk, rst => rst, display_data => score_segment, display_digit => score_anode); 
 end Behavioral;

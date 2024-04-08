@@ -10,9 +10,9 @@ Port (--Pins of the tactile buttons on breadboard
     --LEDs to ensure buttons are working correctly
     led_right, led_left, led_up, led_down : out STD_LOGIC;
     -- Anode: Controls which segment is active at any given time
-    D0_AN : out std_logic_vector (3 downto 0):= "1111";
+    name_anode : out std_logic_vector (3 downto 0):= "1111";
     --controls which particular segments are active
-    D0_SEG : out std_logic_vector (7 downto 0)
+    name_segment : out std_logic_vector (7 downto 0)
  );
 end username_select;
 
@@ -28,13 +28,6 @@ component sev_seg_driver is
   rst : in STD_LOGIC:='0';
   display_data : out STD_LOGIC_VECTOR(7 downto 0);
   display_digit : out STD_LOGIC_VECTOR(3 downto 0));
-end component;
-    
---unused debounce component, made redundant by top_module
-component button_debounce is 
-Port ( raw_button : in STD_LOGIC;
-       clk : in STD_LOGIC;
-       debounced_button  : out STD_LOGIC);
 end component;
 
 --Variable that stores the hexvalue to be displayed on each screen.
@@ -139,6 +132,6 @@ begin
                                 data_3 => 16,--blank 
                                 clk => clk, 
                                 rst => rst, 
-                                display_data => D0_SEG, 
-                                display_digit => D0_AN);
+                                display_data => name_segment, 
+                                display_digit => name_anode);
 end Behavioral;

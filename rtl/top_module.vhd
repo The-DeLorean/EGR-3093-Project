@@ -13,13 +13,13 @@ entity top_module is
            --LEDs to ensure buttons are working correctly
            led_right, led_left, led_up, led_down : out STD_LOGIC;
             -- Anodes of 7seg Display #1
-            D0_AN : out std_logic_vector (3 downto 0):= "1111";
+            name_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            D0_SEG : out std_logic_vector (7 downto 0);
+            name_segment : out std_logic_vector (7 downto 0);
             --Anodes of 7seg Display #2
-            D1_AN : out std_logic_vector (3 downto 0):= "1111";
+            score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            D1_SEG : out std_logic_vector (7 downto 0)
+            score_segment : out std_logic_vector (7 downto 0)
            );
 end top_module;
 
@@ -37,20 +37,20 @@ Port (
     right, left, up, down, clk, rst : in STD_LOGIC;
     led_right, led_left, led_up, led_down : out STD_LOGIC;
     -- Anode: Controls which segment is active at any given time
-    D0_AN : out std_logic_vector (3 downto 0):= "1111";
-    D0_SEG : out std_logic_vector (7 downto 0));
+    name_anode : out std_logic_vector (3 downto 0):= "1111";
+    name_segment : out std_logic_vector (7 downto 0));
 end component;
 
 --Declare component that uses a debounced button to increment score
 component score_controller is
     Port ( score_button, clk, rst : in STD_LOGIC;
             --Anodes of 7seg Display
-            D1_AN : out std_logic_vector (3 downto 0):= "1111";
+            score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            D1_SEG : out std_logic_vector (7 downto 0));
+            score_segment : out std_logic_vector (7 downto 0));
 end component;
 
---Declare signals to hold the debounces output
+--Declare signals to hold the debounced output
 signal up_i: STD_LOGIC:='1';
 signal down_i: STD_LOGIC:='1';
 signal right_i: STD_LOGIC:='1';
@@ -67,7 +67,7 @@ begin
 
     username_select_i: username_select port map(right => right_i, left => left_i, 
     up => up_i, down => down_i, clk => clk, rst => rst, led_right => led_right, led_left => led_left, 
-    led_up => led_up, led_down => led_down, D0_AN => D0_AN, D0_SEG => D0_SEG);
+    led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
-    rst => rst, D1_AN => D1_AN, D1_SEG => D1_SEG);
+    rst => rst, score_anode => score_anode, score_segment => score_segment);
 end Behavioral;
