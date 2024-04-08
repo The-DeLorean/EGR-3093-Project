@@ -1,22 +1,27 @@
+--Decoder for the seven segment display
+--Receives a hex value for a single digit
+--Drives the display circuitry depending on this value
+--Renamed file **sev_seg_decoder**
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 
 
-entity seven_segment_decoder is
+entity sev_seg_decoder is
   port(
-  hexValue : in integer range 0 to 16;
+  hex_value : in integer range 0 to 16;
   control : in STD_LOGIC_VECTOR (1 downto 0);
   segments : out STD_LOGIC_VECTOR (7 downto 0);
   anodes : out STD_LOGIC_VECTOR (3 downto 0));
-end seven_segment_decoder;
+end sev_seg_decoder;
 
-architecture Behavioral of seven_segment_decoder is
+architecture Behavioral of sev_seg_decoder is
 
 begin
-process(hexValue)
+process(hex_value)
 begin
-   case hexValue is
+   case hex_value is
       when 0 => segments <= "11000000"; --0
       when 1 => segments <= "11111001"; --1
       when 2 => segments <= "10100100"; --2

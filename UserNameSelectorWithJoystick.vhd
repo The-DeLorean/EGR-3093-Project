@@ -4,7 +4,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 
-entity UserNameSelectorWithJoystick is
+entity username_select is
 Port ( 
     --Pins of the tactile buttons on breadboard
     right, left, up, down, clk, rst : in STD_LOGIC;
@@ -14,9 +14,9 @@ Port (
     D0_AN : out std_logic_vector (3 downto 0):= "1111";
     D0_SEG : out std_logic_vector (7 downto 0)
  );
-end UserNameSelectorWithJoystick;
+end username_select;
 
-architecture Behavioral of UserNameSelectorWithJoystick is
+architecture Behavioral of username_select is
 --Variable that stores the hexvalue to be displayed on each screen.
 signal hexBuffer0 : integer range -2 to 17:= 0; --stores hex value with small buffer on either side
 signal hexBuffer1 : integer range -2 to 17:= 0; --stores hex value with small buffer on either side
@@ -32,14 +32,14 @@ signal d: STD_LOGIC:='1';
 
 component sevenSegmentDriver is
   port (
-  data0 : in integer range 0 to 16;
-  data1 : in integer range 0 to 16;
-  data2 : in integer range 0 to 16;
-  data3 : in integer range 0 to 16;
+  data_0 : in integer range 0 to 16;
+  data_1 : in integer range 0 to 16;
+  data_2 : in integer range 0 to 16;
+  data_3 : in integer range 0 to 16;
   clk : in STD_LOGIC;
   rst : in STD_LOGIC:='0';
-  displayData : out STD_LOGIC_VECTOR(7 downto 0);
-  displayDigit : out STD_LOGIC_VECTOR(3 downto 0));
+  display_data : out STD_LOGIC_VECTOR(7 downto 0);
+  display_digit : out STD_LOGIC_VECTOR(3 downto 0));
 end component;
 
 component ButtonDebouncer is 
