@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 04/06/2024 10:35:58 PM
 -- Design Name: Retro PacMan
--- Module Name: ScatterLogic - Behavioral
+-- Module Name: scatterLogic - Behavioral
 ----------------------------------------------------------------------------------
 
 
@@ -14,7 +14,7 @@ use ieee.numeric_std.all;
 library unisim;
 use unisim.vcomponents.all;
 
-entity ScatterLogic is
+entity scatterLogic is
     generic (
         OBJECT_SIZE : natural := 14
         );
@@ -29,9 +29,9 @@ entity ScatterLogic is
            prevY      : integer;
            PosX       : out std_logic_vector(OBJECT_SIZE-1 downto 0);
            PosY       : out std_logic_vector(OBJECT_SIZE-1 downto 0));
-end ScatterLogic;
+end scatterLogic;
 
-architecture Behavioral of ScatterLogic is
+architecture Behavioral of scatterLogic is
     signal xdir : integer range 0 to 520:=prevX;
     signal ydir : integer range 5 to 480:=prevY;
 begin

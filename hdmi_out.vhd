@@ -31,15 +31,15 @@ entity hdmi_out is
         clk_n    : out std_logic;
         data_p   : out std_logic_vector(2 downto 0);
         data_n   : out std_logic_vector(2 downto 0);
-        ChaseLED     : out STD_LOGIC;
-        ScatterLED     : out STD_LOGIC;
+        chaseLED     : out STD_LOGIC;
+        scatterLED     : out STD_LOGIC;
         RetreatLED     : out STD_LOGIC
     );
 end hdmi_out;
 
 architecture rtl of hdmi_out is
 
-    --DO NOT TOUCH
+    --DO NOT TOUCH -HDMI converter signals
     signal pixclk, serclk : std_logic;
     signal video_active   : std_logic := '0';
     signal video_data     : std_logic_vector(PIXEL_SIZE-1 downto 0);
@@ -50,31 +50,31 @@ architecture rtl of hdmi_out is
     signal object1x       : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(500, OBJECT_SIZE));
     signal object1y       : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(140, OBJECT_SIZE));
     --PacMan Location
-    signal PacManx        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
-    signal PacMany        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
+    signal pacman_x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
+    signal pacman_y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
     --Inky Location
-    signal InkyX          : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-    signal InkyY          : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+    signal inky_x          : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
+    signal inky_y          : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
     --Clyde Location
-    signal ClydeX         : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-    signal ClydeY         : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
-    signal ghost2x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-    signal ghost2y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
-    signal ghost3x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-    signal ghost3y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+    signal clyde_x         : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
+    signal clyde_y         : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+    signal ghost_2_x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
+    signal ghost_2_y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+    signal ghost_3_x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
+    signal ghost_3_y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
     --Background color
     signal backgrnd_rgb   : std_logic_vector(PIXEL_SIZE-1 downto 0) := x"000000"; -- yellow
     --Pac Man Direction variables
-    signal PacMandirx     : integer range 0 to 640:=240;
-    signal PacMandiry     : integer range 0 to 480:=340; 
+    signal pacman_dir_x     : integer range 0 to 640:=240;
+    signal pacman_dir_y     : integer range 0 to 480:=340; 
     --Inky Direction variables
-    signal Inkydirx       : integer range 0 to 640:=300;
-    signal Inkydiry       : integer range 0 to 480:=100;
+    signal inky_dir_x       : integer range 0 to 640:=300;
+    signal inky_dir_y       : integer range 0 to 480:=100;
     --Clyde Direction variables
-    signal ClydeDirx      : integer range 0 to 640:=100;
-    signal ClydeDirY      : integer range 0 to 480:=100;
-    signal ClydeDirxOut      : integer range 0 to 640:=100;
-    signal ClydeDirYOut      : integer range 0 to 480:=100;
+    signal clyde_dir_x      : integer range 0 to 640:=100;
+    signal clyde_dir_y      : integer range 0 to 480:=100;
+    signal clyde_dir_x_out      : integer range 0 to 640:=100;
+    signal clyde_dir_y_out      : integer range 0 to 480:=100;
     --Counter for game speed
     signal count          : integer;
     --Pac Man Boolean variables
@@ -84,54 +84,54 @@ architecture rtl of hdmi_out is
     signal d              : boolean:=false;
     signal m              : boolean:=true;
     --Potentially Clock animation still working**
-    signal animatedclock  : integer; 
+    signal animated_clock  : integer; 
     
     --Variables to signify power up chase scatter retreat
-    signal PowerupB       : std_logic:='0';
-    signal PrisonB        : std_logic:='0';
-    signal EscapeB        : std_logic:='0';
-    signal ChaseB         : std_logic:='0';
-    signal ScatterB       : std_logic:='0';
-    signal RetreatB       : std_logic:='0';
+    signal powerup_b       : std_logic:='0';
+    signal prison_b        : std_logic:='0';
+    signal escape_b        : std_logic:='0';
+    signal chase_b         : std_logic:='0';
+    signal scatter_b       : std_logic:='0';
+    signal retreat_b       : std_logic:='0';
     
-    signal StartTime      : integer;
-    signal Start_Game     : std_logic:='0';
+    signal start_time      : integer;
+    signal start_game     : std_logic:='0';
     
 
     --Component to call Clyde Logic
     component Clyde is
     port (
         --pacman location
-        PacManx : in integer range 0 to 640:=240;
-        PacMany : in integer range 0 to 480:=340;
+        pacman_x : in integer range 0 to 640:=240;
+        pacman_y : in integer range 0 to 480:=340;
         --clyde location
-        ClydeX : in integer range 0 to 640:=240;
-        ClydeY : in integer range 0 to 480:=100;
+        clyde_x : in integer range 0 to 640:=240;
+        clyde_y : in integer range 0 to 480:=100;
         --output new clyde location
-        ClydeXout : out integer range 0 to 640:=240;
-        ClydeYout : out integer range 0 to 480:=100;
+        clyde_xout : out integer range 0 to 640:=240;
+        clyde_yout : out integer range 0 to 480:=100;
         clk : in std_logic;
-        Chase : in std_logic
+        chase : in std_logic
         );
     end Component;
 
     --Component for the Ghost state Machine
     Component Ghost_SM is
         Port ( 
-               Start_Game : in std_logic;
+               start_game : in std_logic;
                clk        : in STD_LOGIC;
-               PowerUp    : in STD_LOGIC;
-               Chase      : out STD_LOGIC;
-               Scatter    : out STD_LOGIC;
+               powerup    : in STD_LOGIC;
+               chase      : out STD_LOGIC;
+               scatter    : out STD_LOGIC;
                Retreat    : out STD_LOGIC);
     end component;
-    signal ChaseS : std_logic:='1';
+    signal chaseS : std_logic:='1';
     --Component For the Retreat logic
     Component retreat is
     port (
         --pacman location
-        PacManx : in integer range 0 to 640;
-        PacMany : in integer range 0 to 480;
+        pacman_x : in integer range 0 to 640;
+        pacman_y : in integer range 0 to 480;
         --ghost location
         GhostX : in integer range 0 to 640;
         Ghosty : in integer range 0 to 480;
@@ -154,83 +154,83 @@ process
     if rising_edge(clk) then
         count<=count +1;
         if count =2000000 then
-            ClydeDirx<=ClydeDirxOut;
-            ClydeDiry<=ClydeDiryOut;
+            clyde_dir_x<=clyde_dir_x_out;
+            clyde_dir_y<=clyde_dir_y_out;
             m<=not(m);
             count<=0;
             if r = true then
-                PacMandirx<=PacMandirx+1;
-                Inkydirx<=Inkydirx-1;
-                if PacMandirx =503 then
-                    PacMandirx<=502;
+                pacman_dir_x<=pacman_dir_x+1;
+                inky_dir_x<=inky_dir_x-1;
+                if pacman_dir_x =503 then
+                    pacman_dir_x<=502;
                     r<= false;
                 end if;
-                if Inkydirx =123 then
-                    Inkydirx<=124;
+                if inky_dir_x =123 then
+                    inky_dir_x<=124;
                 end if;
             elsif l = true then
-                PacMandirx<=PacMandirx-1;
-                Inkydirx<=Inkydirx+1;
-                if PacMandirx = 123 then
-                    PacMandirx<= 124;
+                pacman_dir_x<=pacman_dir_x-1;
+                inky_dir_x<=inky_dir_x+1;
+                if pacman_dir_x = 123 then
+                    pacman_dir_x<= 124;
                 end if;
-                if Inkydirx = 503 then
-                    Inkydirx<=502;
+                if inky_dir_x = 503 then
+                    inky_dir_x<=502;
                 end if;
             elsif d = true then
-                PacMandiry<=PacMandiry+1;
-                Inkydiry<=Inkydiry-1;
-                if PacMandiry = 440 then
-                    PacMandiry<= 439;
+                pacman_dir_y<=pacman_dir_y+1;
+                inky_dir_y<=inky_dir_y-1;
+                if pacman_dir_y = 440 then
+                    pacman_dir_y<= 439;
                 end if;
-                if Inkydiry =4 then
-                    Inkydiry<=5;
+                if inky_dir_y =4 then
+                    inky_dir_y<=5;
                 end if;
             elsif u = true then
-                PacMandiry<=PacMandiry-1;
-                Inkydiry<=Inkydiry+1;
-                if PacMandiry = 4 then
-                    PacMandiry<= 5;
+                pacman_dir_y<=pacman_dir_y-1;
+                inky_dir_y<=inky_dir_y+1;
+                if pacman_dir_y = 4 then
+                    pacman_dir_y<= 5;
                 end if;
-                if Inkydiry = 440 then
-                    Inkydiry<= 439;
+                if inky_dir_y = 440 then
+                    inky_dir_y<= 439;
                 end if;
             end if;
         end if;
     end if;
     end process;
     --PacMan Position
-    PacManx<= std_logic_vector(to_unsigned(PacMandirx, OBJECT_SIZE));
-    PacMany<= std_logic_vector(to_unsigned(PacMandiry, OBJECT_SIZE));
+    pacman_x<= std_logic_vector(to_unsigned(pacman_dir_x, OBJECT_SIZE));
+    pacman_y<= std_logic_vector(to_unsigned(pacman_dir_y, OBJECT_SIZE));
     
     --Ghost State Machine to change between ghost states Prison->Escape->CHASE->SCATTER->Retreat
     --Still Need to make Prison and Escape
-    Clyde_States: Ghost_SM port map(Start_Game=>Start_Game, clk=> clk, PowerUp=> PowerUpB , Chase=> ChaseB, Scatter=> ScatterB, Retreat=> RetreatB);
-    ChaseLed<=chaseB;
-    ScatterLed<=ScatterB;
-    RetreatLed<=RetreatB;
+    Clyde_States: Ghost_SM port map(start_game=>start_game, clk=> clk, powerup=> powerup_b, chase=> chase_b, scatter=> scatter_b, Retreat=> retreat_b);
+    chaseLed<=chase_b;
+    scatterLed<=scatter_b;
+    RetreatLed<=retreat_b;
     process
     begin
         if rising_edge(clk) then
-            StartTime<=StartTime+1;
-            if StartTime = 1700000000 then
-                StartTime<=0;
-                Start_Game<='1';
+            start_time<=start_time+1;
+            if start_time = 1700000000 then
+                start_time<=0;
+                start_game<='1';
             end if;
         end if;
     end process;
     
     --Giving Inky position
-    InkyX<= std_logic_vector(to_unsigned(Inkydirx, OBJECT_SIZE));
-    InkyY<= std_logic_vector(to_unsigned(Inkydiry, OBJECT_SIZE));
+    inky_x<= std_logic_vector(to_unsigned(inky_dir_x, OBJECT_SIZE));
+    inky_y<= std_logic_vector(to_unsigned(inky_dir_y, OBJECT_SIZE));
     
     -- Clyde Logic 
-    clydeChaseLogic:  Clyde port map (PacManx=> PacMandirx, PacMany=> PacMandiry, ClydeX=> ClydeDirx, ClydeY=> ClydeDiry, ClydeXout=> ClydeDirxOut, ClydeYout => ClydeDiryOut, clk=> clk, Chase=> ChaseB ); 
+    clydechaseLogic:  Clyde port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, clyde_x=> clyde_dir_x, clyde_y=> clyde_dir_y, clyde_xout=> clyde_dir_x_out, clyde_yout => clyde_dir_y_out, clk=> clk, chase=> chase_b ); 
     --MAKE NOT HAVE MULTIPLE DRIVERS IF RETREAT THAN CLYDES LOCATION HAS MULTIPLE DRIVERS
-    --clydeRetreatLogic: retreat port map (PacManx=> PacMandirx, PacMany=> PacMandiry, GhostX=> ClydeDirx, GhostY=> ClydeDiry, GhostXOut=> ClydeDirxOut, GhostYOut => ClydeDiryOut, clk=> clk, Clyde=> RetreatB);
+    --clydeRetreatLogic: retreat port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, GhostX=> clyde_dir_x, GhostY=> clyde_dir_y, GhostXOut=> clyde_dir_x_out, GhostYOut => clyde_dir_y_out, clk=> clk, Clyde=> retreat_b);
     --Giving Clyde Position
-    ClydeX<= std_logic_vector(to_unsigned(ClydeDirxOut, OBJECT_SIZE));
-    ClydeY<= std_logic_vector(to_unsigned(ClydeDiryOut, OBJECT_SIZE));
+    clyde_x<= std_logic_vector(to_unsigned(clyde_dir_x_out, OBJECT_SIZE));
+    clyde_y<= std_logic_vector(to_unsigned(clyde_dir_y_out, OBJECT_SIZE));
     
     
     timing_vga: if RESOLUTION = "VGA" generate
@@ -259,11 +259,11 @@ process
         generic map (OBJECT_SIZE=>OBJECT_SIZE, PIXEL_SIZE =>PIXEL_SIZE)
         port map (video_active=>video_active, pixel_x=>pixel_x, pixel_y=>pixel_y,
         object1x=>object1x, object1y=>object1y,
-        PacManx=>PacManx, PacMany=>PacMany,
-        InkyX=>InkyX, InkyY=>InkyY,
-        ClydeX=>ClydeX, ClydeY=>ClydeY,
-        ghost2x=>ghost2x, ghost2y=>ghost2y,
-        ghost3x=>ghost3x, ghost3y=>ghost3y,
+        pacman_x=>pacman_x, pacman_y=>pacman_y,
+        inky_x=>inky_x, inky_y=>inky_y,
+        clyde_x=>clyde_x, clyde_y=>clyde_y,
+        ghost_2_x=>ghost_2_x, ghost_2_y=>ghost_2_y,
+        ghost_3_x=>ghost_3_x, ghost_3_y=>ghost_3_y,
         backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> m);
     end generate;
 end rtl;

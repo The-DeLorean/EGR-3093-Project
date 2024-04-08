@@ -5,8 +5,8 @@ use ieee.numeric_std.all;
 entity retreat is
     port (
         --pacman location
-        PacManx : in integer range 0 to 640;
-        PacMany : in integer range 0 to 480;
+        pacman_x : in integer range 0 to 640;
+        pacman_y : in integer range 0 to 480;
         --ghost location
         GhostX : in integer range 0 to 640;
         Ghosty : in integer range 0 to 480;
@@ -31,8 +31,8 @@ architecture retreat of retreat is
 begin
     ghostxx <= Ghostx;
     ghostyy <= Ghosty;
-    xdirr <= PacManx;
-    ydirr <= PacMany;
+    xdirr <= pacman_x;
+    ydirr <= pacman_y;
     clydeBool <= clyde;
     process
     begin

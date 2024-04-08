@@ -19,6 +19,6 @@ set_property -dict { PACKAGE_PIN N15   IOSTANDARD TMDS_33  } [get_ports { data_p
 ##set_property -dict { PACKAGE_PIN T11   IOSTANDARD LVCMOS33 } [get_ports { hdmi_tx_hpdn }]; #IO_0_34 Sch=hdmi_tx_hpdn
 ##set_property -dict { PACKAGE_PIN R11   IOSTANDARD LVCMOS33 } [get_ports { hdmi_tx_cec }]; #IO_L19N_T3_VREF_35 Sch=hdmi_tx_cec
 
-set_property -dict {PACKAGE_PIN A4 IOSTANDARD LVCMOS33} [get_ports ChaseLED]
-set_property -dict {PACKAGE_PIN B4 IOSTANDARD LVCMOS33} [get_ports ScatterLED]
+set_property -dict {PACKAGE_PIN A4 IOSTANDARD LVCMOS33} [get_ports chaseLED]
+set_property -dict {PACKAGE_PIN B4 IOSTANDARD LVCMOS33} [get_ports scatterLED]
 set_property -dict {PACKAGE_PIN A3 IOSTANDARD LVCMOS33} [get_ports RetreatLED]

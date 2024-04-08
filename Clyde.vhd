@@ -6,33 +6,33 @@ entity Clyde is
 
     port (
         --pacman location
-        PacManx : in integer range 0 to 640:=240;
-        PacMany : in integer range 0 to 480:=340;
+        pacman_x : in integer range 0 to 640:=240;
+        pacman_y : in integer range 0 to 480:=340;
         --clyde location
-        ClydeX : in integer range 0 to 640:=240;
-        ClydeY : in integer range 0 to 480:=100;
+        clyde_x : in integer range 0 to 640:=240;
+        clyde_y : in integer range 0 to 480:=100;
         --output new clyde location
-        ClydeXout : out integer range 0 to 640:=240;
-        ClydeYout : out integer range 0 to 480:=100;
+        clyde_xout : out integer range 0 to 640:=240;
+        clyde_yout : out integer range 0 to 480:=100;
         clk : in std_logic;
-        Chase : in std_logic
+        chase : in std_logic
     );
 end Clyde;
 
-architecture ClydeYhunter of Clyde is
+architecture clyde_yhunter of Clyde is
         signal count : integer;
         signal clydexx : integer range 0 to 640:=240;
         signal clydeyy : integer range 0 to 480:=100;
         signal xdirr : integer range 0 to 640:=240;
         signal ydirr : integer range 0 to 480:=340;
 begin
-    clydexx <= ClydeX;
-    clydeyy <= ClydeY;
-    xdirr <= PacManx;
-    ydirr <= PacMany;
+    clydexx <= clyde_x;
+    clydeyy <= clyde_y;
+    xdirr <= pacman_x;
+    ydirr <= pacman_y;
     process
     begin
-    if Chase='1' then
+    if chase='1' then
         if rising_edge(clk) then
             count<=count +1;
             if count =2000000 then
@@ -55,6 +55,6 @@ begin
     end if;
     end process;
     --output clyde new position 
-    ClydeXout <= clydexx;
-    ClydeYout <= clydeyy;
-end ClydeYhunter;
+    clyde_xout <= clydexx;
+    clyde_yout <= clydeyy;
+end clyde_yhunter;

@@ -18,11 +18,11 @@ entity objectbuffer is
         video_active       : in  std_logic;
         pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         object1x, object1y : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        PacManx, PacMany   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        InkyX, InkyY       : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        ClydeX, ClydeY     : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        ghost2x, ghost2y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        ghost3x, ghost3y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        pacman_x, pacman_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        inky_x, inky_y       : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        clyde_x, clyde_y     : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        ghost_2_x, ghost_2_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        ghost_3_x, ghost_3_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         backgrnd_rgb       : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
         rgb                : out std_logic_vector(PIXEL_SIZE-1 downto 0);
         mVariable          : in boolean
@@ -63,10 +63,10 @@ architecture rtl of objectbuffer is
     signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
 
     --Coordinates of the Pac Man Lives
-    signal stillPacManx0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
-    signal stillPacManx1 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(150, OBJECT_SIZE));
-    signal stillPacManx2 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(170, OBJECT_SIZE));
-    signal stillPacMany0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(460, OBJECT_SIZE));
+    signal stillpacman_x0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
+    signal stillpacman_x1 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(150, OBJECT_SIZE));
+    signal stillpacman_x2 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(170, OBJECT_SIZE));
+    signal stillpacman_y0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(460, OBJECT_SIZE));
     
     
     --Arrays for wall positions
@@ -149,22 +149,22 @@ begin
     box_rgb <= x"00FF00"; --green
 
     --DRAW the STILL PAC MAN AS LIVEs
-    stillPac0 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillPacManx0, object_y=>stillPacMany0, animation=> false, PacMan_on=>stillPacMan_on0); 
-    stillPac1 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillPacManx1, object_y=>stillPacMany0, animation=> false, PacMan_on=>stillPacMan_on1);
-    stillPac2 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillPacManx2, object_y=>stillPacMany0, animation=> false, PacMan_on=>stillPacMan_on2);
+    stillPac0 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x0, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on0); 
+    stillPac1 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x1, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on1);
+    stillPac2 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x2, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on2);
    
     -- DRAW MOVING PACKMAN *************
-    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>PacManx, object_y=>PacMany, animation=> mVariable, PacMan_on=>PacMan_on);
+    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pacman_x, object_y=>pacman_y, animation=> mVariable, PacMan_on=>PacMan_on);
     --Pac man's Color
     PacMan_rgb <= x"FFFF00";   -- yellow    
     
     --DRAW Clyde
-    Clyde: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>ClydeX, object_y=>ClydeY, Ghost_on=>Clyde_on);
+    Clyde: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>clyde_x, object_y=>clyde_y, Ghost_on=>Clyde_on);
     --Clyde's Color
     Clyde_rgb <= x"FFA500";   -- orange
     
     --Drawing Inky
-    Inky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>InkyX, object_y=>InkyY, Ghost_on=>Inky_on);
+    Inky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>inky_x, object_y=>inky_y, Ghost_on=>Inky_on);
     Inky_rgb <= x"00FFFF";    -- Cyan
 
     -- display the image based on who is active
