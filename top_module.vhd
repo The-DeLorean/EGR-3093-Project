@@ -68,6 +68,6 @@ begin
     username_select_i: username_select port map(right => right_i, left => left_i, 
     up => up_i, down => down_i, clk => clk, rst => rst, led_right => led_right, led_left => led_left, 
     led_up => led_up, led_down => led_down, D0_AN => D0_AN, D0_SEG => D0_SEG);
-    count_score: score_controller port map(score_button => score_button_i, clk => clk, 
+    score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, D1_AN => D1_AN, D1_SEG => D1_SEG);
 end Behavioral;
