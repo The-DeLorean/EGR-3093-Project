@@ -8,19 +8,19 @@ set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk}]
 set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports {rst}]
 
 #LED's to register the right, left, up, and down inputs
-set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33} [get_ports rLED]
-set_property -dict {PACKAGE_PIN G2 IOSTANDARD LVCMOS33} [get_ports lLED]
-set_property -dict {PACKAGE_PIN F1 IOSTANDARD LVCMOS33} [get_ports uLED]
-set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports dLED]
+set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33} [get_ports led_right]
+set_property -dict {PACKAGE_PIN G2 IOSTANDARD LVCMOS33} [get_ports led_left]
+set_property -dict {PACKAGE_PIN F1 IOSTANDARD LVCMOS33} [get_ports led_up]
+set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports led_down]
 
 # Input Pins for external joystick buttons
-set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports lButton]
-set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports rButton]
-set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports dButton]
-set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports uButton]
+set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports left_raw]
+set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports right_raw]
+set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports down_raw]
+set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
 
 #On board button for score counter
-set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports {scoreButton}]
+set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports {score_raw}]
 
 # On-board 7-Segment display 0
 set_property -dict {PACKAGE_PIN D5 IOSTANDARD LVCMOS33} [get_ports {D0_AN[0]}]

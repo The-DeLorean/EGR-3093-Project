@@ -2,17 +2,9 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity ButtonPresstoIncreaseScoreCOunt is
-    Port ( buttonO : in STD_LOGIC;
+    Port ( score_button : in STD_LOGIC;
             clk : in STD_LOGIC;
             rst : in STD_LOGIC;
             --Anodes of 7seg Display
@@ -54,10 +46,11 @@ signal hexVal3: integer range 0 to 9;
 
 begin
 
-dig0: DigitCounterForScore port map(buttonO, hexVal0,nD0);
-dig1: DigitCounterForScore port map(nD0, hexVal1,nD1);
-dig2: DigitCounterForScore port map(nD1, hexVal2,nD2);
-dig3: DigitCounterForScore port map(nD2, hexVal3,nD3);
+dig0: DigitCounterForScore port map(button => score_button, Value => hexVal0, nextDigit => nD0);
+dig1: DigitCounterForScore port map(button => nD0, Value => hexVal1, nextDigit => nD1);
+dig2: DigitCounterForScore port map(button => nD1, Value => hexVal2, nextDigit => nD2);
+dig3: DigitCounterForScore port map(button => nD2, Value => hexVal3, nextDigit => nD3);
 
-DrivSevenSeg: sevenSegmentDriver port map( hexVal3, hexVal2, hexVal1, hexVal0, clk, rst, D1_SEG, D1_AN); 
+DrivSevenSeg: sevenSegmentDriver port map(data0 => hexVal3, data1 => hexVal2, data2 => hexVal1, data3 => hexVal0, 
+                                 clk => clk, rst => rst, displayData => D1_SEG, displayDigit => D1_AN); 
 end Behavioral;

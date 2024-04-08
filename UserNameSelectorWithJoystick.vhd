@@ -1,8 +1,4 @@
-
-----------------------------------------------------------------------------------
-
-
-
+--
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
@@ -11,24 +7,12 @@ use ieee.numeric_std.all;
 entity UserNameSelectorWithJoystick is
 Port ( 
     --Pins of the tactile buttons on breadboard
-    rButtonO : in STD_LOGIC;
-    lButtonO : in STD_LOGIC;
-    uButtonO : in STD_LOGIC;
-    dButtonO : in STD_LOGIC;
-    clk : in STD_LOGIC;
-    rst : in STD_LOGIC;
-    
-    --LED's to ensure buttons are working correctly
-    rLED : out STD_LOGIC;
-    lLED : out STD_LOGIC;
-    uLED : out STD_LOGIC;
-    dLED : out STD_LOGIC;
-    
+    right, left, up, down, clk, rst : in STD_LOGIC;
+    --LEDs to ensure buttons are working correctly
+    led_right, led_left, led_up, led_down : out STD_LOGIC;
     -- Anode: Controls which segment is active at any given time
     D0_AN : out std_logic_vector (3 downto 0):= "1111";
-    
     D0_SEG : out std_logic_vector (7 downto 0)
-    
  );
 end UserNameSelectorWithJoystick;
 
@@ -61,15 +45,15 @@ end component;
 component ButtonDebouncer is 
 Port ( Button : in STD_LOGIC;
        clk : in STD_LOGIC;
-       DebouncedButton : out STD_LOGIC);
+       Debouncedown_raw : out STD_LOGIC);
 end component;
 
 begin
-   --Making rButton change the digit selector when userName is being edited
+   --Making right_raw change the digit selector when userName is being edited
    process
    begin
        if userName= '1' then
-          if (falling_edge(rButtonO)) then
+          if (falling_edge(right)) then
             digitSelector <= digitSelector + 1;
             if digitSelector= 4 then
                digitSelector<= 3;   
@@ -86,15 +70,15 @@ begin
          if(rising_edge(clk)) then
          if digitSelector=0 then
                 -- Button 0 adds 1 when pressed and does nothing when not pressed
-                if (uButtonO='0' and u='1' and dButtonO='1') then
+                if (up='0' and u='1' and down='1') then
                     hexBuffer0<= hexBuffer0 + 1;
-                elsif (dButtonO='0' and d='1' and uButtonO='1')then
+                elsif (down='0' and d='1' and up='1')then
                     hexBuffer0<= hexBuffer0 - 1;
                 else
                 --nothing please
                 end if;
-                u<=uButtonO;
-                d<=dButtonO;
+                u<=up;
+                d<=down;
                 if hexBuffer0 < 0 then 
                     hexBuffer0 <= 15;
                 elsif hexBuffer0 > 15 then 
@@ -102,15 +86,15 @@ begin
                 end if;
          elsif digitSelector=1 then
                 -- Button 0 adds 1 when pressed and does nothing when not pressed
-                if (uButtonO='0' and u='1' and dButtonO='1') then
+                if (up='0' and u='1' and down='1') then
                     hexBuffer1<= hexBuffer1 + 1;
-                elsif (dButtonO='0' and d='1' and uButtonO='1')then
+                elsif (down='0' and d='1' and up='1')then
                     hexBuffer1<= hexBuffer1 - 1;
                 else
                 --nothing please
                 end if;
-                u<=uButtonO;
-                d<=dButtonO;
+                u<=up;
+                d<=down;
                 if hexBuffer1 < 0 then 
                     hexBuffer1 <= 15;
                 elsif hexBuffer1 > 15 then 
@@ -118,15 +102,15 @@ begin
                 end if;
          elsif digitSelector=2 then
                 -- Button 0 adds 1 when pressed and does nothing when not pressed
-                if (uButtonO='0' and u='1' and dButtonO='1') then
+                if (up='0' and u='1' and down='1') then
                     hexBuffer2<= hexBuffer2 + 1;
-                elsif (dButtonO='0' and d='1' and uButtonO='1')then
+                elsif (down='0' and d='1' and up='1')then
                     hexBuffer2<= hexBuffer2 - 1;
                 else
                 --nothing please
                 end if;
-                u<=uButtonO;
-                d<=dButtonO;
+                u<=up;
+                d<=down;
                 if hexBuffer2 < 0 then 
                     hexBuffer2 <= 15;
                 elsif hexBuffer2 > 15 then 
@@ -138,10 +122,10 @@ begin
          end if;
        --making nothing happen once userName = 0
        else
-         rLed <= NOT(rButtonO);
-         lLed <= NOT(lButtonO);
-         uLed <= NOT(uButtonO);
-         dLed <= NOT(dButtonO);
+         led_right <= NOT(right);
+         led_left <= NOT(left);
+         led_up <= NOT(up);
+         led_down <= NOT(down);
        end if ;
     end process;
     
