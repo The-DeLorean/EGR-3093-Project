@@ -1,8 +1,11 @@
+--This entity 
+--Rename file **clyde.vhd**
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity Clyde is
+entity clyde is
 
     port (
         --pacman location
@@ -17,7 +20,7 @@ entity Clyde is
         clk : in std_logic;
         chase : in std_logic
     );
-end Clyde;
+end clyde;
 
 architecture clyde_yhunter of Clyde is
         signal count : integer;

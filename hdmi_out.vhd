@@ -99,7 +99,7 @@ architecture rtl of hdmi_out is
     
 
     --Component to call Clyde Logic
-    component Clyde is
+    component clyde is
     port (
         --pacman location
         pacman_x : in integer range 0 to 640:=240;
@@ -125,7 +125,9 @@ architecture rtl of hdmi_out is
                scatter    : out STD_LOGIC;
                Retreat    : out STD_LOGIC);
     end component;
+    
     signal chaseS : std_logic:='1';
+    
     --Component For the Retreat logic
     Component retreat is
     port (
