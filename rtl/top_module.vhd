@@ -9,7 +9,7 @@ entity top_module is
            --clk variables
            clk, rst : in STD_LOGIC;
            --Button on board to increment score
-           score_raw: in STD_LOGIC;
+           score_raw : in STD_LOGIC;
            --LEDs to ensure buttons are working correctly
            led_right, led_left, led_up, led_down : out STD_LOGIC;
             -- Anodes of 7seg Display #1

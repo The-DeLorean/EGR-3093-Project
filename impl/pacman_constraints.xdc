@@ -25,7 +25,7 @@ set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports up_raw]
 
 #On board button for score counter
 # Change to switch (SW15) to let onboard buttons be L/R/U/D
-set_property -dict {PACKAGE_PIN K15 IOSTANDARD LVCMOS33} [get_ports {score_raw}]
+set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports score_raw]
 
 # On-board 7-Segment display 0
 set_property -dict {PACKAGE_PIN D5 IOSTANDARD LVCMOS33} [get_ports {D0_AN[0]}]
