@@ -4,8 +4,8 @@
 set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk}]
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 6} [get_ports { clk }];
 
-##Buttons
-set_property -dict { PACKAGE_PIN J2   IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L4P_T0_35 Sch=btn[0]
+#reset mapped in other constraints file
+#set_property -dict { PACKAGE_PIN J2   IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L4P_T0_35 Sch=btn[0]
 
 ##HDMI Tx
 set_property -dict { PACKAGE_PIN T14   IOSTANDARD TMDS_33  } [get_ports { clk_n }]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
