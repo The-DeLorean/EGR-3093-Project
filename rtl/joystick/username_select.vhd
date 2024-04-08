@@ -4,7 +4,7 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use ieee.numeric_std.all;
 
-entity selection_active_select is
+entity username_select is
 Port (--Pins of the tactile buttons on breadboard
     right, left, up, down, clk, rst : in STD_LOGIC;
     --LEDs to ensure buttons are working correctly
@@ -14,9 +14,9 @@ Port (--Pins of the tactile buttons on breadboard
     --controls which particular segments are active
     D0_SEG : out std_logic_vector (7 downto 0)
  );
-end selection_active_select;
+end username_select;
 
-architecture Behavioral of selection_active_select is
+architecture Behavioral of username_select is
 --Declare seven segment component
 component sev_seg_driver is
   port (
