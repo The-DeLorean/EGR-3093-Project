@@ -19,7 +19,15 @@ entity top_module is
             --Anodes of 7seg Display #2
             score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            score_segment : out std_logic_vector (7 downto 0)
+            score_segment : out std_logic_vector (7 downto 0);
+            -- tmds output ports
+            clk_p    : out std_logic;
+            clk_n    : out std_logic;
+            data_p   : out std_logic_vector(2 downto 0);
+            data_n   : out std_logic_vector(2 downto 0);
+            chaseLED     : out STD_LOGIC;
+            scatterLED     : out STD_LOGIC;
+            RetreatLED     : out STD_LOGIC
            );
 end top_module;
 
@@ -41,6 +49,33 @@ Port (
     name_segment : out std_logic_vector (7 downto 0));
 end component;
 
+Component hdmi_out is
+ generic (
+        RESOLUTION   : string  := "VGA"; -- HD1080P, HD720P, SVGA, VGA
+        GEN_PATTERN  : boolean := false; -- generate pattern or objects
+        GEN_PIX_LOC  : boolean := true; -- generate location counters for x / y coordinates
+        OBJECT_SIZE  : natural := 14; -- size of the objects. should be higher than 11
+        PIXEL_SIZE   : natural := 24; -- RGB pixel total size. (R + G + B)
+        SERIES6      : boolean := false -- disables OSERDESE2 and enables OSERDESE1 for GHDL simulation (7 series vs 6 series)
+    );
+    port(
+        clk, rst : in std_logic;
+        right    : in std_logic;
+        left     : in std_logic;
+        up       : in std_logic;
+        down     : in std_logic;
+        -- tmds output ports
+        clk_p    : out std_logic;
+        clk_n    : out std_logic;
+        data_p   : out std_logic_vector(2 downto 0);
+        data_n   : out std_logic_vector(2 downto 0);
+        chaseLED     : out STD_LOGIC;
+        scatterLED     : out STD_LOGIC;
+        RetreatLED     : out STD_LOGIC
+    );
+end component;
+
+
 --Declare component that uses a debounced button to increment score
 component score_controller is
     Port ( score_button, clk, rst : in STD_LOGIC;
@@ -49,6 +84,8 @@ component score_controller is
             --Cathodes of 7 seg display
             score_segment : out std_logic_vector (7 downto 0));
 end component;
+
+
 
 --Declare signals to hold the debounced output
 signal up_i: STD_LOGIC:='1';
@@ -70,4 +107,22 @@ begin
     led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, score_anode => score_anode, score_segment => score_segment);
+    
+    hdmi_out_rocess: hdmi_out port map(
+        clk=> clk,
+        rst=> rst,
+        right=> right_i,
+        left=> left_i,
+        up=> up_i,
+        down=> down_i,
+        -- tmds output ports
+        clk_p => clk_p,
+        clk_n => clk_n,
+        data_p=> data_p,
+        data_n=> data_n,
+        chaseLED=> chaseLed,
+        scatterLED=> scatterLed,
+        RetreatLED=> retreatled);
+    
+    
 end Behavioral;

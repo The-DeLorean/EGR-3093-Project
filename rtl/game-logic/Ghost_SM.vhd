@@ -69,7 +69,7 @@ begin
                             count <=0;
                         else
                             count <=count+1; 
-                                if scatterTracker <2 then 
+                                if scatterTracker <3 then 
                                     if count = 700000000 then   
                                         Ghoststate:= Gchase;
                                         count <=0;

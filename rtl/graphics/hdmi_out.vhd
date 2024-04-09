@@ -22,10 +22,10 @@ entity hdmi_out is
     );
     port(
         clk, rst : in std_logic;
-        right    : in boolean:=true;
-        left     : in boolean:=false;
-        up       : in boolean:=false;
-        down     : in boolean:=false;
+        right    : in std_logic;
+        left     : in std_logic;
+        up       : in std_logic;
+        down     : in std_logic;
         -- tmds output ports
         clk_p    : out std_logic;
         clk_n    : out std_logic;
@@ -77,11 +77,11 @@ architecture rtl of hdmi_out is
     signal clyde_dir_y_out      : integer range 0 to 480:=100;
     --Counter for game speed
     signal count          : integer;
-    --Pac Man Boolean variables
-    signal r              : boolean:=true;
-    signal l              : boolean:=false;
-    signal u              : boolean:=false;
-    signal d              : boolean:=false;
+--    --Pac Man Boolean variables
+    signal r, l, u, d              : std_logic;
+--    signal l              : boolean:=false;
+--    signal u              : boolean:=false;
+--    signal d              : boolean:=false;
     signal m              : boolean:=true;
     --Potentially Clock animation still working**
     signal animated_clock  : integer; 
@@ -102,18 +102,20 @@ architecture rtl of hdmi_out is
     component clyde is
     port (
         --pacman location
-        pacman_x : in integer range 0 to 640:=240;
-        pacman_y : in integer range 0 to 480:=340;
+        pacman_x   : in integer range 0 to 640:=240;
+        pacman_y   : in integer range 0 to 480:=340;
         --clyde location
-        clyde_x : in integer range 0 to 640:=240;
-        clyde_y : in integer range 0 to 480:=100;
+        Clyde_X    : in integer range 0 to 640:=240;
+        Clyde_Y    : in integer range 0 to 480:=100;
         --output new clyde location
-        clyde_xout : out integer range 0 to 640:=240;
-        clyde_yout : out integer range 0 to 480:=100;
-        clk : in std_logic;
-        chase : in std_logic
-        );
-    end Component;
+        Clyde_Xout : out integer range 0 to 640:=240;
+        Clyde_Yout : out integer range 0 to 480:=100;
+        clk       : in std_logic;
+        Chase     : in std_logic;
+        Scatter   : in std_logic;
+        Retreat   : in std_logic
+    );
+    end component;
 
     --Component for the Ghost state Machine
     Component Ghost_SM is
@@ -128,26 +130,12 @@ architecture rtl of hdmi_out is
     
     signal chaseS : std_logic:='1';
     
-    --Component For the Retreat logic
-    Component retreat is
-    port (
-        --pacman location
-        pacman_x : in integer range 0 to 640;
-        pacman_y : in integer range 0 to 480;
-        --ghost location
-        GhostX : in integer range 0 to 640;
-        Ghosty : in integer range 0 to 480;
-        --outputs
-        GhostXout : out integer range 0 to 640;
-        GhostYout : out integer range 0 to 480;
-        clk : in std_logic;
-        --check if clyde that needs retreat
-        clyde : in std_logic
-    );
-    end component;
     
 begin
-
+    r<=right;
+    l<=left;
+    u<=up;
+    d<=down;
 --Calculating Pac Man and Inky Position
 -- TO MAKE JOYSTICK WORK REPLACE R L D AND U WITH RIGHT LEFT UP AND DOWN
 process
@@ -160,17 +148,16 @@ process
             clyde_dir_y<=clyde_dir_y_out;
             m<=not(m);
             count<=0;
-            if r = true then
+            if r = '1' then
                 pacman_dir_x<=pacman_dir_x+1;
                 inky_dir_x<=inky_dir_x-1;
                 if pacman_dir_x =503 then
                     pacman_dir_x<=502;
-                    r<= false;
                 end if;
                 if inky_dir_x =123 then
                     inky_dir_x<=124;
                 end if;
-            elsif l = true then
+            elsif l = '1' then
                 pacman_dir_x<=pacman_dir_x-1;
                 inky_dir_x<=inky_dir_x+1;
                 if pacman_dir_x = 123 then
@@ -179,7 +166,7 @@ process
                 if inky_dir_x = 503 then
                     inky_dir_x<=502;
                 end if;
-            elsif d = true then
+            elsif d = '1' then
                 pacman_dir_y<=pacman_dir_y+1;
                 inky_dir_y<=inky_dir_y-1;
                 if pacman_dir_y = 440 then
@@ -188,7 +175,7 @@ process
                 if inky_dir_y =4 then
                     inky_dir_y<=5;
                 end if;
-            elsif u = true then
+            elsif u = '1' then
                 pacman_dir_y<=pacman_dir_y-1;
                 inky_dir_y<=inky_dir_y+1;
                 if pacman_dir_y = 4 then
@@ -227,9 +214,7 @@ process
     inky_y<= std_logic_vector(to_unsigned(inky_dir_y, OBJECT_SIZE));
     
     -- Clyde Logic 
-    clydechaseLogic:  Clyde port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, clyde_x=> clyde_dir_x, clyde_y=> clyde_dir_y, clyde_xout=> clyde_dir_x_out, clyde_yout => clyde_dir_y_out, clk=> clk, chase=> chase_b ); 
-    --MAKE NOT HAVE MULTIPLE DRIVERS IF RETREAT THAN CLYDES LOCATION HAS MULTIPLE DRIVERS
-    --clydeRetreatLogic: retreat port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, GhostX=> clyde_dir_x, GhostY=> clyde_dir_y, GhostXOut=> clyde_dir_x_out, GhostYOut => clyde_dir_y_out, clk=> clk, Clyde=> retreat_b);
+    clydechaseLogic:  Clyde port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, clyde_x=> clyde_dir_x, clyde_y=> clyde_dir_y, clyde_xout=> clyde_dir_x_out, clyde_yout => clyde_dir_y_out, clk=> clk, Chase=> Chase_B, Scatter=>Scatter_B, Retreat=> Retreat_B); 
     --Giving Clyde Position
     clyde_x<= std_logic_vector(to_unsigned(clyde_dir_x_out, OBJECT_SIZE));
     clyde_y<= std_logic_vector(to_unsigned(clyde_dir_y_out, OBJECT_SIZE));
