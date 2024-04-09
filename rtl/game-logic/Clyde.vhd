@@ -17,6 +17,7 @@ entity Clyde is
         Clyde_Xout : out integer range 0 to 640:=240;
         Clyde_Yout : out integer range 0 to 480:=100;
         clk       : in std_logic;
+        --check ghost state
         Chase     : in std_logic;
         Scatter   : in std_logic;
         Retreat   : in std_logic
