@@ -98,7 +98,7 @@ architecture rtl of objectbuffer is
         Ghost_on : out std_logic
     );
     end component;
-    
+    --HI 
     component MazeWalls is
       Port (
             Wall_XL             : in integer range 0 to 392;
