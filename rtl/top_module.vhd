@@ -108,21 +108,21 @@ begin
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, score_anode => score_anode, score_segment => score_segment);
     
-    hdmi_out_rocess: hdmi_out port map(
-        clk=> clk,
-        rst=> rst,
-        right=> right_i,
-        left=> left_i,
-        up=> up_i,
-        down=> down_i,
+    hdmi_out_i: hdmi_out port map(
+        clk => clk,
+        rst => rst,
+        right => right_i,
+        left => left_i,
+        up => up_i,
+        down => down_i,
         -- tmds output ports
         clk_p => clk_p,
         clk_n => clk_n,
-        data_p=> data_p,
-        data_n=> data_n,
-        chase_led=> chase_led,
-        scatter_led=> scatter_led,
-        retreat_led=> retreat_led);
+        data_p => data_p,
+        data_n => data_n,
+        chase_led => chase_led,
+        scatter_led => scatter_led,
+        retreat_led => retreat_led);
     
     
 end Behavioral;

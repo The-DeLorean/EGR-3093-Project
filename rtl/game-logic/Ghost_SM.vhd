@@ -1,10 +1,11 @@
 ----------------------------------------------------------------------------------
 -- Company: Point Loma Nazarene University
 -- Engineer: Kyle Dramov
--- 
+-- This module is a state machine that reads various game situations (such as powerup).
+-- It drives three semaphores which will indicate to other logic files what ghost behavior ought to be.
 -- Create Date: 04/06/2024 09:50:16 AM
 -- Design Name: Ghost State Machine
--- Module Name: Ghost_SM - Behavioral
+-- Module Name: ghost_state - Behavioral
 -- Project Name: PacMan
 
 
@@ -20,7 +21,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity Ghost_SM is
+entity ghost_state is
     Port ( 
            start_game : in std_logic;
            clk        : in STD_LOGIC;
@@ -28,86 +29,94 @@ entity Ghost_SM is
            chase      : out STD_LOGIC;
            scatter    : out STD_LOGIC;
            Retreat    : out STD_LOGIC);
-end Ghost_SM;
+end ghost_state;
 
-architecture Behavioral of Ghost_SM is
-  signal chase_s        :  std_logic :='1';
-  signal scatter_s      :  std_logic :='0';
-  signal Retreat_s      :  std_logic :='0';
-  signal chasePrev      :  std_logic :='0';
-  signal count          :  integer :=0; 
-  signal scatterTracker : integer range 0 to 4:=0;
-  type Ghost is (Gchase, Gscatter, GRetreat);
+architecture Behavioral of ghost_state is
+
+--These signals drive the state machine
+signal chase_i        :  std_logic :='1';
+signal scatter_i      :  std_logic :='0';
+signal retreat_i      :  std_logic :='0';
+signal chase_prev      :  std_logic :='0';
+signal count          :  integer :=0; 
+signal scatter_tracker : integer range 0 to 4:=0;
+
+--Every ghost is in one of three states.  Each of these states 
+type Ghost is (chase_state, scatter_state, reatreat_state);
+  
 begin
-    process (clk, scatterTracker, powerup)
-    variable GhostState : Ghost;
+    process (clk, scatter_tracker, powerup)
+    variable ghost_state_machine : Ghost;
     begin
         if start_game='1' then
             if rising_edge(clk) then
-                case GhostState is
-                    When Gchase =>
+                case ghost_state_machine is
+                    When chase_state =>
                         If powerup= '1' then
-                            GhostState := GRetreat;
+                            ghost_state_machine := reatreat_state;
                             count <=0;
-                        elsif scatterTracker /=4 then
+                        elsif scatter_tracker /=4 then
                             count <=count+1; 
                             if count = 2000000000 then   
-                                Ghoststate:= Gscatter;
+                                ghost_state_machine:= scatter_state;
                                 count <=0;
-                                chasePrev<='1';
+                                chase_prev<='1';
                             end if;   
                         else    
                                        
                         end if;
-                    When Gscatter => 
-                        if scatterTracker /=4 and chasePrev='1' then
-                            scatterTracker <= scatterTracker+1;
-                            chasePrev<='0';
+                    When scatter_state => 
+                        if scatter_tracker /=4 and chase_prev='1' then
+                            scatter_tracker <= scatter_tracker+1;
+                            chase_prev<='0';
                         end if;
                         If powerup= '1' then
-                            GhostState:= GRetreat;
+                            ghost_state_machine:= reatreat_state;
                             count <=0;
                         else
                             count <=count+1; 
-                                if scatterTracker <3 then 
+                                if scatter_tracker <3 then 
                                     if count = 700000000 then   
-                                        Ghoststate:= Gchase;
+                                        ghost_state_machine:= chase_state;
                                         count <=0;
                                     end if;
-                                elsif scatterTracker <4 then
+                                elsif scatter_tracker <4 then
                                     if count = 500000000 then   
-                                        Ghoststate:= Gchase;
+                                        ghost_state_machine:= chase_state;
                                         count <=0;
                                     end if;
-                                elsif scatterTracker =4 then
-                                    Ghoststate:= Gchase;
+                                elsif scatter_tracker =4 then
+                                    ghost_state_machine:= chase_state;
                                     count <=0;
                                 end if;                            
                         end if;
-                    when GRetreat =>
+                    when reatreat_state =>
                         if powerup= '0' then
-                            GhostState:=Gchase;
+                            ghost_state_machine:=chase_state;
                         end if;
                end case;    
           end if;  
-          Case GhostState is 
-              when Gchase =>
-                  chase_s   <='1';
-                  scatter_s <='0';
-                  Retreat_s <='0';
-              when Gscatter =>
-                  chase_s   <='0';
-                  scatter_s <='1';
-                  Retreat_s <='0';
-              when GRetreat=>
-                  chase_s   <='0';
-                  scatter_s <='0';
-                  Retreat_s <='1';
+          
+          --assign internal signals based on state
+          Case ghost_state_machine is 
+              when chase_state =>
+                  chase_i   <='1';
+                  scatter_i <='0';
+                  retreat_i <='0';
+              when scatter_state =>
+                  chase_i   <='0';
+                  scatter_i <='1';
+                  retreat_i <='0';
+              when reatreat_state=>
+                  chase_i   <='0';
+                  scatter_i <='0';
+                  retreat_i <='1';
           end case;
         end if;
     end process;
     
-    chase <= chase_s;
-    scatter<= scatter_s;
-    Retreat<= Retreat_s;
+    --output semaphores
+    chase <= chase_i;
+    scatter <= scatter_i;
+    Retreat <= retreat_i;
 end Behavioral;

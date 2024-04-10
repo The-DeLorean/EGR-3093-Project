@@ -118,7 +118,7 @@ architecture rtl of hdmi_out is
     end component;
 
     --Component for the Ghost state Machine
-    Component Ghost_SM is
+    Component ghost_state is
         Port ( 
                start_game : in std_logic;
                clk        : in STD_LOGIC;
@@ -194,10 +194,13 @@ process
     
     --Ghost State Machine to change between ghost states Prison->Escape->CHASE->SCATTER->Retreat
     --Still Need to make Prison and Escape
-    Clyde_States: Ghost_SM port map(start_game=>start_game, clk=> clk, powerup=> powerup_b, chase=> chase_b, scatter=> scatter_b, Retreat=> retreat_b);
-    chase_led<=chase_b;
-    scatter_led<=scatter_b;
-    retreat_led<=retreat_b;
+    ghost_state_i: ghost_state port map(start_game => start_game, clk => clk, powerup => powerup_b, 
+                                    chase => chase_b, scatter => scatter_b, Retreat => retreat_b);
+    chase_led <= chase_b;
+    scatter_led <= scatter_b;
+    retreat_led <= retreat_b;
+    
+    --Game delay/start time process
     process
     begin
         if rising_edge(clk) then
@@ -209,15 +212,18 @@ process
         end if;
     end process;
     
-    --Giving Inky position
+    --Assign Inky position
     inky_x<= std_logic_vector(to_unsigned(inky_dir_x, OBJECT_SIZE));
     inky_y<= std_logic_vector(to_unsigned(inky_dir_y, OBJECT_SIZE));
     
-    -- Clyde Logic 
-    clydechaseLogic:  Clyde port map (pacman_x=> pacman_dir_x, pacman_y=> pacman_dir_y, clyde_x=> clyde_dir_x, clyde_y=> clyde_dir_y, clyde_xout=> clyde_dir_x_out, clyde_yout => clyde_dir_y_out, clk=> clk, Chase=> Chase_B, Scatter=>Scatter_B, Retreat=> Retreat_B); 
-    --Giving Clyde Position
-    clyde_x<= std_logic_vector(to_unsigned(clyde_dir_x_out, OBJECT_SIZE));
-    clyde_y<= std_logic_vector(to_unsigned(clyde_dir_y_out, OBJECT_SIZE));
+    --Clyde port map 
+    clyde_i:  clyde port map (pacman_x => pacman_dir_x, pacman_y=> pacman_dir_y, 
+    clyde_x => clyde_dir_x, clyde_y=> clyde_dir_y, clyde_xout=> clyde_dir_x_out, 
+    clyde_yout => clyde_dir_y_out, clk=> clk, Chase=> Chase_B, Scatter=>Scatter_B, Retreat=> Retreat_B);
+    
+    --Drive Clyde position signals
+    clyde_x <= std_logic_vector(to_unsigned(clyde_dir_x_out, OBJECT_SIZE));
+    clyde_y <= std_logic_vector(to_unsigned(clyde_dir_y_out, OBJECT_SIZE));
     
     
     timing_vga: if RESOLUTION = "VGA" generate
