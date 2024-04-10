@@ -68,20 +68,37 @@ architecture rtl of objectbuffer is
     signal stillpacman_x2 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(170, OBJECT_SIZE));
     signal stillpacman_y0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(460, OBJECT_SIZE));
     
-    
+    -- ****   MAZE WALLS   *****
+    --NUMBER OF WALLS DRAWN
+    constant wall_num : integer := 51;
     --Arrays for wall positions
-    constant WallNum : integer := 51;
-    type int_vect is array (0 to WallNum-1) of integer range 0 to 32;
+    type int_vect_Walls is array (0 to wall_num-1) of integer range 0 to 32;
     --                                    | Walls go from left to right top to bottom in a snaking pattern. Starting at the top of the wall down|              | left tunnel sides | |  right tunnel sides  ||    Ghost Box     |   |Border|                    
-    constant  Wall_Xvalues : int_vect := (12, 1, 6, 15, 21, 1, 6, 8, 9, 12, 18, 15, 21, 6,  18, 9,  12, 1,  3,  6,  15, 21, 21, 0,  24, 6,  1,  9,  12, 18, 15, 0, 4, 0,  0,  4,  0,  21, 21, 21, 21, 21, 21, 9,  9,  9,  14, 16, 12, 26, 0 );
-    constant  Wall_Yvalues : int_vect := (0,  1, 1, 1,  1,  5, 5, 8, 5, 7,  5,  8,  5,  14, 14, 17, 19, 20, 22, 20, 20, 20, 22, 23, 23, 23, 26, 23, 25, 23, 26, 8, 9, 12, 14, 15, 18, 8,  9,  12, 14, 15, 18, 11, 12, 15, 11, 12, 0, 0,  29);
-    constant  Wall_Lengths : int_vect := (2,  4, 5, 5,  4,  4, 2, 3, 8, 2,  2,  3,  4,  2,  2,  8,  2,  4,  2,  5,  5,  4,  2,  2,  2,  2,  10, 8,  2,  2,  10, 5, 1, 5,  5,  1,  5,  5,  1,  5,  5,  1,  5,  3,  1,  8,  3,  1,  0, 2,  28);
-    constant  Wall_Heights : int_vect := (4,  3, 3, 3,  3,  2, 8, 2, 2, 3,  8,  2,  2,  5,  5,  2,  3,  2,  3,  2,  2,  2,  3,  2,  2,  3,  2,  2,  3,  3,  2,  1, 3, 1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  0, 32, 3 );
+    constant  Wall_Xvalues : int_vect_walls := (12, 1, 6, 15, 21, 1, 6, 8, 9, 12, 18, 15, 21, 6,  18, 9,  12, 1,  3,  6,  15, 21, 21, 0,  24, 6,  1,  9,  12, 18, 15, 0, 4, 0,  0,  4,  0,  21, 21, 21, 21, 21, 21, 9,  9,  9,  14, 16, 12, 26, 0 );
+    constant  Wall_Yvalues : int_vect_walls := (0,  1, 1, 1,  1,  5, 5, 8, 5, 7,  5,  8,  5,  14, 14, 17, 19, 20, 22, 20, 20, 20, 22, 23, 23, 23, 26, 23, 25, 23, 26, 8, 9, 12, 14, 15, 18, 8,  9,  12, 14, 15, 18, 11, 12, 15, 11, 12, 0, 0,  29);
+    constant  Wall_Lengths : int_vect_walls := (2,  4, 5, 5,  4,  4, 2, 3, 8, 2,  2,  3,  4,  2,  2,  8,  2,  4,  2,  5,  5,  4,  2,  2,  2,  2,  10, 8,  2,  2,  10, 5, 1, 5,  5,  1,  5,  5,  1,  5,  5,  1,  5,  3,  1,  8,  3,  1,  0, 2,  28);
+    constant  Wall_Heights : int_vect_walls := (4,  3, 3, 3,  3,  2, 8, 2, 2, 3,  8,  2,  2,  5,  5,  2,  3,  2,  3,  2,  2,  2,  3,  2,  2,  3,  2,  2,  3,  3,  2,  1, 3, 1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  0, 32, 3 );
     
-   --Variable tp hold the outputs of all the walls   
-    type std_logic_Array is array (0 to WallNum-1) of std_logic;
-    signal Wall_On : std_logic_Array;   
+   --Variable to hold the outputs of all the walls   
+    type std_logic_array_walls is array (0 to wall_num-1) of std_logic;
+    signal Wall_On : std_logic_array_walls;   
     
+    -- ****   DOTS   ***** prev 68 
+    constant dot_num : integer:=128;--:= NuM;
+    --Array type to hold all the dot positions
+    type int_vect_dots is array (0 to dot_num-1) of integer range 0 to 32;
+    --
+    --                                                                          *** TOP ROW***                                   |                         Columns                                ||                                         2nd Big Row                                        ||                           2nd Columns   ||               Snd Row with multiple dots                             ||          Dots Through top of ghost gate
+    constant dot_xvalues : int_vect_dots :=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 8, 17, 20, 25, 0, 5, 8, 17, 20, 25, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 24, 25, 5, 11, 14, 20, 5, 11, 14, 20, 5,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 20, 5,  8,  17, 20, 5,  8,  17, 20);
+    constant dot_yvalues : int_vect_dots :=(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, 1, 1,  1,  1,  1,  2, 2, 2,  2,  2,  2,  3, 3, 3,  3,  3,  3,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5, 5, 5, 5,  5,  5,  6, 6, 6, 6,  6,  6,  7, 7, 7, 7, 7, 7, 7, 7, 7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8, 8,  8,  8,  9, 9,  9,  9,  10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12);
+    
+    --Variable to hold the outputs of all the dots
+    type std_logic_array_dots is array (0 to dot_num-1) of std_logic;
+    signal Dot_on      : std_logic_array_dots;
+    --Array to hold each dots visibility
+    --signal Dot_visible : std_logic_array_dots:= ('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1');
+    --Visibile variable for testing
+    signal visible_i: std_logic := '1';
     component StillPacManDraw is
     Port (
         pixel_x, pixel_y   : in  std_logic_vector(13 downto 0);
@@ -98,7 +115,7 @@ architecture rtl of objectbuffer is
         Ghost_on : out std_logic
     );
     end component;
-    --HI 
+    
     component MazeWalls is
       Port (
             Wall_XL             : in integer range 0 to 392;
@@ -109,6 +126,16 @@ architecture rtl of objectbuffer is
             Wall_on            : out std_logic
         );
     end component;
+    
+  component DotDraw is
+  Port ( 
+        Dot_XL             : in integer range 0 to 28;
+        Dot_YT             : in integer range 0 to 32;
+        pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        visible            : in std_logic;
+        Dot_on             : out std_logic
+       );
+  end component ;
 
 begin
     
@@ -127,10 +154,15 @@ begin
     --The Border Color
     Border_rgb <= x"0000FF"; -- blue
 
-    --PAC MAN Maze
-    Walls: for i in 0 to WallNum-1 generate
+    --Drawing PAC MAN Maze
+    Walls: for i in 0 to wall_num-1 generate
         wall: MazeWalls port map (Wall_XL=> Wall_Xvalues(i), Wall_YT=> Wall_Yvalues(i), length=> Wall_Lengths(i), height => Wall_Heights(i), pixel_x=> pixel_x, pixel_y=> pixel_y, Wall_on=>Wall_on(i)); 
     end generate Walls;
+    
+    --Drawing dots 
+    dots: for i in 0 to dot_num-1 generate
+        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i));
+    end generate dots;
     
     --Drawing the Ghost Gate
     GhostGate_on <= '1' when (Ghost_GateXL) <= pix_x and pix_x <=(Ghost_GateXR) and pix_y <= (Ghost_GateYB) and (Ghost_GateYT) <= pix_y  else '0';
@@ -187,11 +219,17 @@ begin
                 rgb <= backgrnd_rgb; -- x"000000"; -- black background
             end if;
             --Drawing Maze Walls
-            wallon : for i in 0 to WallNum-1 loop
+            wallon : for i in 0 to wall_num-1 loop
                 if Wall_on(i)='1' then
                     rgb <= x"FF0000";
                 end if;
             end loop wallon;
+            --Drawing dots
+            Doton : for i in 0 to dot_num-1 loop
+                if Dot_on(i)='1' then
+                    rgb <= x"FFFFFF";
+                end if;
+            end loop doton;
             if Clyde_on='1' then
                 rgb<= Clyde_rgb;
             elsif Inky_on='1' then

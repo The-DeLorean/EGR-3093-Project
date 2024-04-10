@@ -20,13 +20,13 @@ entity MazeWalls is
 end MazeWalls;
 
 architecture Behavioral of MazeWalls is
-    constant statX : integer:=124;
-    constant statY : integer:=5;
+    constant start_X : integer:=124;
+    constant start_Y : integer:=6;
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
       
 begin
     pix_x <= unsigned(pixel_x);
     pix_y <= unsigned(pixel_y);
     
-    Wall_on <= '1' when (124 + (WALL_XL*14)) <= pix_x and pix_x <=((WALL_XL*14) + 124 + (length*14)) and pix_y <= ((WALL_YT*14) + 6 + (height*14)) and (6 + (14*WALL_YT)) <= pix_y  else '0';
+    Wall_on <= '1' when (start_X + (WALL_XL*14)) <= pix_x and pix_x <=((WALL_XL*14) + start_X + (length*14)) and pix_y <= ((WALL_YT*14) + start_Y + (height*14)) and (start_Y + (14*WALL_YT)) <= pix_y  else '0';
 end Behavioral;
