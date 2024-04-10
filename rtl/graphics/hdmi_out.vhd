@@ -31,9 +31,9 @@ entity hdmi_out is
         clk_n    : out std_logic;
         data_p   : out std_logic_vector(2 downto 0);
         data_n   : out std_logic_vector(2 downto 0);
-        chaseLED     : out STD_LOGIC;
-        scatterLED     : out STD_LOGIC;
-        RetreatLED     : out STD_LOGIC
+        chase_led     : out STD_LOGIC;
+        scatter_led     : out STD_LOGIC;
+        retreat_led     : out STD_LOGIC
     );
 end hdmi_out;
 
@@ -195,9 +195,9 @@ process
     --Ghost State Machine to change between ghost states Prison->Escape->CHASE->SCATTER->Retreat
     --Still Need to make Prison and Escape
     Clyde_States: Ghost_SM port map(start_game=>start_game, clk=> clk, powerup=> powerup_b, chase=> chase_b, scatter=> scatter_b, Retreat=> retreat_b);
-    chaseLed<=chase_b;
-    scatterLed<=scatter_b;
-    RetreatLed<=retreat_b;
+    chase_led<=chase_b;
+    scatter_led<=scatter_b;
+    retreat_led<=retreat_b;
     process
     begin
         if rising_edge(clk) then
