@@ -8,7 +8,7 @@
 
 # On-board Buttons
 # change from pin J2 (BTN0) to pin V2 (SW0)
-set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {rst}]
+#set_property -dict {PACKAGE_PIN V2 IOSTANDARD LVCMOS33} [get_ports {rst}]
 
 #LED's to register the right, left, up, and down inputs
 set_property -dict {PACKAGE_PIN G1 IOSTANDARD LVCMOS33} [get_ports led_right]
@@ -18,14 +18,14 @@ set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports led_down]
 
 # Input Pins for external joystick buttons
 # change L/R/U/D (pins P5/R5/R6/T6) to onboard buttons for testing purposes
-set_property -dict {PACKAGE_PIN H2 IOSTANDARD LVCMOS33} [get_ports left_raw]
-set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports right_raw]
-set_property -dict {PACKAGE_PIN J1 IOSTANDARD LVCMOS33} [get_ports down_raw]
-set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports up_raw]
+set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports left_raw]
+set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports right_raw]
+set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports down_raw]
+set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
 
 #On board button for score counter
 # Change to switch (SW15) to let onboard buttons be L/R/U/D
-set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports score_raw]
+set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports score_raw]
 
 # On-board 7-Segment display 0
 set_property -dict {PACKAGE_PIN D5 IOSTANDARD LVCMOS33} [get_ports {name_anode[0]}]

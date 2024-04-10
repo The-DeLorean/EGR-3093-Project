@@ -148,7 +148,7 @@ process
             clyde_dir_y<=clyde_dir_y_out;
             m<=not(m);
             count<=0;
-            if r = '1' then
+            if r = '0' then
                 pacman_dir_x<=pacman_dir_x+1;
                 inky_dir_x<=inky_dir_x-1;
                 if pacman_dir_x =503 then
@@ -157,7 +157,7 @@ process
                 if inky_dir_x =123 then
                     inky_dir_x<=124;
                 end if;
-            elsif l = '1' then
+            elsif l = '0' then
                 pacman_dir_x<=pacman_dir_x-1;
                 inky_dir_x<=inky_dir_x+1;
                 if pacman_dir_x = 123 then
@@ -166,7 +166,7 @@ process
                 if inky_dir_x = 503 then
                     inky_dir_x<=502;
                 end if;
-            elsif d = '1' then
+            elsif d = '0' then
                 pacman_dir_y<=pacman_dir_y+1;
                 inky_dir_y<=inky_dir_y-1;
                 if pacman_dir_y = 440 then
@@ -175,7 +175,7 @@ process
                 if inky_dir_y =4 then
                     inky_dir_y<=5;
                 end if;
-            elsif u = '1' then
+            elsif u = '0' then
                 pacman_dir_y<=pacman_dir_y-1;
                 inky_dir_y<=inky_dir_y+1;
                 if pacman_dir_y = 4 then
