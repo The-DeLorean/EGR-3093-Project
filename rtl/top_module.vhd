@@ -1,8 +1,8 @@
---Top module containing logic/inputs/outputs for joystick, score, and username control
+--Top module containing logic/inputs/outputs for joystick, score, username, game logic, and graphics
 --Rename file to **top_module**
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
---ytcfydycy
+
 entity top_module is
     Port ( --non-debounced joystick input
            right_raw, left_raw, up_raw, down_raw : in STD_LOGIC; 
@@ -25,9 +25,9 @@ entity top_module is
             clk_n    : out std_logic;
             data_p   : out std_logic_vector(2 downto 0);
             data_n   : out std_logic_vector(2 downto 0);
-            chaseLED     : out STD_LOGIC;
-            scatterLED     : out STD_LOGIC;
-            RetreatLED     : out STD_LOGIC
+            chase_led     : out STD_LOGIC;
+            scatter_led     : out STD_LOGIC;
+            retreat_led     : out STD_LOGIC
            );
 end top_module;
 
@@ -69,9 +69,9 @@ Component hdmi_out is
         clk_n    : out std_logic;
         data_p   : out std_logic_vector(2 downto 0);
         data_n   : out std_logic_vector(2 downto 0);
-        chaseLED     : out STD_LOGIC;
-        scatterLED     : out STD_LOGIC;
-        RetreatLED     : out STD_LOGIC
+        chase_led     : out STD_LOGIC;
+        scatter_led     : out STD_LOGIC;
+        retreat_led     : out STD_LOGIC
     );
 end component;
 
@@ -108,21 +108,21 @@ begin
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, score_anode => score_anode, score_segment => score_segment);
     
-    hdmi_out_rocess: hdmi_out port map(
-        clk=> clk,
-        rst=> rst,
-        right=> right_i,
-        left=> left_i,
-        up=> up_i,
-        down=> down_i,
+    hdmi_out_i: hdmi_out port map(
+        clk => clk,
+        rst => rst,
+        right => right_i,
+        left => left_i,
+        up => up_i,
+        down => down_i,
         -- tmds output ports
         clk_p => clk_p,
         clk_n => clk_n,
-        data_p=> data_p,
-        data_n=> data_n,
-        chaseLED=> chaseLed,
-        scatterLED=> scatterLed,
-        RetreatLED=> retreatled);
+        data_p => data_p,
+        data_n => data_n,
+        chase_led => chase_led,
+        scatter_led => scatter_led,
+        retreat_led => retreat_led);
     
     
 end Behavioral;
