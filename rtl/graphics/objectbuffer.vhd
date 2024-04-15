@@ -21,8 +21,8 @@ entity objectbuffer is
         pacman_x, pacman_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         inky_x, inky_y       : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         clyde_x, clyde_y     : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        ghost_2_x, ghost_2_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        ghost_3_x, ghost_3_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        pinky_x, pinky_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+        blinky_x, blinky_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         backgrnd_rgb       : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
         rgb                : out std_logic_vector(PIXEL_SIZE-1 downto 0);
         mVariable          : in boolean

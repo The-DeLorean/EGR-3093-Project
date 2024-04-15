@@ -1,4 +1,4 @@
---This entity 
+
 --Rename file **clyde.vhd**
 library ieee;
 use ieee.std_logic_1164.all;
@@ -8,33 +8,36 @@ entity clyde is
 
     port (
         --pacman location
-        PacMan_x   : in integer range 0 to 640:=240;
-        PacMan_y   : in integer range 0 to 480:=340;
+        pacman_x_int   : in integer range 0 to 640:=240;
+        pacman_y_int   : in integer range 0 to 480:=340;
         --clyde location
-        Clyde_X    : in integer range 0 to 640:=240;
-        Clyde_Y    : in integer range 0 to 480:=100;
+        clyde_x_int    : in integer range 0 to 640:=240;
+        clyde_y_int    : in integer range 0 to 480:=100;
         --output new clyde location
-        Clyde_Xout : out integer range 0 to 640:=240;
-        Clyde_Yout : out integer range 0 to 480:=100;
+        clyde_x_out : out integer range 0 to 640:=240;
+        clyde_y_out : out integer range 0 to 480:=100;
         clk       : in std_logic;
         --check ghost state
-        Chase     : in std_logic;
-        Scatter   : in std_logic;
-        Retreat   : in std_logic
+        powerup     : in std_logic;
+        prison   : in std_logic;
+        escape   : in std_logic;
+        chase     : in std_logic;
+        scatter   : in std_logic;
+        retreat   : in std_logic
     );
 end Clyde;
 
-architecture ClydeYhunter of Clyde is
+architecture Behavioral of Clyde is
         signal count : integer;
         signal clydexx : integer range 0 to 640:=240;
         signal clydeyy : integer range 0 to 480:=100;
         signal xdirr : integer range 0 to 640:=240;
         signal ydirr : integer range 0 to 480:=340;
 begin
-    clydexx <= Clyde_X;
-    clydeyy <= Clyde_Y;
-    xdirr <= PacMan_x;
-    ydirr <= PacMan_y;
+    clydexx <= clyde_x_int;
+    clydeyy <= clyde_y_int;
+    xdirr <= pacman_x_int;
+    ydirr <= pacman_y_int;
     process
     begin
     if rising_edge(clk) then
@@ -93,6 +96,8 @@ begin
     end if;
     end process;
     --output clyde new position 
-    Clyde_Xout <= clydexx;
-    Clyde_Yout <= clydeyy;
-end ClydeYhunter;
+    clyde_x_out <= clydexx;
+    clyde_y_out <= clydeyy;
+    
+    
+end Behavioral;

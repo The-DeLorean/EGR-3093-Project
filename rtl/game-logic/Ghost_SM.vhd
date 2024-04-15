@@ -12,14 +12,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity ghost_state is
     Port ( 
@@ -30,6 +22,8 @@ entity ghost_state is
            scatter    : out STD_LOGIC;
            Retreat    : out STD_LOGIC);
 end ghost_state;
+
+--IDEA: output semaphores as an active high std logic vector.
 
 architecture Behavioral of ghost_state is
 
