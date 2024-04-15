@@ -25,9 +25,9 @@ entity clyde is
         scatter   : in std_logic;
         retreat   : in std_logic
     );
-end Clyde;
+end clyde;
 
-architecture Behavioral of Clyde is
+architecture Behavioral of clyde is
         signal count : integer;
         signal clydexx : integer range 0 to 640:=240;
         signal clydeyy : integer range 0 to 480:=100;
