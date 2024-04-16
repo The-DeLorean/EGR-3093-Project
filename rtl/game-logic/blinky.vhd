@@ -30,7 +30,7 @@ entity blinky is
             up       : in std_logic;
             down     : in std_logic;
             moving   : in boolean;
-            pacman_x_int_int   : in integer range 0 to 640:=240;
+            pacman_x_int   : in integer range 0 to 640:=240;
             pacman_y_int   : in integer range 0 to 480:=340;
             blinky_x_int    : in integer range 0 to 640:=240;
             blinky_y_int    : in integer range 0 to 480:=100;
@@ -47,7 +47,7 @@ end blinky;
 
 architecture Behavioral of Blinky is
          --internal signals
-signal pacman_x_int_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
+signal pacman_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=340; 
 signal blinky_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
 signal blinky_y_int_i     : integer range 0 to 480:=340; 
@@ -58,7 +58,7 @@ signal moving_i : boolean := moving;
 begin
     blinky_x_int_i <= blinky_x_int;
     blinky_y_int_i <= blinky_y_int;
-    pacman_x_int_int_i <= pacman_x_int_int;
+    pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
     
     process
@@ -69,7 +69,7 @@ begin
             if count >=2000000 then
                 count<=0;
                --head pacman hunter hard coded values for walls (for now)
-                if blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                if blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
@@ -77,7 +77,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
@@ -85,7 +85,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
@@ -93,7 +93,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
@@ -101,19 +101,19 @@ begin
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     blinky_y_int_i<=blinky_y_int_i+1;
                     alternate <= 0;
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     blinky_y_int_i<=blinky_y_int_i-1;
                     alternate <= 0;   
-                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     blinky_x_int_i<=blinky_x_int_i+1;
                     alternate <= 1; 
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     blinky_x_int_i<=blinky_x_int_i-1;
                     alternate <= 1; 
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     --gameover
                 end if;
            end if;
@@ -136,7 +136,7 @@ begin
             if count >=2000000 then
                 count<=0;
                --head pacman hunter hard coded values for walls (for now)
-                if blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                if blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
@@ -144,7 +144,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
@@ -152,7 +152,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
@@ -160,7 +160,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     if alternate = 1 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
@@ -168,19 +168,19 @@ begin
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                     blinky_y_int_i<=blinky_y_int_i-1;
                     alternate <= 0;
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                     blinky_y_int_i<=blinky_y_int_i+1;
                     alternate <= 0;   
-                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     blinky_x_int_i<=blinky_x_int_i-1;
                     alternate <= 1; 
-                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     blinky_x_int_i<=blinky_x_int_i+1;
                     alternate <= 1; 
-                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     --eaten
                 end if;
            end if;
