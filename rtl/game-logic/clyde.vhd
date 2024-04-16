@@ -29,6 +29,8 @@ architecture Behavioral of clyde is
         signal clydeyy : integer range 0 to 480:=100;
         signal xdirr : integer range 0 to 640:=240;
         signal ydirr : integer range 0 to 480:=340;
+        
+        signal b_r_corner;
 begin
     clydexx <= clyde_x_int;
     clydeyy <= clyde_y_int;
@@ -41,8 +43,16 @@ begin
             count<=count +1;
             if count >=2000000 then
                 count<=0;
+--                if right='0' & down ='0' then
+--                    b_r_corner='1';
+--                    clydexx<=clydexx-1;
+--                elsif b_r_corner ='1' then
+--                    clydexx<=clydexx-1;
+--                    if down='1' then
+--                        clydeyy<=clydeyy+1;
+--                        b_r_corner='0';
                --y pacman hunter hard coded values for walls (for now)
-                if clydeyy = ydirr or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
+                elsif clydeyy = ydirr or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
                 --do x hunting
                     if clydexx < xdirr then
                         clydexx<=clydexx+1;
