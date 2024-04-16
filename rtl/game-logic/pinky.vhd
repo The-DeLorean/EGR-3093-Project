@@ -51,7 +51,7 @@ signal pacman_x_int_i     : integer range 0 to 640:=240; -- starting coordinates
 signal pacman_y_int_i     : integer range 0 to 480:=340; 
 signal pinky_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
 signal pinky_y_int_i     : integer range 0 to 480:=340; 
-signal count_i          : integer;
+signal count          : integer;
 signal moving_i : boolean := moving;
 
 begin
@@ -61,4 +61,65 @@ begin
     pinky_x_int_i <= pinky_x_int;
     pinky_y_int_i <= pinky_y_int;
 
+    process
+    begin
+    if rising_edge(clk) then
+        if Chase='1' then
+            count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --x pacman hunter hard coded values for walls (for now)
+                if pinky_x_int_i = pacman_x_int_i or (pinky_x_int_i = 150 and (pinky_y_int_i = 240 or pinky_y_int_i = 241)) then
+                --do y hunting
+                    if pinky_y_int_i < pacman_y_int_i then
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                    elsif pinky_y_int_i > pacman_y_int_i then
+                        pinky_y_int_i<=pinky_y_int_i-1;
+                    end if;
+                elsif pinky_x_int_i < pacman_x_int_i then
+                    pinky_x_int_i<=pinky_x_int_i+1;
+                elsif pinky_x_int_i > pacman_x_int_i then
+                    pinky_x_int_i<=pinky_x_int_i-1;
+                end if;
+           end if;
+       elsif Scatter='1' then
+            count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --Scattering to Top Right corner
+                if pinky_y_int_i = 6 or (pinky_y_int_i = 150 and (pinky_x_int_i = 240 or pinky_x_int_i = 241)) then
+                --do y hunting
+                    if pinky_x_int_i > 124 then
+                        pinky_x_int_i<=pinky_x_int_i+1;
+                    end if; 
+                elsif pinky_y_int_i > 6 then
+                    pinky_y_int_i<=pinky_y_int_i-1;
+                end if;
+            end if;
+        elsif Retreat='1' then
+             count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --x pacman hunter hard coded values for walls (for now)
+                if pinky_x_int_i = pacman_x_int_i or (pinky_x_int_i = 150 and (pinky_y_int_i = 240 or pinky_y_int_i = 241)) then
+                --do y hunting
+                    if pinky_y_int_i < pacman_y_int_i then
+                        pinky_y_int_i<=pinky_y_int_i-1;
+                    elsif pinky_y_int_i > pacman_y_int_i then
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                    end if;
+                elsif pinky_x_int_i < pacman_x_int_i then
+                    pinky_x_int_i<=pinky_x_int_i-1;
+                elsif pinky_x_int_i > pacman_x_int_i then
+                    pinky_x_int_i<=pinky_x_int_i+1;
+                end if;
+           end if;
+               
+           --end if;
+        end if;
+    end if;
+    end process;
+    --output pinky new position 
+    pinky_x_int_out <= pinky_x_int_i;
+    pinky_y_int_out <= pinky_y_int_i;
 end Behavioral;
