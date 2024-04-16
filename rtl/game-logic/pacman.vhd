@@ -36,11 +36,6 @@ Port (  clk     : in std_logic;
         pacman_x_int_out     : out integer range 0 to 640:=240; -- starting coordinates (240,340)
         pacman_y_int_out     : out integer range 0 to 480:=340;
         powerup     : in std_logic;
-        prison   : in std_logic;
-        escape   : in std_logic;
-        chase     : in std_logic;
-        scatter   : in std_logic;
-        retreat   : in std_logic;
         pac_death : in std_logic
         );
 end pacman;

@@ -17,10 +17,9 @@ entity ghost_state is
     Port ( 
            start_game : in std_logic;
            clk        : in STD_LOGIC;
+           prison_time: in integer;
            powerup    : in STD_LOGIC;
-           chase      : out STD_LOGIC;
-           scatter    : out STD_LOGIC;
-           Retreat    : out STD_LOGIC);
+           ghost_state_vec   : out std_logic_vector(4 downto 0));
 end ghost_state;
 
 --IDEA: output semaphores as an active high std logic vector.
@@ -28,15 +27,14 @@ end ghost_state;
 architecture Behavioral of ghost_state is
 
 --These signals drive the state machine
-signal chase_i        :  std_logic :='1';
-signal scatter_i      :  std_logic :='0';
-signal retreat_i      :  std_logic :='0';
+--Output that is a vector of 5 bits in order  prison - escape - chase - scatter - retreat
+signal ghost_state_vec_i        :  std_logic_vector(4 downto 0):="10000";
 signal chase_prev      :  std_logic :='0';
 signal count          :  integer :=0; 
 signal scatter_tracker : integer range 0 to 4:=0;
 
 --Every ghost is in one of three states.  Each of these states 
-type Ghost is (chase_state, scatter_state, reatreat_state);
+type Ghost is (prison_state, escape_state,chase_state, scatter_state, reatreat_state);
   
 begin
     process (clk, scatter_tracker, powerup)
@@ -45,6 +43,21 @@ begin
         if start_game='1' then
             if rising_edge(clk) then
                 case ghost_state_machine is
+                    --Waiting the prison time in the prison state
+                    When prison_state =>
+                        count <= count+1;
+                        if count = prison_time then
+                            ghost_state_machine := escape_state;
+                            count<=0;
+                        end if;
+                    --Moving quickly only staying in escape state for 5us
+                    When escape_state=> 
+                        count <= count+1;
+                        if count =  5000 then
+                            ghost_state_machine := chase_state;
+                            count<=0;
+                        end if;        
+                    --In the chase state for 20s          
                     When chase_state =>
                         If powerup= '1' then
                             ghost_state_machine := reatreat_state;
@@ -93,24 +106,20 @@ begin
           
           --assign internal signals based on state
           Case ghost_state_machine is 
+              when prison_state=>
+                  ghost_state_vec_i   <="10000";
+              when escape_state=>
+                  ghost_state_vec_i   <="01000";
               when chase_state =>
-                  chase_i   <='1';
-                  scatter_i <='0';
-                  retreat_i <='0';
+                  ghost_state_vec_i   <="00100";
               when scatter_state =>
-                  chase_i   <='0';
-                  scatter_i <='1';
-                  retreat_i <='0';
+                  ghost_state_vec_i   <="00010";
               when reatreat_state=>
-                  chase_i   <='0';
-                  scatter_i <='0';
-                  retreat_i <='1';
+                  ghost_state_vec_i   <="00001";
           end case;
         end if;
     end process;
     
     --output semaphores
-    chase <= chase_i;
-    scatter <= scatter_i;
-    Retreat <= retreat_i;
+    ghost_state_vec <= ghost_state_vec_i;
 end Behavioral;

@@ -37,11 +37,8 @@ entity inky is
             inky_x_int_out : out integer range 0 to 640:=240;
             inky_y_int_out : out integer range 0 to 480:=100;
             powerup     : in std_logic;
-            prison   : in std_logic;
-            escape   : in std_logic;
-            chase     : in std_logic;
-            scatter   : in std_logic;
-            retreat   : in std_logic);
+            ghost_state_vec   : in std_logic_vector(4 downto 0)
+            );
 end inky;
 
 architecture Behavioral of inky is

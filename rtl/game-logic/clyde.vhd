@@ -19,11 +19,7 @@ entity clyde is
         clk       : in std_logic;
         --check ghost state
         powerup     : in std_logic;
-        prison   : in std_logic;
-        escape   : in std_logic;
-        chase     : in std_logic;
-        scatter   : in std_logic;
-        retreat   : in std_logic
+        ghost_state_vec     : in std_logic_vector (4 downto 0)
     );
 end clyde;
 
@@ -41,7 +37,7 @@ begin
     process
     begin
     if rising_edge(clk) then
-        if Chase='1' then
+        if ghost_state_vec="00100" then
             count<=count +1;
             if count >=2000000 then
                 count<=0;
@@ -59,7 +55,7 @@ begin
                     clydeyy<=clydeyy-1;
                 end if;
            end if;
-       elsif Scatter='1' then
+       elsif ghost_state_vec="00010" then
             count<=count +1;
             if count >=2000000 then
                 count<=0;
@@ -73,7 +69,7 @@ begin
                     clydeyy<=clydeyy-1;
                 end if;
             end if;
-        elsif Retreat='1' then
+        elsif ghost_state_vec="00001" then
              count<=count +1;
              if count >=2000000 then
                 count<=0;

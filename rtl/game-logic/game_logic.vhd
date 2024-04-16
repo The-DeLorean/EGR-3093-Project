@@ -79,12 +79,11 @@ architecture Behavioral of game_logic is
     signal clyde_y_int      : integer range 0 to 480:=100;
     
     --ghost state machine semaphores
+    constant prison_time : integer:= 5000000;
     signal powerup       : std_logic:='0';
-    signal prison        : std_logic:='0';
-    signal escape        : std_logic:='0';
-    signal chase         : std_logic:='0';
-    signal scatter       : std_logic:='0';
-    signal retreat       : std_logic:='0';
+ 
+    signal clyde_state_vec   : std_logic_vector(4 downto 0);
+    signal inky_state_vec   : std_logic_vector(4 downto 0);
     
     --misc. game data
     signal start_time      : integer;
@@ -99,13 +98,12 @@ architecture Behavioral of game_logic is
     --Ghost State Machine to change between ghost states Prison->Escape->CHASE->SCATTER->Retreat
     --Still Need to make Prison and Escape
     --change ghost state output to one std_logic_vector
-    ghost_state_i: entity work.ghost_state(Behavioral)
+    clyde_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
+                prison_time=> prison_time,
                 powerup => powerup, 
-                chase => chase, 
-                scatter => scatter, 
-                retreat => retreat);
+                ghost_state_vec=> clyde_state_vec);
     
     --PacMan port map
     pacman_i: entity work.pacman(Behavioral)
@@ -122,11 +120,6 @@ architecture Behavioral of game_logic is
                 pacman_x_int_out => pacman_x_int, 
                 pacman_y_int_out => pacman_y_int,
                 powerup => powerup, 
-                prison => prison, 
-                escape => escape,
-                chase => chase, 
-                scatter => scatter, 
-                retreat => retreat,
                 pac_death => pac_death);
     
     --drive Pacman position signals
@@ -149,11 +142,8 @@ architecture Behavioral of game_logic is
                 inky_x_int_out => inky_x_int, 
                 inky_y_int_out => inky_y_int,
                 powerup => powerup, 
-                prison => prison, 
-                escape => escape,
-                chase => chase, 
-                scatter => scatter, 
-                retreat => retreat);
+                ghost_state_vec => inky_state_vec 
+                );
                 
     --Drive Inky position signals
     inky_x <= std_logic_vector(to_unsigned(inky_x_int, OBJECT_SIZE));
@@ -174,11 +164,8 @@ architecture Behavioral of game_logic is
                 clyde_y_out => clyde_y_int, 
                 clk => clk, 
                 powerup => powerup, 
-                prison => prison, 
-                escape => escape,
-                chase => chase, 
-                scatter => scatter, 
-                retreat => retreat);
+                ghost_state_vec => clyde_state_vec
+                );
     
     --Drive Clyde position signals
     clyde_x <= std_logic_vector(to_unsigned(clyde_x_int, OBJECT_SIZE));
