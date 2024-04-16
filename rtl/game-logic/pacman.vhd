@@ -40,7 +40,8 @@ Port (  clk     : in std_logic;
         escape   : in std_logic;
         chase     : in std_logic;
         scatter   : in std_logic;
-        retreat   : in std_logic
+        retreat   : in std_logic;
+        pac_death : in std_logic
         );
 end pacman;
 
@@ -96,10 +97,15 @@ begin
                     end if;
                 end if;
                 
+                if (pac_death = '1') then
+                --reset pacman coordinates
+                pacman_x_int_i <= 240;
+                pacman_y_int_i <= 340;
+                end if;
             end if;
         end if;
     end process;
-    
+
     --drive output signals 
     pacman_x_int_out <= pacman_x_int_i;
     pacman_y_int_out <= pacman_y_int_i;

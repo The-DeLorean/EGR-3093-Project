@@ -89,6 +89,7 @@ architecture Behavioral of game_logic is
     --misc. game data
     signal start_time      : integer;
     signal start_game     : std_logic:='0';
+    signal pac_death    : std_logic:='0';
     
     --mouth moving (wokka wokka)
     signal moving              : boolean:=true;
@@ -125,7 +126,8 @@ architecture Behavioral of game_logic is
                 escape => escape,
                 chase => chase, 
                 scatter => scatter, 
-                retreat => retreat);
+                retreat => retreat,
+                pac_death => pac_death);
     
     --drive Pacman position signals
     pacman_x <= std_logic_vector(to_unsigned(pacman_x_int, OBJECT_SIZE));
@@ -182,6 +184,13 @@ architecture Behavioral of game_logic is
     clyde_x <= std_logic_vector(to_unsigned(clyde_x_int, OBJECT_SIZE));
     clyde_y <= std_logic_vector(to_unsigned(pacman_y_int, OBJECT_SIZE));
     
+    clyde_hit: entity work.collides(Behavioral)
+    port map (  obj_a_x => pacman_x_int, 
+                obj_a_y => pacman_y_int, 
+                obj_b_x => clyde_x_int, 
+                obj_b_y => clyde_y_int,
+                collision => pac_death);
+    
     --Game delay/start time process
     process
     begin
@@ -193,4 +202,5 @@ architecture Behavioral of game_logic is
             end if;
         end if;
     end process;
+
 end Behavioral;
