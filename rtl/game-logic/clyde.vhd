@@ -19,6 +19,7 @@ entity clyde is
         clk       : in std_logic;
         --check ghost state
         powerup     : in std_logic;
+        --p e c s r
         ghost_state_vec     : in std_logic_vector (4 downto 0)
     );
 end clyde;
