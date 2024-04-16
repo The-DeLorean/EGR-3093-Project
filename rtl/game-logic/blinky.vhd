@@ -30,7 +30,7 @@ entity blinky is
             up       : in std_logic;
             down     : in std_logic;
             moving   : in boolean;
-            pacman_x_int   : in integer range 0 to 640:=240;
+            pacman_x_int_int   : in integer range 0 to 640:=240;
             pacman_y_int   : in integer range 0 to 480:=340;
             blinky_x_int    : in integer range 0 to 640:=240;
             blinky_y_int    : in integer range 0 to 480:=100;
@@ -44,21 +44,152 @@ entity blinky is
             retreat   : in std_logic);
 end blinky;
 
-architecture Behavioral of blinky is
 
- --internal signals
-signal pacman_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
+architecture Behavioral of Blinky is
+         --internal signals
+signal pacman_x_int_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=340; 
 signal blinky_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
 signal blinky_y_int_i     : integer range 0 to 480:=340; 
-signal count_i          : integer;
+signal count : integer;
+signal alternate : integer:=0;
 signal moving_i : boolean := moving;
 
 begin
-    --assign internals
-    pacman_x_int_i <= pacman_x_int;
-    pacman_y_int_i <= pacman_y_int;
     blinky_x_int_i <= blinky_x_int;
     blinky_y_int_i <= blinky_y_int;
-
+    pacman_x_int_int_i <= pacman_x_int_int;
+    pacman_y_int_i <= pacman_y_int;
+    
+    process
+    begin
+    if rising_edge(clk) then
+        if Chase='1' then
+            count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --head pacman hunter hard coded values for walls (for now)
+                if blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i+1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i-1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i+1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i-1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    blinky_y_int_i<=blinky_y_int_i+1;
+                    alternate <= 0;
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    blinky_y_int_i<=blinky_y_int_i-1;
+                    alternate <= 0;   
+                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    blinky_x_int_i<=blinky_x_int_i+1;
+                    alternate <= 1; 
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                    alternate <= 1; 
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    --gameover
+                end if;
+           end if;
+       elsif Scatter='1' then
+            count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --Scattering to bot right corner
+                if blinky_y_int_i = 6 or (blinky_y_int_i = 150 and (blinky_x_int_i = 240 or blinky_x_int_i = 241)) then
+                --do y hunting
+                    if blinky_x_int_i > 124 then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                    end if; 
+                elsif blinky_y_int_i > 6 then
+                    blinky_y_int_i<=blinky_y_int_i+1;
+                end if;
+            end if;
+        elsif Retreat='1' then
+             count<=count +1;
+            if count >=2000000 then
+                count<=0;
+               --head pacman hunter hard coded values for walls (for now)
+                if blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i-1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i+1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i-1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    if alternate = 1 then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                        alternate <= 0;
+                    elsif alternate = 0 then
+                        blinky_y_int_i<=blinky_y_int_i+1;
+                        alternate <= 1;
+                    end if;
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i < pacman_y_int_i then
+                    blinky_y_int_i<=blinky_y_int_i-1;
+                    alternate <= 0;
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i > pacman_y_int_i then
+                    blinky_y_int_i<=blinky_y_int_i+1;
+                    alternate <= 0;   
+                elsif blinky_x_int_i < pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                    alternate <= 1; 
+                elsif blinky_x_int_i > pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    blinky_x_int_i<=blinky_x_int_i+1;
+                    alternate <= 1; 
+                elsif blinky_x_int_i = pacman_x_int_int_i and blinky_y_int_i = pacman_y_int_i then
+                    --eaten
+                end if;
+           end if;
+               
+           --end if;
+        end if;
+    end if;
+    end process;
+    --output pinky new position 
+    blinky_x_int_out <= blinky_x_int_i;
+    blinky_y_int_out <= blinky_y_int_i;
 end Behavioral;
