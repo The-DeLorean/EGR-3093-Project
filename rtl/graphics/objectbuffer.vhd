@@ -34,13 +34,13 @@ architecture rtl of objectbuffer is
     constant WALL_X_L0: integer := 118;
     constant WALL_X_R0: integer := 123;
     
-    constant WALL_X_L1: integer := 517;
-    constant WALL_X_R1: integer := 522;
+    constant WALL_X_L1: integer := 489;
+    constant WALL_X_R1: integer := 494;
     
     constant WALL_Y_B2: integer := 5;
     
-    constant WALL_Y_T3: integer := 454;
-    constant WALL_Y_B3: integer := 459;
+    constant WALL_Y_T3: integer := 412;
+    constant WALL_Y_B3: integer := 417;
     
     constant Ghost_GateXL: integer :=(124+(OBJECT_SIZE*12));
     constant Ghost_GateXR: integer :=(124+(OBJECT_SIZE*14));
@@ -70,27 +70,27 @@ architecture rtl of objectbuffer is
     
     -- ****   MAZE WALLS   *****
     --NUMBER OF WALLS DRAWN
-    constant wall_num : integer := 51;
+    constant wall_num : integer := 49;
     --Arrays for wall positions
     type int_vect_Walls is array (0 to wall_num-1) of integer range 0 to 32;
-    --                                    | Walls go from left to right top to bottom in a snaking pattern. Starting at the top of the wall down|              | left tunnel sides | |  right tunnel sides  ||    Ghost Box     |   |Border|                    
-    constant  Wall_Xvalues : int_vect_walls := (12, 1, 6, 15, 21, 1, 6, 8, 9, 12, 18, 15, 21, 6,  18, 9,  12, 1,  3,  6,  15, 21, 21, 0,  24, 6,  1,  9,  12, 18, 15, 0, 4, 0,  0,  4,  0,  21, 21, 21, 21, 21, 21, 9,  9,  9,  14, 16, 12, 26, 0 );
-    constant  Wall_Yvalues : int_vect_walls := (0,  1, 1, 1,  1,  5, 5, 8, 5, 7,  5,  8,  5,  14, 14, 17, 19, 20, 22, 20, 20, 20, 22, 23, 23, 23, 26, 23, 25, 23, 26, 8, 9, 12, 14, 15, 18, 8,  9,  12, 14, 15, 18, 11, 12, 15, 11, 12, 0, 0,  29);
-    constant  Wall_Lengths : int_vect_walls := (2,  4, 5, 5,  4,  4, 2, 3, 8, 2,  2,  3,  4,  2,  2,  8,  2,  4,  2,  5,  5,  4,  2,  2,  2,  2,  10, 8,  2,  2,  10, 5, 1, 5,  5,  1,  5,  5,  1,  5,  5,  1,  5,  3,  1,  8,  3,  1,  0, 2,  28);
-    constant  Wall_Heights : int_vect_walls := (4,  3, 3, 3,  3,  2, 8, 2, 2, 3,  8,  2,  2,  5,  5,  2,  3,  2,  3,  2,  2,  2,  3,  2,  2,  3,  2,  2,  3,  3,  2,  1, 3, 1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  0, 32, 3 );
+    --                                    | Walls go from left to right top to bottom in a snaking pattern. Starting at the top of the wall down|              | left tunnel sides | |  right tunnel sides  ||    Ghost Box     |                       
+    constant  Wall_Xvalues : int_vect_walls := (12, 1, 6, 15, 21, 1, 6, 8, 9, 12, 18, 15, 21, 6,  18, 9,  12, 1,  3,  6,  15, 21, 21, 0,  24, 6,  1,  9,  12, 18, 15, 0, 4, 0,  0,  4,  0,  21, 21, 21, 21, 21, 21, 9,  9,  9,  14, 16, 12 );
+    constant  Wall_Yvalues : int_vect_walls := (0,  1, 1, 1,  1,  5, 5, 8, 5, 7,  5,  8,  5,  14, 14, 17, 19, 20, 22, 20, 20, 20, 22, 23, 23, 23, 26, 23, 25, 23, 26, 8, 9, 12, 14, 15, 18, 8,  9,  12, 14, 15, 18, 11, 12, 15, 11, 12, 0  );
+    constant  Wall_Lengths : int_vect_walls := (2,  4, 5, 5,  4,  4, 2, 3, 8, 2,  2,  3,  4,  2,  2,  8,  2,  4,  2,  5,  5,  4,  2,  2,  2,  2,  10, 8,  2,  2,  10, 5, 1, 5,  5,  1,  5,  5,  1,  5,  5,  1,  5,  3,  1,  8,  3,  1,  0  );
+    constant  Wall_Heights : int_vect_walls := (4,  3, 3, 3,  3,  2, 8, 2, 2, 3,  8,  2,  2,  5,  5,  2,  3,  2,  3,  2,  2,  2,  3,  2,  2,  3,  2,  2,  3,  3,  2,  1, 3, 1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  1,  1,  3,  0  );
     
    --Variable to hold the outputs of all the walls   
     type std_logic_array_walls is array (0 to wall_num-1) of std_logic;
     signal Wall_On : std_logic_array_walls;   
     
     -- ****   DOTS   ***** prev 68 
-    constant dot_num : integer:=128;--:= NuM;
+    constant dot_num : integer:=174;--:= NuM;
     --Array type to hold all the dot positions
     type int_vect_dots is array (0 to dot_num-1) of integer range 0 to 32;
     --
-    --                                                                          *** TOP ROW***                                   |                         Columns                                ||                                         2nd Big Row                                        ||                           2nd Columns   ||               Snd Row with multiple dots                             ||          Dots Through top of ghost gate
-    constant dot_xvalues : int_vect_dots :=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 8, 17, 20, 25, 0, 5, 8, 17, 20, 25, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 24, 25, 5, 11, 14, 20, 5, 11, 14, 20, 5,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 20, 5,  8,  17, 20, 5,  8,  17, 20);
-    constant dot_yvalues : int_vect_dots :=(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, 1, 1,  1,  1,  1,  2, 2, 2,  2,  2,  2,  3, 3, 3,  3,  3,  3,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5, 5, 5, 5,  5,  5,  6, 6, 6, 6,  6,  6,  7, 7, 7, 7, 7, 7, 7, 7, 7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8, 8,  8,  8,  9, 9,  9,  9,  10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12);
+    --                                                                          *** TOP ROW***                                   |                         Columns                                ||                                         2nd Big Row                                        ||                           2nd Columns   ||               Snd Row with multiple dots                             ||          Dots Through top of ghost gate                                                                   | New Dots further down    line below ghost gate                       |     NEXT                                           5 rows of dots                           174 dots here     |
+    constant dot_xvalues : int_vect_dots :=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 8, 17, 20, 25, 0, 5, 8, 17, 20, 25, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 24, 25, 5, 11, 14, 20, 5, 11, 14, 20, 5,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 20, 5,  8,  17, 20, 5,  8,  17, 20, 0,  1,  2,  3,  4,  5,  6,  7,  8,  17, 18, 19, 20, 21, 22, 23, 24, 25, 5,  8,  17, 20, 5,  8,  17, 20, 5,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 20, 5,  8,  17, 20, 5,  8,  17, 20);
+    constant dot_yvalues : int_vect_dots :=(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, 1, 1,  1,  1,  1,  2, 2, 2,  2,  2,  2,  3, 3, 3,  3,  3,  3,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5, 5, 5, 5,  5,  5,  6, 6, 6, 6,  6,  6,  7, 7, 7, 7, 7, 7, 7, 7, 7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8, 8,  8,  8,  9, 9,  9,  9,  10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18);
     
     --Variable to hold the outputs of all the dots
     type std_logic_array_dots is array (0 to dot_num-1) of std_logic;
