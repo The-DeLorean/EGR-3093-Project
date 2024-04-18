@@ -60,14 +60,14 @@ begin
                --Add elsif below
                 if clydeyy = ydirr or (down = '0' and up = '0') then
                 --do x hunting
-                    if clydexx < xdirr then
+                    if clydexx < xdirr and right = '1' then
                         clydexx<=clydexx+1;
-                    elsif clydexx > xdirr then
+                    elsif clydexx > xdirr and left = '1' then
                         clydexx<=clydexx-1;
                     end if;
-                elsif clydeyy < ydirr then
+                elsif clydeyy < ydirr and down = '1' then
                     clydeyy<=clydeyy+1;
-                elsif clydeyy > ydirr then
+                elsif clydeyy > ydirr and up = '1' then
                     clydeyy<=clydeyy-1;
                 end if;
            end if;
