@@ -59,8 +59,8 @@ architecture rtl of objectbuffer is
     -- signals that holds the x, y coordinates
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
 
-    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on: std_logic;
-    signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
+    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on: std_logic;
+    signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, Pinky_rgb, Blinky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
 
     --Coordinates of the Pac Man Lives
     signal stillpacman_x0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
@@ -193,12 +193,19 @@ begin
     --DRAW Clyde
     Clyde: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>clyde_x, object_y=>clyde_y, Ghost_on=>Clyde_on);
     --Clyde's Color
-    Clyde_rgb <= x"FFA500";   -- orange
+    Clyde_rgb <= x"FFB852";   -- orange
     
     --Drawing Inky
     Inky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>inky_x, object_y=>inky_y, Ghost_on=>Inky_on);
     Inky_rgb <= x"00FFFF";    -- Cyan
-
+    
+    --Pinky
+    Pinky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pinky_x, object_y=>pinky_y, Ghost_on=>Pinky_on);
+    Pinky_rgb <= x"FFB8FF";    -- Pink
+    
+    --Blinky
+    Blinky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>blinky_x, object_y=>blinky_y, Ghost_on=>Blinky_on);
+    Blinky_rgb <= x"FF000F";    -- RED
     -- display the image based on who is active
     -- note that the order is important
     process(video_active, GhostGate_on, Border_on0, Border_on1, Border_on2, Border_on3, box_on, Border_rgb, box_rgb, PacMan_rgb, backgrnd_rgb, PacMan_on, Inky_on, Clyde_on, Clyde_rgb, Inky_rgb) is
@@ -234,6 +241,10 @@ begin
                 rgb<= Clyde_rgb;
             elsif Inky_on='1' then
                 rgb<= Inky_rgb;
+            elsif Blinky_on='1' then
+                rgb<= Blinky_rgb;
+            elsif Pinky_on='1' then
+                rgb<= Pinky_rgb;
             elsif PacMan_on='1' then
                 rgb <= PacMan_rgb;
             end if;
