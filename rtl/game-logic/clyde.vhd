@@ -7,6 +7,10 @@ use ieee.numeric_std.all;
 entity clyde is
 
     port (
+        right    : in std_logic;
+        left     : in std_logic;
+        up       : in std_logic;
+        down     : in std_logic;
         --pacman location
         pacman_x_int   : in integer range 0 to 640:=240;
         pacman_y_int   : in integer range 0 to 480:=340;
@@ -54,7 +58,7 @@ begin
 --                        b_r_corner='0';
                --y pacman hunter hard coded values for walls (for now)
                --Add elsif below
-                if clydeyy = ydirr or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
+                if clydeyy = ydirr or (down = '0' and up = '0') then
                 --do x hunting
                     if clydexx < xdirr then
                         clydexx<=clydexx+1;
