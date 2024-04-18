@@ -84,6 +84,8 @@ architecture Behavioral of game_logic is
  
     signal clyde_state_vec   : std_logic_vector(4 downto 0);
     signal inky_state_vec   : std_logic_vector(4 downto 0);
+    signal pinky_state_vec   : std_logic_vector(4 downto 0);
+    signal blinky_state_vec   : std_logic_vector(4 downto 0);
     
     --misc. game data
     signal start_time      : integer;
@@ -104,7 +106,18 @@ architecture Behavioral of game_logic is
                 prison_time=> prison_time,
                 powerup => powerup, 
                 ghost_state_vec=> clyde_state_vec);
-    
+    pinky_state_i: entity work.ghost_state(Behavioral)
+    port map(   start_game => start_game, 
+                clk => clk, 
+                prison_time=> prison_time,
+                powerup => powerup, 
+                ghost_state_vec=> pinky_state_vec);
+    blinky_state_i: entity work.ghost_state(Behavioral)
+    port map(   start_game => start_game, 
+                clk => clk, 
+                prison_time=> prison_time,
+                powerup => powerup, 
+                ghost_state_vec=> blinky_state_vec);
     --PacMan port map
     pacman_i: entity work.pacman(Behavioral)
     port map (  clk => clk,
@@ -150,9 +163,49 @@ architecture Behavioral of game_logic is
     inky_y <= std_logic_vector(to_unsigned(inky_y_int, OBJECT_SIZE));
     
     --Pinky port map
-    
+    pinky_i: entity work.pinky(Behavioral)
+    port map (  clk => clk,
+                rst => rst,
+                right => right,
+                left => left,
+                up => up,
+                down => down,
+                moving => moving,
+                pacman_x_int => pacman_x_int, 
+                pacman_y_int => pacman_y_int,
+                pinky_x_int => pinky_x_int, 
+                pinky_y_int => pinky_y_int,
+                pinky_x_int_out => pinky_x_int, 
+                pinky_y_int_out => pinky_y_int,
+                powerup => powerup, 
+                ghost_state_vec => pinky_state_vec 
+                );
+                
+    --Drive pInky position signals
+    pinky_x <= std_logic_vector(to_unsigned(pinky_x_int, OBJECT_SIZE));
+    pinky_y <= std_logic_vector(to_unsigned(pinky_y_int, OBJECT_SIZE));
     --Blinky port map
-    
+    blinky_i: entity work.blinky(Behavioral)
+    port map (  clk => clk,
+                rst => rst,
+                right => right,
+                left => left,
+                up => up,
+                down => down,
+                --moving => moving,
+                pacman_x_int => pacman_x_int, 
+                pacman_y_int => pacman_y_int,
+                blinky_x_int => blinky_x_int, 
+                blinky_y_int => blinky_y_int,
+                blinky_x_int_out => blinky_x_int, 
+                blinky_y_int_out => blinky_y_int,
+                powerup => powerup, 
+                ghost_state_vec => blinky_state_vec 
+                );
+                
+    --Drive blInky position signals
+    blinky_x <= std_logic_vector(to_unsigned(blinky_x_int, OBJECT_SIZE));
+    blinky_y <= std_logic_vector(to_unsigned(blinky_y_int, OBJECT_SIZE));
     --Clyde port map 
     clyde_i: entity work.clyde(Behavioral)
     --generic map (SERIES6=>SERIES6)
