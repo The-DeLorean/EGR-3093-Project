@@ -29,7 +29,7 @@ entity blinky is
             left     : in std_logic;
             up       : in std_logic;
             down     : in std_logic;
-            moving   : in boolean;
+            --moving   : in boolean;
             pacman_x_int   : in integer range 0 to 640:=240;
             pacman_y_int   : in integer range 0 to 480:=340;
             blinky_x_int    : in integer range 0 to 640:=240;
@@ -37,11 +37,8 @@ entity blinky is
             blinky_x_int_out : out integer range 0 to 640:=240;
             blinky_y_int_out : out integer range 0 to 480:=100;
             powerup     : in std_logic;
-            prison   : in std_logic;
-            escape   : in std_logic;
-            chase     : in std_logic;
-            scatter   : in std_logic;
-            retreat   : in std_logic);
+            --p e c s r
+            ghost_state_vec   : in std_logic_vector(4 downto 0));
 end blinky;
 
 
@@ -53,20 +50,22 @@ signal blinky_x_int_i     : integer range 0 to 640:=240; -- starting coordinates
 signal blinky_y_int_i     : integer range 0 to 480:=340; 
 signal count : integer;
 signal alternate : integer:=0;
-signal moving_i : boolean := moving;
+--signal moving_i : boolean := moving;
+signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
 
 begin
     blinky_x_int_i <= blinky_x_int;
     blinky_y_int_i <= blinky_y_int;
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
+    ghost_state_vec_i <= ghost_state_vec;
     
     process
     begin
     if rising_edge(clk) then
-        if Chase='1' then
+        if ghost_state_vec="00100" then
             count<=count +1;
-            if count >=2000000 then
+            if count>=2000000 then
                 count<=0;
                --head pacman hunter hard coded values for walls (for now)
                 if blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
@@ -117,7 +116,7 @@ begin
                     --gameover
                 end if;
            end if;
-       elsif Scatter='1' then
+       elsif ghost_state_vec="00010" then
             count<=count +1;
             if count >=2000000 then
                 count<=0;
@@ -131,7 +130,7 @@ begin
                     blinky_y_int_i<=blinky_y_int_i+1;
                 end if;
             end if;
-        elsif Retreat='1' then
+        elsif ghost_state_vec="00001" then
              count<=count +1;
             if count >=2000000 then
                 count<=0;
