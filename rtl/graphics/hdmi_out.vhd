@@ -76,7 +76,7 @@ architecture rtl of hdmi_out is
     --Background color
     signal backgrnd_rgb   : std_logic_vector(PIXEL_SIZE-1 downto 0) := x"000000"; -- yellow
 
-    signal pac_moving              : boolean:=true;
+    signal pac_moving              : boolean;
     
     --Potentially Clock animation still working**
     signal animated_clock  : integer; 
@@ -90,6 +90,7 @@ begin
                     up => up,
                     down => down,
                     pac_moving => pac_moving,
+                    pac_moving_out=> pac_moving,
                     pacman_x => pacman_x, 
                     pacman_y => pacman_y,
                     inky_x => inky_x, 

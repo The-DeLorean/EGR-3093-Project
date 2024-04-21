@@ -105,6 +105,7 @@ begin
     username_select_i: username_select port map(right => right_i, left => left_i, 
     up => up_i, down => down_i, clk => clk, rst => rst, led_right => led_right, led_left => led_left, 
     led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
+    
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, score_anode => score_anode, score_segment => score_segment);
     

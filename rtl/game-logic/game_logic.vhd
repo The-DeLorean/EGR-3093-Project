@@ -43,6 +43,7 @@ entity game_logic is
             up       : in std_logic;
             down     : in std_logic;
             pac_moving: in boolean;
+            pac_moving_out  : out boolean;
             pacman_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
             pacman_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
             inky_x          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
@@ -93,7 +94,7 @@ architecture Behavioral of game_logic is
     signal pac_death    : std_logic:='0';
     
     --mouth moving (wokka wokka)
-    signal moving              : boolean:=true;
+    signal moving              : boolean;
     
     begin
     
@@ -136,6 +137,7 @@ architecture Behavioral of game_logic is
                 pac_death => pac_death);
     
     --drive Pacman position signals
+    pac_moving_out<= moving;
     pacman_x <= std_logic_vector(to_unsigned(pacman_x_int, OBJECT_SIZE));
     pacman_y <= std_logic_vector(to_unsigned(pacman_y_int, OBJECT_SIZE));
     

@@ -8,9 +8,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity sev_seg_driver is
   port (
-  data_0 : in integer range 0 to 15;
-  data_1 : in integer range 0 to 15;
-  data_2 : in integer range 0 to 15;
+  data_0 : in integer range 0 to 16;
+  data_1 : in integer range 0 to 16;
+  data_2 : in integer range 0 to 16;
   data_3 : in integer range 0 to 16;
   clk : in STD_LOGIC;
   rst : in STD_LOGIC:='0';

@@ -48,10 +48,69 @@ signal pacman_y_int_i     : integer range 0 to 480:=340;
 signal count_i          : integer;
 signal moving_i : boolean := moving;
 
+<<<<<<< Updated upstream
 begin
+=======
+--Directional internal signals to keep pacman moving in a certain direction
+signal right_i : std_logic:='0';
+signal left_i : std_logic:='0';
+signal up_i : std_logic:='0';
+signal down_i : std_logic:='0';
+-- Vector is in order of right - left - up - down
+signal prev_direction : std_logic_vector (3 downto 0):="0000";
+signal new_direction : std_logic_vector (3 downto 0):="0000";
+
+
+signal pac_crash : std_logic;
+
+
+
+begin
+
+
+ 
+>>>>>>> Stashed changes
     --assign internals
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
+    
+    collision_i: entity work.navigation_check(Behavioral)
+    port map (  x_pos => pacman_x_int_i,
+                y_pos => pacman_y_int_i,
+                down=> down,
+                collision => pac_crash
+                );
+    --Continual motion process
+--    process
+--    begin
+--        if right='1' then
+--            right_i<='1';
+--            left_i<='0';
+--            up_i<='0';
+--            down_i<='0';
+--            prev_direction<="1000";
+--        elsif left='1' then 
+--            right_i<='0';
+--            left_i<='1';
+--            up_i<='0';
+--            down_i<='0';
+--            prev_direction<="0100";
+--        elsif up='1' then 
+--            right_i<='0';
+--            left_i<='0';
+--            up_i<='1';
+--            down_i<='0';
+--            prev_direction<="0010";
+--        elsif down='1' then 
+--            right_i<='0';
+--            left_i<='0';
+--            up_i<='0';
+--            down_i<='1';
+--            prev_direction<="0001";
+--        end if;
+        
+--  end process;
+    
     process
         begin
         wait for 10 ns;
@@ -87,9 +146,12 @@ begin
                 --move up
                 elsif up = '0' then
                     pacman_y_int_i <= pacman_y_int_i-1;
-                    if pacman_y_int_i = 4 then
-                        pacman_y_int_i <= 5;
+                    if pacman_y_int_i = 5 then
+                        pacman_y_int_i <= 6;
                     end if;
+                elsif (pac_crash='1') then
+                     
+                    
                 end if;
                 
                 if (pac_death = '1') then
@@ -100,6 +162,8 @@ begin
             end if;
         end if;
     end process;
+    
+    
 
     --drive output signals 
     pacman_x_int_out <= pacman_x_int_i;
