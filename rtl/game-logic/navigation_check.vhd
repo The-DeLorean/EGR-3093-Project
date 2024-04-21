@@ -51,7 +51,7 @@ constant rom_depth : natural := 448; --32
 constant rom_width : natural := 392;--28
 signal collision_i : std_logic:='0';
 
-signal wall_bit: std_logic;
+signal wall_bit: std_logic:='0';
 signal y_pos_i : integer;
 signal x_pos_i : integer;
 
@@ -578,14 +578,22 @@ begin
 ----                        if not(x_pos = (j*14)+124 and x_pos+14 = (j*14)+124+14) then
 ----                            collision_i <= '0'; -- no collision
 ----                        end if;
-----            WORKS BEST I THINK
-----                if(down='0') then
-----                        if (    ((y_pos_i  >= (i*14) + 6-14) and y_pos_i<(i*14) And x_pos_i >= (j*14)+124 and x_pos_i <= (j*14)+124+14)) then
-----                            collision_i<='1'; -- collision
+
+
+----            WORKS BEST I THINK Unccoment lines below to have it almost work perfectly
+--    for i in 0 to rom_depth - 1 loop 
+--        for j in 0 to rom_width - 1 loop
+--            wait for 1 ns;
+--            --assign wall bit
+--            wall_bit <= walls(i)(j);
+--           if( wall_bit = '1' ) then --if there is actually a block there
+--                if(down='0') then
+--                        if (    ((y_pos_i  >= (i*14) + 6-14) and y_pos_i<(i*14) And x_pos_i >= (j*14)+124 and x_pos_i <= (j*14)+124+14)) then
+--                            collision_i<='1'; -- collision
    
-----                       end if;
-----                end if;
---           -- end if;
+--                       end if;
+--                end if;
+--           end if;
 --        end loop;
 --    end loop;  
 end process;
