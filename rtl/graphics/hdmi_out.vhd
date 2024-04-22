@@ -37,7 +37,7 @@ entity hdmi_out is
         score_out       : out STD_LOGIC
     );
 end hdmi_out;
-
+--testing ty very much
 architecture rtl of hdmi_out is
 
     --DO NOT TOUCH -HDMI converter signals

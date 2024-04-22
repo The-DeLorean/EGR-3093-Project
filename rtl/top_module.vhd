@@ -28,7 +28,7 @@ entity top_module is
             chase_led     : out STD_LOGIC;
             scatter_led     : out STD_LOGIC;
             retreat_led     : out STD_LOGIC;
-            score_out       : inout STD_LOGIC
+            score_inout       : inout STD_LOGIC
            );
 end top_module;
 
@@ -109,7 +109,7 @@ begin
     up => up_i, down => down_i, clk => clk, rst => rst, led_right => led_right, led_left => led_left, 
     led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
-    rst => rst, score_anode => score_anode, score_segment => score_segment, score_in => score_out);
+    rst => rst, score_anode => score_anode, score_segment => score_segment, score_in => score_inout);
     
     hdmi_out_i: hdmi_out port map(
         clk => clk,
@@ -126,7 +126,7 @@ begin
         chase_led => chase_led,
         scatter_led => scatter_led,
         retreat_led => retreat_led,
-        score_out => score_out);
+        score_out => score_inout);
     
     
 end Behavioral;
