@@ -1,5 +1,4 @@
 --Top module containing logic/inputs/outputs for joystick, score, username, game logic, and graphics
---Rename file to **top_module**
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
