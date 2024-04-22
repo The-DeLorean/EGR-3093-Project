@@ -25,7 +25,10 @@ entity objectbuffer is
         blinky_x, blinky_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         backgrnd_rgb       : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
         rgb                : out std_logic_vector(PIXEL_SIZE-1 downto 0);
-        mVariable          : in boolean
+        mVariable          : in boolean;
+        score_out           : out std_logic;
+        pacman_x_int        : in integer range 0 to 640;
+        pacman_y_int        : in integer range 0 to 480
     );
 end objectbuffer;
 
@@ -85,7 +88,7 @@ architecture rtl of objectbuffer is
     
     -- ****   DOTS   ***** prev 68 
     constant dot_num : integer:=136;--:= NuM;
-    --Array type to hold all the dot positions
+    --Type which will be used to hold all the dot positions in parallel arrays
     type int_vect_dots is array (0 to dot_num-1) of integer range 0 to 32;
     --
     --                                                                          *** TOP ROW***                                   |                         Columns                                ||                                         2nd Big Row                                        ||                           2nd Columns   ||               Snd Row with multiple dots                             ||          Dots Through top of ghost gate                                                                   | New Dots further down    line below ghost gate                       |     NEXT                                           5 rows of dots                           174 dots here     |
@@ -133,7 +136,10 @@ architecture rtl of objectbuffer is
         Dot_YT             : in integer range 0 to 32;
         pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         visible            : in std_logic;
-        Dot_on             : out std_logic
+        Dot_on             : out std_logic;
+        pacman_x_int        : in integer range 0 to 640;
+        pacman_y_int        : in integer range 0 to 480;
+        score_out           : out std_logic
        );
   end component ;
 
@@ -161,7 +167,7 @@ begin
     
     --Drawing dots 
     dots: for i in 0 to dot_num-1 generate
-        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i));
+        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out);
     end generate dots;
     
     --Drawing the Ghost Gate
