@@ -44,6 +44,7 @@ begin
     process
     begin
     if rising_edge(clk) then
+        --chase
         if ghost_state_vec="00100" then
             count<=count +1;
             if count >=2000000 then
@@ -85,6 +86,7 @@ begin
                     clydeyy<=clydeyy-1;
                 end if;
             end if;
+        --retreat
         elsif ghost_state_vec="00001" then
              count<=count +1;
              if count >=2000000 then
