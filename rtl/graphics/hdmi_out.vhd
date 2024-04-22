@@ -33,7 +33,8 @@ entity hdmi_out is
         data_n   : out std_logic_vector(2 downto 0);
         chase_led     : out STD_LOGIC;
         scatter_led     : out STD_LOGIC;
-        retreat_led     : out STD_LOGIC
+        retreat_led     : out STD_LOGIC;
+        score_out       : out STD_LOGIC
     );
 end hdmi_out;
 
@@ -99,7 +100,10 @@ begin
                     blinky_x => blinky_x,
                     blinky_y => blinky_y,
                     clyde_x => clyde_x,
-                    clyde_y => clyde_y);
+                    clyde_y => clyde_y,
+                    pacman_x_int_out => pacman_x_int,
+                    pacman_y_int_out => pacman_y_int
+                    );
     
     --chase_led <= chase_b;
     --scatter_led <= scatter_b;
@@ -136,6 +140,10 @@ begin
         clyde_x=>clyde_x, clyde_y=>clyde_y,
         pinky_x=>pinky_x, pinky_y=>pinky_y,
         blinky_x=>blinky_x, blinky_y=>blinky_y,
-        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving);
+        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving,
+        score_out=>score_out,
+        pacman_x_int => pacman_x_int,
+        pacman_y_int => pacman_y_int
+        );
     end generate;
 end rtl;

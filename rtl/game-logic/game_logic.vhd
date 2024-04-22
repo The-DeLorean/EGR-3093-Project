@@ -52,7 +52,9 @@ entity game_logic is
             blinky_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
             blinky_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
             clyde_x         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-            clyde_y         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE))
+            clyde_y         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+            pacman_x_int_out    :out integer range 0 to 640;
+            pacman_y_int_out    :out integer range 0 to 640
          );
 end game_logic;
 
@@ -247,5 +249,9 @@ architecture Behavioral of game_logic is
             end if;
         end if;
     end process;
+    
+    --drive int outputs
+    pacman_x_int_out <= pacman_x_int;
+    pacman_y_int_out <= pacman_y_int;
 
 end Behavioral;
