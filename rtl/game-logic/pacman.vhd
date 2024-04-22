@@ -81,6 +81,7 @@ begin
     port map (  x_pos => pacman_x_int_i,
                 y_pos => pacman_y_int_i,
                 down=> down,
+                right=>right,
                 clk=>clk, 
                 collision => pac_crash
                 );

@@ -38,9 +38,9 @@ entity navigation_check is
     Port ( x_pos : in integer;
            y_pos : in integer;
            down  : in std_logic;
+           right : in std_logic;
            clk :in std_logic;
            collision : out std_logic
-           --right : out std_logic;
            --up : out std_logic;
            --down : out std_logic
            );
@@ -73,7 +73,7 @@ constant walls : wall_type :=(
                             "111110111110110111110111111",
                             "000010111110110111110100001",
                             "000010110000000000110100001",
-                            "000010110111001110110100001",
+                            "000010110111111110110100001",
                             "111110110100000010110111111",
                             "000000000100000010000000001",
                             "111110110100000010110111111",
@@ -112,6 +112,16 @@ begin
                     else
                         collision_i<='0';
                     end if;
+                 elsif right='0' then
+                    pac_loc_x<= (x_pos+1)/14;
+                    pac_loc_y<= y_pos/14;
+                    if (walls(pac_loc_y)(pac_loc_x+1)='1') then
+                        collision_i<='1';
+                    else
+                        collision_i<='0';
+                    end if;
+                 else
+                    collision_i<='0';
                 end if;
             end if;
     end if;
