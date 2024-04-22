@@ -81,6 +81,9 @@ architecture rtl of hdmi_out is
     --Potentially Clock animation still working**
     signal animated_clock  : integer; 
     
+    --Integer to keep trac of pac man deaths
+    signal death : integer range 0 to 4 :=0;
+    
 begin
     game_logic_i: entity work.game_logic(Behavioral)
         port map (  clk => clk,
@@ -91,6 +94,7 @@ begin
                     down => down,
                     pac_moving => pac_moving,
                     pac_moving_out=> pac_moving,
+                    death_out=> death,
                     pacman_x => pacman_x, 
                     pacman_y => pacman_y,
                     inky_x => inky_x, 
@@ -137,6 +141,6 @@ begin
         clyde_x=>clyde_x, clyde_y=>clyde_y,
         pinky_x=>pinky_x, pinky_y=>pinky_y,
         blinky_x=>blinky_x, blinky_y=>blinky_y,
-        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving);
+        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving, death_int=>death);
     end generate;
 end rtl;

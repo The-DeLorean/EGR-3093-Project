@@ -10,6 +10,7 @@ entity StillPacManDraw is
     pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
     object_x, object_y : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
     Animation          : in boolean;
+    visible            : in std_logic;
     PacMan_on          : out std_logic
     );
 end StillPacManDraw;
@@ -88,7 +89,7 @@ begin
 rom_bit <= Pac_ROMC(to_integer(rom_addr))(to_integer(rom_col)) when animation else
                Pac_ROMO(to_integer(rom_addr))(to_integer(rom_col));
     --turning on Pixels of pac man
-    PacMan_onBuffer <= '1' when square_PacMan_on='1' and rom_bit='1' else '0';
+    PacMan_onBuffer <= '1' when square_PacMan_on='1' and rom_bit='1' and visible='1' else '0';
     
     PacMan_on<= PacMan_onBuffer;
 end Behavioral;

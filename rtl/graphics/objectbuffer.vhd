@@ -25,7 +25,8 @@ entity objectbuffer is
         blinky_x, blinky_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         backgrnd_rgb       : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
         rgb                : out std_logic_vector(PIXEL_SIZE-1 downto 0);
-        mVariable          : in boolean
+        mVariable          : in boolean;
+        death_int              : in integer range 0 to 4
     );
 end objectbuffer;
 
@@ -59,14 +60,14 @@ architecture rtl of objectbuffer is
     -- signals that holds the x, y coordinates
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
 
-    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on: std_logic;
+    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on, game_over_on_G, game_Over_on_A, game_Over_on_M, game_Over_on_E, game_Over_on_O, game_Over_on_V, game_Over_on_E1, game_Over_on_R : std_logic;
     signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, Pinky_rgb, Blinky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
 
     --Coordinates of the Pac Man Lives
     signal stillpacman_x0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
     signal stillpacman_x1 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(150, OBJECT_SIZE));
     signal stillpacman_x2 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(170, OBJECT_SIZE));
-    signal stillpacman_y0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(460, OBJECT_SIZE));
+    signal stillpacman_y0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(420, OBJECT_SIZE));
     
     -- ****   MAZE WALLS   *****
     --NUMBER OF WALLS DRAWN
@@ -104,6 +105,7 @@ architecture rtl of objectbuffer is
         pixel_x, pixel_y   : in  std_logic_vector(13 downto 0);
         object_x, object_y : in  std_logic_vector(13 downto 0);
         animation          : in boolean;
+        visible            : in std_logic;
         PacMan_on : out std_logic
     );
     end component;
@@ -136,6 +138,33 @@ architecture rtl of objectbuffer is
         Dot_on             : out std_logic
        );
   end component ;
+  
+  component Game_Over_text is
+    Port (
+     pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+     object_x, object_y : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
+     letter             : in std_logic_vector (6 downto 0);
+     death_int          : in integer range 0 to 4;
+     game_over_on          : out std_logic
+     );
+end component;
+
+     signal game_over_y: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
+     
+     --Signal to hold x values of all the Lettters in game over
+     signal g_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(236, OBJECT_SIZE));
+     signal a_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(250, OBJECT_SIZE));
+     signal m_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(264, OBJECT_SIZE));
+     signal e_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(278, OBJECT_SIZE));
+     signal o_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(306, OBJECT_SIZE));
+     signal v_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(320, OBJECT_SIZE));
+     signal e_x_1: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(334, OBJECT_SIZE));
+     signal r_x: std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(348, OBJECT_SIZE));
+     
+     --Visible Bits for PacMan Lifes
+     signal visible_i_0 : std_logic;
+     signal visible_i_1 : std_logic;
+     signal visible_i_2 : std_logic;
 
 begin
     
@@ -169,41 +198,51 @@ begin
     GhostGate_rgb<= x"FFB8FF";
     
 
-    -- Soon to be dots around maze
-    -- calculate the coordinates
-    box_x_l <= unsigned(object1x);
-    box_y_t <= unsigned(object1y);
-    box_x_r <= box_x_l + BOX_SIZE_X - 1;
-    box_y_b <= box_y_t + BOX_SIZE_Y - 1;
-    box_on <= '1' when box_x_l<=pix_x and pix_x<=box_x_r and
-                       box_y_t<=pix_y and pix_y<=box_y_b else  '0';
-    -- box rgb output
-    box_rgb <= x"00FF00"; --green
+--DRAW the STILL PAC MAN AS LIVEs
+    -- making the visibility of the lives on the screen change as the deaths increase 
+      visible_i_0<='1' when death_int<=2 else '0';
+      visible_i_1<='1' when death_int<=1 else '0';
+      visible_i_2<='1' when death_int=0  else '0';
+      --Drawing the Lives on the screen
+      stillPac0 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x0, object_y=>stillpacman_y0, animation=> false, visible=> visible_i_0, PacMan_on=>stillPacMan_on0); 
+      stillPac1 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x1, object_y=>stillpacman_y0, animation=> false, visible=> visible_i_1, PacMan_on=>stillPacMan_on1);
+      stillPac2 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x2, object_y=>stillpacman_y0, animation=> false, visible=> visible_i_2, PacMan_on=>stillPacMan_on2);
+    
+--Drawing game Over
+    --Wont be on until deat_int=3
+    G: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>g_x, object_y=>game_over_y, letter=>  "1000000", death_int=>death_int, game_Over_on=>game_Over_on_G);
+    A: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>A_x, object_y=>game_over_y, letter=>  "0100000", death_int=>death_int, game_Over_on=>game_Over_on_A);
+    M: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>M_x, object_y=>game_over_y, letter=>  "0010000", death_int=>death_int, game_Over_on=>game_Over_on_M);
+    E0: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, game_Over_on=>game_Over_on_E);
+    O: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>O_x, object_y=>game_over_y, letter=>  "0000100", death_int=>death_int, game_Over_on=>game_Over_on_O);
+    V: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>V_x, object_y=>game_over_y, letter=>  "0000010", death_int=>death_int, game_Over_on=>game_Over_on_V);
+    E1: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x_1, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, game_Over_on=>game_Over_on_E1);
+    R: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>R_x, object_y=>game_over_y, letter=> "0000001", death_int=>death_int, game_Over_on=>game_Over_on_R);
 
-    --DRAW the STILL PAC MAN AS LIVEs
-    stillPac0 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x0, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on0); 
-    stillPac1 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x1, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on1);
-    stillPac2 : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>stillpacman_x2, object_y=>stillpacman_y0, animation=> false, PacMan_on=>stillPacMan_on2);
-   
-    -- DRAW MOVING PACKMAN *************
-    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pacman_x, object_y=>pacman_y, animation=> mVariable, PacMan_on=>PacMan_on);
+-- DRAW MOVING PACKMAN *************
+    --Always visible
+    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pacman_x, object_y=>pacman_y, animation=> mVariable, visible=> '1', PacMan_on=>PacMan_on);
     --Pac man's Color
     PacMan_rgb <= x"FFFF00";   -- yellow    
     
     --DRAW Clyde
+    --Always visible
     Clyde: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>clyde_x, object_y=>clyde_y, Ghost_on=>Clyde_on);
     --Clyde's Color
     Clyde_rgb <= x"FFB852";   -- orange
     
     --Drawing Inky
+    --Always visible
     Inky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>inky_x, object_y=>inky_y, Ghost_on=>Inky_on);
     Inky_rgb <= x"00FFFF";    -- Cyan
     
     --Pinky
+    --Always visible
     Pinky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pinky_x, object_y=>pinky_y, Ghost_on=>Pinky_on);
     Pinky_rgb <= x"FFB8FF";    -- Pink
     
     --Blinky
+    --Always visible
     Blinky: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>blinky_x, object_y=>blinky_y, Ghost_on=>Blinky_on);
     Blinky_rgb <= x"FF000F";    -- RED
     -- display the image based on who is active
@@ -216,8 +255,6 @@ begin
             --Drawing Everything Else
             if Border_on0='1' or Border_on1='1' or Border_on2='1' or Border_on3='1' then
                 rgb <= Border_rgb;
-            elsif box_on='1' then
-                rgb <= box_rgb;
             elsif GhostGate_on = '1' then
                 rgb<= GhostGate_rgb;
             elsif stillPacMan_on0='1' or stillPacMan_on1='1' or stillPacMan_on2='1' then
@@ -228,7 +265,7 @@ begin
             --Drawing Maze Walls
             wallon : for i in 0 to wall_num-1 loop
                 if Wall_on(i)='1' then
-                    rgb <= x"FF0000";
+                    rgb <=border_rgb;
                 end if;
             end loop wallon;
             --Drawing dots
@@ -247,6 +284,10 @@ begin
                 rgb<= Pinky_rgb;
             elsif PacMan_on='1' then
                 rgb <= PacMan_rgb;
+            --Drawing Game over bit
+            elsif game_over_on_G='1' or game_over_on_A='1' or game_over_on_M='1' or game_over_on_E='1' or game_over_on_O='1' or game_over_on_V='1' or game_over_on_E1='1' or game_over_on_R='1' then
+                    --Making game over Red
+                    rgb<= blinky_rgb;
             end if;
         end if;
     end process;

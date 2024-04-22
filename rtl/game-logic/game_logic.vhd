@@ -44,6 +44,7 @@ entity game_logic is
             down     : in std_logic;
             pac_moving: in boolean;
             pac_moving_out  : out boolean;
+            death_out       : out integer range 0 to 4;
             pacman_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
             pacman_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
             inky_x          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
@@ -96,6 +97,7 @@ architecture Behavioral of game_logic is
     --mouth moving (wokka wokka)
     signal moving              : boolean;
     
+    
     begin
     
     --Ghost State Machine to change between ghost states Prison->Escape->CHASE->SCATTER->Retreat
@@ -128,6 +130,7 @@ architecture Behavioral of game_logic is
                 up => up,
                 down => down,
                 moving => moving,
+                death=> death_out,
                 moving_out => moving,
                 pacman_x_int => pacman_x_int, 
                 pacman_y_int => pacman_y_int,

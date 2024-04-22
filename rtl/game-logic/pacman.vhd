@@ -30,6 +30,7 @@ Port (  clk     : in std_logic;
         up       : in std_logic;
         down     : in std_logic;
         moving   : in boolean;
+        death    : out integer range 0 to 4;
         moving_out   : out boolean;
         pacman_x_int     : in integer range 0 to 640:=240; -- starting coordinates (240,340)
         pacman_y_int     : in integer range 0 to 480:=340;
@@ -43,14 +44,12 @@ end pacman;
 architecture Behavioral of pacman is
 
 --internal signals
-signal pacman_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
-signal pacman_y_int_i     : integer range 0 to 480:=340; 
+signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
+signal pacman_y_int_i     : integer range 0 to 480:=314; 
 signal count_i          : integer;
 signal moving_i : boolean := moving;
 
-<<<<<<< Updated upstream
-begin
-=======
+
 --Directional internal signals to keep pacman moving in a certain direction
 signal right_i : std_logic:='0';
 signal left_i : std_logic:='0';
@@ -61,15 +60,19 @@ signal prev_direction : std_logic_vector (3 downto 0):="0000";
 signal new_direction : std_logic_vector (3 downto 0):="0000";
 
 
-signal pac_crash : std_logic;
+signal pac_crash : std_logic :='0';
 
+signal death_i : integer range 0 to 4 :=0;
 
+--A counter to know when pac man has moved 14 pixels
+signal pixel_count : integer range 0 to 14:=0;
+signal pixel_clk   : std_logic;
 
 begin
 
 
  
->>>>>>> Stashed changes
+
     --assign internals
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
@@ -78,6 +81,7 @@ begin
     port map (  x_pos => pacman_x_int_i,
                 y_pos => pacman_y_int_i,
                 down=> down,
+                clk=>clk, 
                 collision => pac_crash
                 );
     --Continual motion process
@@ -112,52 +116,54 @@ begin
 --  end process;
     
     process
-        begin
-        wait for 10 ns;
-        
+        begin        
         --PacMan movement, reimplement as state machine
         if rising_edge(clk) then
             count_i <= count_i +1;          --increment
             if count_i = 2000000 then
                 moving_i <= not(moving_i);  --toggle pacman mouth
                 count_i <= 0;               --reset counter
-                
                 --move right
-                if right = '0' then
+                if (right = '0' and pac_crash='0') then
                     pacman_x_int_i <= pacman_x_int_i+1;
-                    if pacman_x_int_i = 503 then
-                        pacman_x_int_i <= 502;
+                    if pacman_x_int_i = 517 then
+                        pacman_x_int_i <= 516;
                     end if;
                 
                 --move left
-                elsif left = '0' then
+                elsif (left = '0' and pac_crash='0') then
                     pacman_x_int_i <= pacman_x_int_i-1;
                     if pacman_x_int_i = 123 then
                         pacman_x_int_i<= 124;
                     end if;
                 
                 --move down
-                elsif down = '0' then
+                elsif (down = '0' and pac_crash='0') then
                     pacman_y_int_i <= pacman_y_int_i+1;
-                    if pacman_y_int_i = 440 then
-                        pacman_y_int_i <= 439;
+                    if pacman_y_int_i = 427 then
+                        pacman_y_int_i <= 426;
                     end if;
                     
                 --move up
-                elsif up = '0' then
+                elsif (up = '0' and pac_crash='0') then
                     pacman_y_int_i <= pacman_y_int_i-1;
                     if pacman_y_int_i = 5 then
                         pacman_y_int_i <= 6;
                     end if;
                 elsif (pac_crash='1') then
-                     
-                    
+--                    if down='0' then
+--                        pacman_y_int_i<= pacman_y_int_i-1;
+--                    end if;
                 end if;
                 
                 if (pac_death = '1') then
-                --reset pacman coordinates
-                pacman_x_int_i <= 240;
-                pacman_y_int_i <= 340;
+                    --reset pacman coordinates
+                    pacman_x_int_i <= 299;
+                    pacman_y_int_i <= 314;
+                    death_i<=death_i+1;
+                    if death_i =4 then
+                        death_i<=3;
+                    end if;
                 end if;
             end if;
         end if;
@@ -169,4 +175,5 @@ begin
     pacman_x_int_out <= pacman_x_int_i;
     pacman_y_int_out <= pacman_y_int_i;
     moving_out <= moving_i;
+    death<=death_i;
 end Behavioral;
