@@ -65,7 +65,7 @@ begin
     
     process --(visible)
     begin
-        if (rising_edge(dot_crash) AND eaten = '0') then
+        if (dot_crash = '1' AND eaten = '0') then
              eaten <= '1';
              score_out <= '1';
              score_out <= '0';
