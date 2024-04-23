@@ -59,14 +59,16 @@ begin
     port map (  obj_a_x => pacman_x_int, 
                 obj_a_y => pacman_y_int, 
                 obj_b_x => dot_x, 
-                obj_b_y => dot_x,
+                obj_b_y => dot_y,
                 collision => dot_crash);
     
     
     process --(visible)
     begin
-        if (rising_edge(dot_crash)) then
+        if (rising_edge(dot_crash) AND eaten = '0') then
              eaten <= '1';
+             score_out <= '1';
+             score_out <= '0';
         end if;
         
         if(eaten= '0')then
@@ -80,7 +82,6 @@ begin
             end if;
         else 
             Dot_on<='0';
-            eaten<='1';
         end if;
         
     end process;

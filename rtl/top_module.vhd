@@ -26,8 +26,7 @@ entity top_module is
             data_n   : out std_logic_vector(2 downto 0);
             chase_led     : out STD_LOGIC;
             scatter_led     : out STD_LOGIC;
-            retreat_led     : out STD_LOGIC;
-            score_inout       : inout STD_LOGIC
+            retreat_led     : out STD_LOGIC
            );
 end top_module;
 
@@ -95,6 +94,7 @@ signal down_i: STD_LOGIC:='1';
 signal right_i: STD_LOGIC:='1';
 signal left_i: STD_LOGIC:='1';
 signal score_button_i: STD_LOGIC:='1';
+signal score_inout: STD_LOGIC;
 
 begin
     --the following calls map the raw input to debounced output signals
