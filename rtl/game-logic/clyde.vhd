@@ -34,8 +34,14 @@ architecture Behavioral of clyde is
         signal clydeyy : integer range 0 to 480:=100;
         signal xdirr : integer range 0 to 640:=240;
         signal ydirr : integer range 0 to 480:=340;
-        
+        --top left
+        signal t_l_corner : std_logic :='0';
+        --top right
+        signal t_r_corner : std_logic :='0';
+        --bot right
         signal b_r_corner : std_logic :='0';
+        --bot left
+        signal b_l_corner : std_logic :='0';
 begin
     clydexx <= clyde_x_int;
     clydeyy <= clyde_y_int;
@@ -59,7 +65,35 @@ begin
 --                        b_r_corner='0';
                --y pacman hunter hard coded values for walls (for now)
                --Add elsif below
-                if clydeyy = ydirr or (down = '0' and up = '0') then
+               --top left
+                if t_l_corner = '1' then
+                    clydexx<=clydexx+1;
+                    if down = '1' then
+                        clydeyy<=clydeyy+1;
+                        t_l_corner<='0'; 
+                    end if;   
+                --top right
+                elsif t_r_corner = '1' then
+                    clydexx<=clydexx-1;
+                    if down = '1' then
+                        clydeyy<=clydeyy+1;
+                        t_r_corner<='0'; 
+                    end if;
+                --bot right
+                elsif b_r_corner = '1' then
+                    clydexx<=clydexx-1;
+                    if down = '1' then
+                        clydeyy<=clydeyy+1;
+                        b_r_corner<='0'; 
+                    end if;
+                --bot left
+                elsif b_l_corner = '1' then
+                    clydexx<=clydexx+1;
+                    if down = '1' then
+                        clydeyy<=clydeyy+1;
+                        b_l_corner<='0'; 
+                    end if;
+                elsif clydeyy = ydirr or (down = '0' and up = '0') then
                 --do x hunting
                     if clydexx < xdirr and right = '1' then
                         clydexx<=clydexx+1;
@@ -70,6 +104,22 @@ begin
                     clydeyy<=clydeyy+1;
                 elsif clydeyy > ydirr and up = '1' then
                     clydeyy<=clydeyy-1;
+                --top left corner stuck
+                elsif up = '0' and left = '0' then
+                    t_l_corner<='1';
+                    clydexx<=clydexx+1;
+                --top right corner stuck
+                elsif up = '0' and right = '0' then
+                    t_r_corner<='1';
+                    clydexx<=clydexx-1;
+                --bot right corner stuck
+                elsif down = '0' and right = '0' then
+                    b_r_corner<='1';
+                    clydexx<=clydexx-1;
+                --bot left corner stuck
+                elsif down = '0' and left = '0' then
+                    b_l_corner<='1';
+                    clydexx<=clydexx+1;
                 end if;
            end if;
        elsif ghost_state_vec="00010" then
@@ -104,7 +154,7 @@ begin
                 elsif clydeyy > ydirr then
                     clydeyy<=clydeyy+1;
                 end if;
-               --other ghosts here (future)
+               
            end if;
         end if;
     end if;
