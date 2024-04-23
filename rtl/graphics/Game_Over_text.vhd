@@ -219,5 +219,5 @@ begin
             end case;
         end process;
         
-        game_over_on <= '1' when square_letter_on='1' and rom_bit='1' and death_int=3 else '0';
+        game_over_on <= '1' when square_letter_on='1' and rom_bit='1' and death_int>=3 else '0';
 end Behavioral;

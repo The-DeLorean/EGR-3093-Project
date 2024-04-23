@@ -22,7 +22,6 @@ entity DotDraw is
         Dot_XL             : in integer range 0 to 28;
         Dot_YT             : in integer range 0 to 32;
         pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        visible            : in std_logic;
         Dot_on             : out std_logic;
         pacman_x_int        : in integer range 0 to 640;
         pacman_y_int        : in integer range 0 to 480;
@@ -44,9 +43,6 @@ architecture Behavioral of DotDraw is
 
 
 begin
-    --drive Pacman position signals
---    pacman_x_int <= to_integer(unsigned(pacman_x));
---    pacman_y_int <= to_integer(unsigned(pacman_y));
     
     dot_x <= Dot_XL*OBJECT_SIZE + start_X;
     dot_y <= Dot_YT*OBJECT_SIZE + start_Y;
@@ -54,13 +50,6 @@ begin
     pix_x <= unsigned(pixel_x);
     pix_y <= unsigned(pixel_y);
     
---    --check if dot should be eaten
---    dot_hit: entity work.collides(Behavioral)
---    port map (  obj_a_x => pacman_x_int, 
---                obj_a_y => pacman_y_int, 
---                obj_b_x => dot_x, 
---                obj_b_y => dot_y,
---                collision => dot_crash);
     
     process
     begin

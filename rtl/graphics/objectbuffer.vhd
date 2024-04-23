@@ -88,19 +88,20 @@ architecture rtl of objectbuffer is
     signal Wall_On : std_logic_array_walls;   
     
     -- ****   DOTS   ***** prev 68 
-    constant dot_num : integer:=136;--:= NuM;
+    constant dot_num : integer:=188;--:= NuM;
     --Array type to hold all the dot positions
     type int_vect_dots is array (0 to dot_num-1) of integer range 0 to 32;
     --
     --                                                                          *** TOP ROW***                                   |                         Columns                                ||                                         2nd Big Row                                        ||                           2nd Columns   ||               Snd Row with multiple dots                             ||          Dots Through top of ghost gate                                                                   | New Dots further down    line below ghost gate                       |     NEXT                                           5 rows of dots                           174 dots here     |
-    constant dot_xvalues : int_vect_dots :=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 8, 17, 20, 25, 0, 5, 8, 17, 20, 25, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 24, 25, 5, 20, 5, 20, 5,  20, 5,  20, 5,  20, 0,  1,  2,  3,  4,  5,  20, 21, 22, 23, 24, 25, 5,  20, 5,  20, 5,  20, 5,  8,  17, 20, 5,  8,  17, 20);
-    constant dot_yvalues : int_vect_dots :=(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, 1, 1,  1,  1,  1,  2, 2, 2,  2,  2,  2,  3, 3, 3,  3,  3,  3,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5, 5, 5, 5,  5,  5,  6, 6, 6, 6,  6,  6,  7, 7, 7, 7, 7, 7, 7, 7, 7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8, 8,  9, 9,  10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18);
+    constant dot_xvalues : int_vect_dots :=(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 5, 11, 14, 20, 25, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 5, 8, 17, 20, 25, 0, 5, 8, 17, 20, 25, 0, 1, 2, 3, 4, 5, 8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 24, 25, 5, 20, 5, 20, 5,  20, 5,  20, 5,  20, 0,  1,  2,  3,  4,  5,  20, 21, 22, 23, 24, 25, 5,  20, 5,  20, 5,  20, 5,  20, 5,  20, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0,  1,  2,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 23, 24, 25, 2,  5,  8,  17, 20, 2,  5,  8,  17, 20);
+    constant dot_yvalues : int_vect_dots :=(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1, 1, 1,  1,  1,  1,  2, 2, 2,  2,  2,  2,  3, 3, 3,  3,  3,  3,  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  4,  5, 5, 5, 5,  5,  5,  6, 6, 6, 6,  6,  6,  7, 7, 7, 7, 7, 7, 7, 7, 7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  7,  8, 8,  9, 9,  10, 10, 11, 11, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 21, 21, 21, 21, 21, 22, 22, 22, 22, 22);
     
     --Variable to hold the outputs of all the dots
     type std_logic_array_dots is array (0 to dot_num-1) of std_logic;
     signal Dot_on      : std_logic_array_dots;
-    signal score_out_arr      : std_logic_array_dots;
-    signal score_out_i  : integer := 0; -- internal signal
+    signal score_out_arr      : std_logic_array_dots  :=('0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0');
+    signal score_out_arr_i      : std_logic_array_dots:=('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'); 
+    signal score_out_i  : integer := 0;
     --Array to hold each dots visibility
     --signal Dot_visible : std_logic_array_dots:= ('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1');
     --Visibile variable for testing
@@ -139,7 +140,6 @@ architecture rtl of objectbuffer is
         Dot_XL             : in integer range 0 to 28;
         Dot_YT             : in integer range 0 to 32;
         pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
-        visible            : in std_logic;
         Dot_on             : out std_logic;
         pacman_x_int        : in integer range 0 to 640;
         pacman_y_int        : in integer range 0 to 480;
@@ -173,6 +173,9 @@ end component;
      signal visible_i_0 : std_logic;
      signal visible_i_1 : std_logic;
      signal visible_i_2 : std_logic;
+     
+     --Pac_mans Visibility signal
+     signal Pac_visible : std_logic:='1';
 
 begin
     
@@ -198,7 +201,7 @@ begin
     
      --Drawing dots 
     dots: for i in 0 to dot_num-1 generate
-        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out_arr(i));
+        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out_arr(i));
     end generate dots;
     
     --Drawing the Ghost Gate
@@ -229,7 +232,7 @@ begin
 
 -- DRAW MOVING PACKMAN *************
     --Always visible
-    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pacman_x, object_y=>pacman_y, animation=> mVariable, visible=> '1', PacMan_on=>PacMan_on);
+    MovingPac : StillPacManDraw port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>pacman_x, object_y=>pacman_y, animation=> mVariable, visible=> Pac_visible, PacMan_on=>PacMan_on);
     --Pac man's Color
     PacMan_rgb <= x"FFFF00";   -- yellow    
     
@@ -304,10 +307,22 @@ begin
     process
     begin
         dot_score: for i in 0 to dot_num - 1 loop
-            if rising_edge(score_out_arr(i)) then
+            if (score_out_arr(i)='1' and score_out_arr_i(i)='1') then
                 score_out_i <= score_out_i+1;
+                score_out_arr_i(i)<='0';
+                wait for 10 ns;
              end if;
         end loop dot_score;
+    end process;
+    
+    --Making Pac man Disapear after he dies.
+    process
+    begin
+        if death_int<=2 then
+            Pac_visible<='1';
+        else
+            Pac_visible<='0';
+        end if;
     end process;
     
     score_out <= score_out_i;

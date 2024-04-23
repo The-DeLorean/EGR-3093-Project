@@ -15,11 +15,11 @@ entity clyde is
         pacman_x_int   : in integer range 0 to 640:=240;
         pacman_y_int   : in integer range 0 to 480:=340;
         --clyde location
-        clyde_x_int    : in integer range 0 to 640:=240;
-        clyde_y_int    : in integer range 0 to 480:=100;
+        clyde_x_int    : in integer range 0 to 640:=299;
+        clyde_y_int    : in integer range 0 to 480:=160;
         --output new clyde location
-        clyde_x_out : out integer range 0 to 640:=240;
-        clyde_y_out : out integer range 0 to 480:=100;
+        clyde_x_out : out integer range 0 to 640:=299;
+        clyde_y_out : out integer range 0 to 480:=160;
         clk       : in std_logic;
         --check ghost state
         powerup     : in std_logic;

@@ -186,8 +186,8 @@ begin
                 
                 if (pac_death = '1') then
                     --reset pacman coordinates
-                    pacman_x_int_i <= 124;
-                    pacman_y_int_i <= 6;
+                    pacman_x_int_i <= 299;
+                    pacman_y_int_i <= 314;
                     death_i<=death_i+1;
                     if death_i >=4 then
                         death_i<=3;
