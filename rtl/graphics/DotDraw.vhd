@@ -65,12 +65,14 @@ begin
     
     process --(visible)
     begin
-        if (dot_crash = '1' AND eaten = '0') then
+        if (rising_edge(dot_crash) AND eaten = '0') then
              eaten <= '1';
              score_out <= '1';
-             score_out <= '0';
         end if;
-        
+    end process;
+    
+    process
+    begin
         if(eaten= '0')then
             if ((dot_x+Dot_SIZE) <= pix_x and 
             pix_x <=(dot_x + OBJECT_SIZE-Dot_SIZE) and 

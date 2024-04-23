@@ -259,15 +259,16 @@ begin
     end process;
     
     --process to detect when a score is eaten
-    process
-    begin
-        for i in 0 to dot_num-1 loop
-            if (score_out_arr(i) = '1') then
-                score_out <= '1';
-                wait for 1ms;
-                score_out <= '0';
-            end if;
-        end loop;
-    end process;
+--    process
+--    begin
+--        for i in 0 to dot_num-1 loop
+--            if (score_out_arr(i) = '1') then
+--                score_out <= '1';
+--                --0wait for 1ms;
+--                exit;
+--            end if;
+--        end loop;
+--        score_out <= '0';
+--    end process;
     
 end rtl;

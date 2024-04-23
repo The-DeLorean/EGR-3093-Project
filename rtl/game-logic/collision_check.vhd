@@ -47,9 +47,9 @@ begin
     begin
         --if object coordinates match then a collision is triggered
         if  ((obj_a_x = obj_b_x) AND (obj_a_y = obj_b_y))then
-        collision <= '1';
+            collision <= '1';
         else
-        collision <= '0';
+            collision <= '0';
         end if;
     end process;
     
