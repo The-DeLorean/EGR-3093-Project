@@ -80,41 +80,67 @@ begin
     collision_i: entity work.navigation_check(Behavioral)
     port map (  x_pos => pacman_x_int_i,
                 y_pos => pacman_y_int_i,
-                down=> down,
                 right=>right,
+                left=> left,
+                up=> up,
+                down=> down,
                 clk=>clk, 
                 collision => pac_crash
                 );
     --Continual motion process
 --    process
 --    begin
---        if right='1' then
---            right_i<='1';
---            left_i<='0';
---            up_i<='0';
---            down_i<='0';
---            prev_direction<="1000";
---        elsif left='1' then 
+--        if right='0' and pac_crash='0' then
 --            right_i<='0';
 --            left_i<='1';
---            up_i<='0';
---            down_i<='0';
---            prev_direction<="0100";
---        elsif up='1' then 
---            right_i<='0';
+--            up_i<='1';
+--            down_i<='1';
+--            prev_direction<="1000";
+--        elsif left='0' and pac_crash='0' then 
+--            right_i<='1';
 --            left_i<='0';
 --            up_i<='1';
---            down_i<='0';
---            prev_direction<="0010";
---        elsif down='1' then 
---            right_i<='0';
---            left_i<='0';
+--            down_i<='1';
+--            prev_direction<="0100";
+--        elsif up='0' and pac_crash='0' then 
+--            right_i<='1';
+--            left_i<='1';
 --            up_i<='0';
 --            down_i<='1';
+--            prev_direction<="0010";
+--        elsif down='0' and pac_crash='0' then 
+--            right_i<='1';
+--            left_i<='1';
+--            up_i<='1';
+--            down_i<='0';
 --            prev_direction<="0001";
+--        elsif pac_crash='1' then
+--            case prev_direction is
+--                when "1000"=> 
+--                    right_i<='0';
+--                    left_i<='1';
+--                    up_i<='1';
+--                    down_i<='1';
+--                when "0100"=>
+--                    right_i<='1';
+--                    left_i<='0';
+--                    up_i<='1';
+--                    down_i<='1';
+--                when "0010"=>
+--                    right_i<='1';
+--                    left_i<='1';
+--                    up_i<='0';
+--                    down_i<='1';
+--                when "0001"=> 
+--                    right_i<='1';
+--                    left_i<='1';
+--                    up_i<='1';
+--                    down_i<='0';
+--                when others=>
+--            end case;
 --        end if;
         
---  end process;
+-- end process;
     
     process
         begin        
@@ -125,28 +151,28 @@ begin
                 moving_i <= not(moving_i);  --toggle pacman mouth
                 count_i <= 0;               --reset counter
                 --move right
-                if (right = '0' and pac_crash='0') then
+                if (right = '0' and pac_crash='0' )then --and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i+1;
-                    if pacman_x_int_i = 517 then
-                        pacman_x_int_i <= 516;
+                    if pacman_x_int_i = 475 then
+                        pacman_x_int_i <= 474;
                     end if;
                 
                 --move left
-                elsif (left = '0' and pac_crash='0') then
+                elsif (left = '0' and pac_crash='0' )then -- and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i-1;
                     if pacman_x_int_i = 123 then
                         pacman_x_int_i<= 124;
                     end if;
                 
                 --move down
-                elsif (down = '0' and pac_crash='0') then
+                elsif (down = '0' and pac_crash='0' )then -- and not(death_i=3)) then
                     pacman_y_int_i <= pacman_y_int_i+1;
-                    if pacman_y_int_i = 427 then
-                        pacman_y_int_i <= 426;
+                    if pacman_y_int_i = 399 then
+                        pacman_y_int_i <= 398;
                     end if;
                     
                 --move up
-                elsif (up = '0' and pac_crash='0') then
+                elsif (up = '0' and pac_crash='0' )then -- and not(death_i=3)) then
                     pacman_y_int_i <= pacman_y_int_i-1;
                     if pacman_y_int_i = 5 then
                         pacman_y_int_i <= 6;
@@ -155,14 +181,15 @@ begin
 --                    if down='0' then
 --                        pacman_y_int_i<= pacman_y_int_i-1;
 --                    end if;
+                      
                 end if;
                 
                 if (pac_death = '1') then
                     --reset pacman coordinates
-                    pacman_x_int_i <= 299;
-                    pacman_y_int_i <= 314;
+                    pacman_x_int_i <= 124;
+                    pacman_y_int_i <= 6;
                     death_i<=death_i+1;
-                    if death_i =4 then
+                    if death_i >=4 then
                         death_i<=3;
                     end if;
                 end if;
