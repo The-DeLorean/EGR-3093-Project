@@ -67,17 +67,21 @@ begin
             count<=count +1;
             if count >=2000000 then
                 count<=0;
-               --x pacman hunter hard coded values for walls (for now)
-                if pinky_x_int_i = pacman_x_int_i or (pinky_x_int_i = 150 and (pinky_y_int_i = 240 or pinky_y_int_i = 241)) then
+                --x pacman hunter 
+                if pinky_x_int_i = pacman_x_int_i or (left = '0' and right = '0') then
                 --do y hunting
-                    if pinky_y_int_i < pacman_y_int_i then
+                    --down
+                    if pinky_y_int_i < pacman_y_int_i and down = '1' then
                         pinky_y_int_i<=pinky_y_int_i+1;
-                    elsif pinky_y_int_i > pacman_y_int_i then
+                    --up
+                    elsif pinky_y_int_i > pacman_y_int_i and up = '1' then
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
-                elsif pinky_x_int_i < pacman_x_int_i then
+                --right
+                elsif pinky_x_int_i < pacman_x_int_i and right = '1' then
                     pinky_x_int_i<=pinky_x_int_i+1;
-                elsif pinky_x_int_i > pacman_x_int_i then
+                --left
+                elsif pinky_x_int_i > pacman_x_int_i and left = '1' then
                     pinky_x_int_i<=pinky_x_int_i-1;
                 end if;
            end if;
