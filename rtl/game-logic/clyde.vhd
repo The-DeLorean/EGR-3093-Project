@@ -68,15 +68,15 @@ begin
                --top left
                 if t_l_corner = '1' then
                     clydexx<=clydexx+1;
-                    if down = '1' then
-                        clydeyy<=clydeyy+1;
+                    if up = '1' then
+                        clydeyy<=clydeyy-1;
                         t_l_corner<='0'; 
                     end if;   
                 --top right
                 elsif t_r_corner = '1' then
                     clydexx<=clydexx-1;
-                    if down = '1' then
-                        clydeyy<=clydeyy+1;
+                    if up = '1' then
+                        clydeyy<=clydeyy-1;
                         t_r_corner<='0'; 
                     end if;
                 --bot right

@@ -52,6 +52,14 @@ signal count : integer;
 signal alternate : integer:=0;
 --signal moving_i : boolean := moving;
 signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
+--top left
+signal t_l_corner : std_logic :='0';
+--top right
+signal t_r_corner : std_logic :='0';
+--bot right
+signal b_r_corner : std_logic :='0';
+--bot left
+signal b_l_corner : std_logic :='0';
 
 begin
     blinky_x_int_i <= blinky_x_int;
@@ -67,53 +75,112 @@ begin
             count<=count +1;
             if count>=2000000 then
                 count<=0;
-               --head pacman hunter hard coded values for walls (for now)
-                if blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
-                    if alternate = 1 then
+                --head pacman hunter 
+                --top left
+                if t_l_corner = '1' then
+                    blinky_y_int_i<=blinky_y_int_i+1;
+                    if left = '1' then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        t_l_corner<='0'; 
+                        alternate <= 1;
+                    end if;   
+                --top right
+                elsif t_r_corner = '1' then
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                    if up = '1' then
+                        blinky_y_int_i<=blinky_y_int_i-1;
+                        t_r_corner<='0'; 
+                        alternate <= 0;
+                    end if;
+                --bot right
+                elsif b_r_corner = '1' then
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                    if down = '1' then
+                        blinky_y_int_i<=blinky_y_int_i+1;
+                        b_r_corner<='0'; 
+                        alternate <= 0;
+                    end if;
+                --bot left
+                elsif b_l_corner = '1' then
+                    blinky_y_int_i<=blinky_y_int_i-1;
+                    if left = '1' then
+                        blinky_x_int_i<=blinky_x_int_i-1;
+                        b_l_corner<='0';
+                        alternate <= 1; 
+                    end if;
+                --down right
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
+                    --right
+                    if alternate = 1 and right = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
-                    elsif alternate = 0 then
+                    --down
+                    elsif alternate = 0 and down = '1' then
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
+                --up right
                 elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
-                    if alternate = 1 then
+                    if alternate = 1 and right = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 0;
-                    elsif alternate = 0 then
+                    elsif alternate = 0 and up = '1' then
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
+                --left down
                 elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
-                    if alternate = 1 then
+                    if alternate = 1 and left = '1' then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
-                    elsif alternate = 0 then
+                    elsif alternate = 0 and down = '1' then
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 1;
                     end if;
+                --left up
                 elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
-                    if alternate = 1 then
+                    if alternate = 1 and left = '1' then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 0;
-                    elsif alternate = 0 then
+                    elsif alternate = 0 and up = '1' then
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 1;
                     end if;
-                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
+                --down
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i and down = '1' then
                     blinky_y_int_i<=blinky_y_int_i+1;
                     alternate <= 0;
-                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
+                --up
+                elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i and up = '1' then
                     blinky_y_int_i<=blinky_y_int_i-1;
                     alternate <= 0;   
-                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
+                --right
+                elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and right = '1' then
                     blinky_x_int_i<=blinky_x_int_i+1;
                     alternate <= 1; 
-                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
+                --left
+                elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and left = '1' then
                     blinky_x_int_i<=blinky_x_int_i-1;
                     alternate <= 1; 
+                --game over
                 elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
                     --gameover
+                --top left corner stuck
+                elsif up = '0' and left = '0' then
+                    t_l_corner<='1';
+                    blinky_y_int_i<=blinky_y_int_i+1;
+                --top right corner stuck
+                elsif up = '0' and right = '0' then
+                    t_r_corner<='1';
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                --bot right corner stuck
+                elsif down = '0' and right = '0' then
+                    b_r_corner<='1';
+                    blinky_x_int_i<=blinky_x_int_i-1;
+                --bot left corner stuck
+                elsif down = '0' and left = '0' then
+                    b_l_corner<='1';
+                    blinky_y_int_i<=blinky_y_int_i-1;
                 end if;
            end if;
        elsif ghost_state_vec="00010" then
