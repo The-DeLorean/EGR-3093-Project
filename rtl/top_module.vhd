@@ -71,7 +71,8 @@ Component hdmi_out is
         data_n   : out std_logic_vector(2 downto 0);
         chase_led     : out STD_LOGIC;
         scatter_led     : out STD_LOGIC;
-        retreat_led     : out STD_LOGIC
+        retreat_led     : out STD_LOGIC;
+        score_out       : out INTEGER
     );
 end component;
 
@@ -82,7 +83,8 @@ component score_controller is
             --Anodes of 7seg Display
             score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            score_segment : out std_logic_vector (7 downto 0));
+            score_segment : out std_logic_vector (7 downto 0);
+            score_int : in INTEGER);
 end component;
 
 
@@ -93,6 +95,7 @@ signal down_i: STD_LOGIC:='1';
 signal right_i: STD_LOGIC:='1';
 signal left_i: STD_LOGIC:='1';
 signal score_button_i: STD_LOGIC:='1';
+signal score_out: INTEGER;
 
 begin
     --the following calls map the raw input to debounced output signals
@@ -107,7 +110,7 @@ begin
     led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
     
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
-    rst => rst, score_anode => score_anode, score_segment => score_segment);
+    rst => rst, score_anode => score_anode, score_segment => score_segment, score_int => score_out);
     
     hdmi_out_i: hdmi_out port map(
         clk => clk,
@@ -123,7 +126,8 @@ begin
         data_n => data_n,
         chase_led => chase_led,
         scatter_led => scatter_led,
-        retreat_led => retreat_led);
+        retreat_led => retreat_led,
+        score_out => score_out);
     
     
 end Behavioral;

@@ -26,7 +26,10 @@ entity objectbuffer is
         backgrnd_rgb       : in  std_logic_vector(PIXEL_SIZE-1 downto 0);
         rgb                : out std_logic_vector(PIXEL_SIZE-1 downto 0);
         mVariable          : in boolean;
-        death_int              : in integer range 0 to 4
+        death_int              : in integer range 0 to 4;
+        score_out           : out integer;
+        pacman_x_int        : in integer range 0 to 640;
+        pacman_y_int        : in integer range 0 to 480
     );
 end objectbuffer;
 
@@ -96,6 +99,8 @@ architecture rtl of objectbuffer is
     --Variable to hold the outputs of all the dots
     type std_logic_array_dots is array (0 to dot_num-1) of std_logic;
     signal Dot_on      : std_logic_array_dots;
+    signal score_out_arr      : std_logic_array_dots;
+    signal score_out_i  : integer := 0; -- internal signal
     --Array to hold each dots visibility
     --signal Dot_visible : std_logic_array_dots:= ('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1');
     --Visibile variable for testing
@@ -135,7 +140,10 @@ architecture rtl of objectbuffer is
         Dot_YT             : in integer range 0 to 32;
         pixel_x, pixel_y   : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
         visible            : in std_logic;
-        Dot_on             : out std_logic
+        Dot_on             : out std_logic;
+        pacman_x_int        : in integer range 0 to 640;
+        pacman_y_int        : in integer range 0 to 480;
+        score_out           : out std_logic
        );
   end component ;
   
@@ -188,9 +196,9 @@ begin
         wall: MazeWalls port map (Wall_XL=> Wall_Xvalues(i), Wall_YT=> Wall_Yvalues(i), length=> Wall_Lengths(i), height => Wall_Heights(i), pixel_x=> pixel_x, pixel_y=> pixel_y, Wall_on=>Wall_on(i)); 
     end generate Walls;
     
-    --Drawing dots 
+     --Drawing dots 
     dots: for i in 0 to dot_num-1 generate
-        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i));
+        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out_arr(i));
     end generate dots;
     
     --Drawing the Ghost Gate
@@ -291,5 +299,16 @@ begin
             end if;
         end if;
     end process;
-
+    
+    --score process
+    process
+    begin
+        dot_score: for i in 0 to dot_num - 1 loop
+            if rising_edge(score_out_arr(i)) then
+                score_out_i <= score_out_i+1;
+             end if;
+        end loop dot_score;
+    end process;
+    
+    score_out <= score_out_i;
 end rtl;

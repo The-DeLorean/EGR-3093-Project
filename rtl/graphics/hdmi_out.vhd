@@ -33,7 +33,8 @@ entity hdmi_out is
         data_n   : out std_logic_vector(2 downto 0);
         chase_led     : out STD_LOGIC;
         scatter_led     : out STD_LOGIC;
-        retreat_led     : out STD_LOGIC
+        retreat_led     : out STD_LOGIC;
+        score_out       : out INTEGER
     );
 end hdmi_out;
 
@@ -54,8 +55,8 @@ architecture rtl of hdmi_out is
     --PacMan Location
     signal pacman_x        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
     signal pacman_y        : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
-    signal pacman_x_int     : integer range 0 to 640:=240; -- starting coordinates (240,340)
-    signal pacman_y_int     : integer range 0 to 480:=340; 
+    signal pacman_x_int     : integer range 0 to 640; -- starting coordinates (240,340)
+    signal pacman_y_int     : integer range 0 to 480; 
     
     --Inky Location
     signal inky_x          : std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
@@ -104,7 +105,9 @@ begin
                     blinky_x => blinky_x,
                     blinky_y => blinky_y,
                     clyde_x => clyde_x,
-                    clyde_y => clyde_y);
+                    clyde_y => clyde_y,
+                    pacman_x_int_out => pacman_x_int, 
+                    pacman_y_int_out => pacman_y_int);
     
     --chase_led <= chase_b;
     --scatter_led <= scatter_b;
@@ -141,6 +144,9 @@ begin
         clyde_x=>clyde_x, clyde_y=>clyde_y,
         pinky_x=>pinky_x, pinky_y=>pinky_y,
         blinky_x=>blinky_x, blinky_y=>blinky_y,
-        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving, death_int=>death);
+        backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving, death_int=>death,
+        score_out=>score_out,
+        pacman_x_int => pacman_x_int,
+        pacman_y_int => pacman_y_int);
     end generate;
 end rtl;

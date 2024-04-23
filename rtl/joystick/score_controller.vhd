@@ -12,7 +12,9 @@ entity score_controller is
             --Anodes of 7seg Display
             score_anode : out std_logic_vector (3 downto 0):= "1111";
             --Cathodes of 7 seg display
-            score_segment : out std_logic_vector (7 downto 0));
+            score_segment : out std_logic_vector (7 downto 0);
+            score_int : in INTEGER
+            );
 end score_controller;
 
 architecture Behavioral of score_controller is
@@ -48,9 +50,25 @@ signal hex_val_1: integer range 0 to 9;
 signal hex_val_2: integer range 0 to 9;
 signal hex_val_3: integer range 0 to 9;
 
+--score int sginals
+signal score_int_i : integer;
+signal score_driver : std_logic := '0';
+
 begin
+Score_int_i <= score_int;
+
+process 
+begin
+    wait on score_int_i;
+    score: for i in 0 to 9 loop
+        score_driver <= '1';
+        wait for 5 ns;
+        score_driver <= '0';
+    end loop score;
+end process;
+
     --drive internal signals with component calls for each place value
-    dig_0: place_value_driver port map(button => score_button, value => hex_val_0, next_digit => nD0);  --ones
+    dig_0: place_value_driver port map(button => score_driver, value => hex_val_0, next_digit => nD0);  --ones
     dig_1: place_value_driver port map(button => nD0, value => hex_val_1, next_digit => nD1);           --tens
     dig_2: place_value_driver port map(button => nD1, value => hex_val_2, next_digit => nD2);           --hundreds
     dig_3: place_value_driver port map(button => nD2, value => hex_val_3, next_digit => nD3);           --thousands
