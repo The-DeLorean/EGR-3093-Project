@@ -1,0 +1,23 @@
++====================+===================+=================================================+
+| Launch Setup Clock | Launch Hold Clock | Pin                                             |
++====================+===================+=================================================+
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/disparity_reg[1]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[2]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[8]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/disparity_reg[2]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/disparity_reg[3]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/disparity_reg[2]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/dout_reg[2]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/dout_reg[9]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/dout_reg[8]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tb/dout_reg[0]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/disparity_reg[0]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[9]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/disparity_reg[1]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/disparity_reg[3]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[6]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[1]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tg/dout_reg[0]/D      |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tr/disparity_reg[3]/D |
+| sys_clk_pin        | sys_clk_pin       | hdmi_out_i/tmds_signaling/tr/disparity_reg[2]/D |
++--------------------+-------------------+-------------------------------------------------+

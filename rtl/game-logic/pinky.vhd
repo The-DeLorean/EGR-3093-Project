@@ -51,6 +51,14 @@ signal pinky_y_int_i     : integer range 0 to 480:=340;
 signal count          : integer;
 signal moving_i : boolean;
 signal ghost_state_vec_i : std_logic_vector(4 downto 0); 
+--top left
+signal t_l_corner : std_logic :='0';
+--top right
+signal t_r_corner : std_logic :='0';
+--bot right
+signal b_r_corner : std_logic :='0';
+--bot left
+signal b_l_corner : std_logic :='0';
 
 begin
     --assign internals
@@ -68,7 +76,34 @@ begin
             if count >=2000000 then
                 count<=0;
                 --x pacman hunter 
-                if pinky_x_int_i = pacman_x_int_i or (left = '0' and right = '0') then
+                if t_l_corner = '1' then
+                    pinky_y_int_i<=pinky_y_int_i+1;
+                    if down = '1' then
+                        pinky_x_int_i<=pinky_x_int_i+1;
+                        t_l_corner<='0'; 
+                    end if;   
+                --top right
+                elsif t_r_corner = '1' then
+                    pinky_y_int_i<=pinky_y_int_i-1;
+                    if down = '1' then
+                        pinky_x_int_i<=pinky_x_int_i+1;
+                        t_r_corner<='0'; 
+                    end if;
+                --bot right
+                elsif b_r_corner = '1' then
+                    pinky_y_int_i<=pinky_y_int_i-1;
+                    if down = '1' then
+                        pinky_x_int_i<=pinky_x_int_i+1;
+                        b_r_corner<='0'; 
+                    end if;
+                --bot left
+                elsif b_l_corner = '1' then
+                    pinky_y_int_i<=pinky_y_int_i+1;
+                    if down = '1' then
+                        pinky_x_int_i<=pinky_x_int_i+1;
+                        b_l_corner<='0'; 
+                    end if;
+                elsif pinky_x_int_i = pacman_x_int_i or (left = '0' and right = '0') then
                 --do y hunting
                     --down
                     if pinky_y_int_i < pacman_y_int_i and down = '1' then
@@ -83,6 +118,22 @@ begin
                 --left
                 elsif pinky_x_int_i > pacman_x_int_i and left = '1' then
                     pinky_x_int_i<=pinky_x_int_i-1;
+                --top left corner stuck
+                elsif up = '0' and left = '0' then
+                    t_l_corner<='1';
+                    pinky_y_int_i<=pinky_y_int_i+1;
+                --top right corner stuck
+                elsif up = '0' and right = '0' then
+                    t_r_corner<='1';
+                    pinky_y_int_i<=pinky_y_int_i-1;
+                --bot right corner stuck
+                elsif down = '0' and right = '0' then
+                    b_r_corner<='1';
+                    pinky_y_int_i<=pinky_y_int_i-1;
+                --bot left corner stuck
+                elsif down = '0' and left = '0' then
+                    b_l_corner<='1';
+                    pinky_y_int_i<=pinky_y_int_i+1;
                 end if;
            end if;
         elsif ghost_state_vec="00010" then
