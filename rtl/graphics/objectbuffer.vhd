@@ -98,6 +98,7 @@ architecture rtl of objectbuffer is
     --Variable to hold the outputs of all the dots
     type std_logic_array_dots is array (0 to dot_num-1) of std_logic;
     signal Dot_on      : std_logic_array_dots;
+    signal score_out_arr      : std_logic_array_dots;
     --Array to hold each dots visibility
     --signal Dot_visible : std_logic_array_dots:= ('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1');
     --Visibile variable for testing
@@ -167,7 +168,7 @@ begin
     
     --Drawing dots 
     dots: for i in 0 to dot_num-1 generate
-        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out);
+        dot: dotdraw port map (Dot_XL=> dot_xvalues(i) ,Dot_YT=> dot_yvalues(i), pixel_x=>pixel_x, pixel_y=> pixel_y, visible=> visible_i, dot_on=> dot_on(i), pacman_x_int => pacman_x_int, pacman_y_int => pacman_y_int, score_out => score_out_arr(i));
     end generate dots;
     
     --Drawing the Ghost Gate
@@ -256,5 +257,17 @@ begin
             end if;
         end if;
     end process;
-
+    
+    --process to detect when a score is eaten
+    process
+    begin
+        for i in 0 to dot_num-1 loop
+            if (score_out_arr(i) = '1') then
+                score_out <= '1';
+                wait for 1ms;
+                score_out <= '0';
+            end if;
+        end loop;
+    end process;
+    
 end rtl;

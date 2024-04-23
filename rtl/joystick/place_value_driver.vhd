@@ -5,10 +5,9 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
 entity place_value_driver is
-    Port ( button : in STD_LOGIC;
+    Port ( score_in : in STD_LOGIC;
            value : out integer range 0 to 9; --place value (ones, tens, etc)
-           next_digit: out STD_LOGIC;
-           score_in      : in STD_LOGIC); -- drives next most significant digit
+           next_digit: out STD_LOGIC); -- drives next most significant digit
 end place_value_driver;
 
 architecture Behavioral of place_value_driver is
@@ -19,7 +18,7 @@ begin
     
     process --increments integer signal upon button press
     begin
-        if (rising_edge(button) OR rising_edge(score_in)) then
+        if (rising_edge(score_in)) then
             value_i <= value_i + 1;
             next_digit_i <= '0';
             if(value_i = 9) then
