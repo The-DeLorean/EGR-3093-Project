@@ -18,6 +18,7 @@ entity ghost_state is
            start_game : in std_logic;
            clk        : in STD_LOGIC;
            prison_time: in integer;
+           --death_int  : in integer range 0 to 4;
            powerup    : in STD_LOGIC;
            ghost_state_vec   : out std_logic_vector(4 downto 0));
 end ghost_state;

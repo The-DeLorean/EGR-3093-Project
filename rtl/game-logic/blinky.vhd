@@ -220,7 +220,6 @@ begin
                         b_l_corner<='1';
                         blinky_y_int_i<=blinky_y_int_i-1;
                     end if;
-               end if;
            --Scatter state
            elsif ghost_state_vec="00010" then
                --Scattering to bot right corner

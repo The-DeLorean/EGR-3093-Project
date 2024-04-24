@@ -20,9 +20,9 @@ entity MazeWalls is
 end MazeWalls;
 
 architecture Behavioral of MazeWalls is
-    constant start_X : integer:=124;
-    constant start_Y : integer:=6;
-    constant offset  : integer:=2;
+    constant start_X : integer :=124;
+    constant start_Y : integer :=6;
+    constant offset  : integer :=0;
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
       
 begin

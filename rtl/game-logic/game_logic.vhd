@@ -99,6 +99,7 @@ architecture Behavioral of game_logic is
     --mouth moving (wokka wokka)
     signal moving              : boolean;
     
+    signal death_out_i : integer range 0 to 4;
     
     begin
     
@@ -132,7 +133,7 @@ architecture Behavioral of game_logic is
                 up => up,
                 down => down,
                 moving => moving,
-                death=> death_out,
+                death=> death_out_i,
                 moving_out => moving,
                 pacman_x_int => pacman_x_int, 
                 pacman_y_int => pacman_y_int,
@@ -242,6 +243,7 @@ architecture Behavioral of game_logic is
             end if;
         end if;
     end process;
+    
     
     --drive int outputs
     pacman_x_int_out <= pacman_x_int;

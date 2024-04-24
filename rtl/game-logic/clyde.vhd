@@ -27,8 +27,8 @@ architecture Behavioral of clyde is
         signal count : integer;
         signal clydexx : integer range 0 to 640:=299;
         signal clydeyy : integer range 0 to 480:=202;
-        signal xdirr : integer range 0 to 640:=240;
-        signal ydirr : integer range 0 to 480:=340;
+        signal xdirr : integer range 0 to 640:=299;
+        signal ydirr : integer range 0 to 480:=202;
         --top left
         signal t_l_corner : std_logic :='0';
         --top right
@@ -77,7 +77,7 @@ begin
         if count >=2000000 then
             count<=0;
          --prison stte
-         if ghost_state_vec="10000" then   
+         if ghost_state_vec_i="10000" then   
                 if prison_right='1' then
                     clydexx<=clydexx+1;
                     if clydexx >=334 then
@@ -91,11 +91,11 @@ begin
                 end if;
                 clydeyy<=202;
         --Escape state
-        elsif ghost_state_vec="01000" then
+        elsif ghost_state_vec_i="01000" then
             clydexx<=299;
             clydeyy<=146;
         --chase
-        elsif ghost_state_vec="00100" then
+        elsif ghost_state_vec_i="00100" then
                --top left
                 if t_l_corner = '1' then
                     clydexx<=clydexx+1;
@@ -152,7 +152,7 @@ begin
                     b_l_corner<='1';
                     clydexx<=clydexx+1;
                 end if;
-       elsif ghost_state_vec="00010" then
+       elsif ghost_state_vec_i="00010" then
                --Scattering to Top LEft corner
                 if clydeyy = 6 or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
                 --do x hunting
@@ -163,7 +163,7 @@ begin
                     clydeyy<=clydeyy-1;
                 end if;
         --retreat
-        elsif ghost_state_vec="00001" then
+        elsif ghost_state_vec_i="00001" then
                --y pacman hunter hard coded values for walls (for now)
                 if clydeyy = ydirr or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
                 --do x hunting

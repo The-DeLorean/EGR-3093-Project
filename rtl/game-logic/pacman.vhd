@@ -68,6 +68,46 @@ signal death_i : integer range 0 to 4 :=0;
 signal pixel_count : integer range 0 to 14:=0;
 signal pixel_clk   : std_logic;
 
+--Collision Cvariables
+constant rom_depth : natural := 29; --30
+constant rom_width : natural := 26;--27
+
+signal pac_loc_x :integer range 0 to 30;
+signal pac_loc_y :integer range 0 to 30;
+
+type wall_type is array (0 to rom_depth -1) of std_logic_vector(rom_width - 1 downto 0);
+constant walls : wall_type :=(
+                            "00000000000011000000000000",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "00000000000000000000000000",
+                            "01111011011111111011011110",
+                            "01111011011111111011011110",
+                            "00000011000011000011000000",
+                            "11111011111011011111011111",
+                            "00001011111011011111010000",
+                            "00001011000000000011010000",
+                            "00001011011111111011010000",
+                            "11111011010000001011011111",
+                            "00000000010000001000000000",
+                            "11111011010000001011011111",
+                            "00001011011111111011010000",
+                            "00001011000000000011010000",
+                            "00001011011111111011010000",
+                            "11111011011111111011011111",
+                            "00000000000011000000000000",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "00011000000000000000011000",
+                            "11011011011111111011011011",
+                            "11011011011111111011011011",
+                            "00000011000011000011000000",
+                            "01111111111011011111111110",
+                            "01111111111011011111111110",
+                            "00000000000000000000000000"
+                            );
+
 begin
 
 
@@ -77,70 +117,17 @@ begin
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
     
-    collision_i: entity work.navigation_check(Behavioral)
-    port map (  x_pos => pacman_x_int_i,
-                y_pos => pacman_y_int_i,
-                right=>right,
-                left=> left,
-                up=> up,
-                down=> down,
-                clk=>clk, 
-                collision => pac_crash
-                );
-    --Continual motion process
---    process
---    begin
---        if right='0' and pac_crash='0' then
---            right_i<='0';
---            left_i<='1';
---            up_i<='1';
---            down_i<='1';
---            prev_direction<="1000";
---        elsif left='0' and pac_crash='0' then 
---            right_i<='1';
---            left_i<='0';
---            up_i<='1';
---            down_i<='1';
---            prev_direction<="0100";
---        elsif up='0' and pac_crash='0' then 
---            right_i<='1';
---            left_i<='1';
---            up_i<='0';
---            down_i<='1';
---            prev_direction<="0010";
---        elsif down='0' and pac_crash='0' then 
---            right_i<='1';
---            left_i<='1';
---            up_i<='1';
---            down_i<='0';
---            prev_direction<="0001";
---        elsif pac_crash='1' then
---            case prev_direction is
---                when "1000"=> 
---                    right_i<='0';
---                    left_i<='1';
---                    up_i<='1';
---                    down_i<='1';
---                when "0100"=>
---                    right_i<='1';
---                    left_i<='0';
---                    up_i<='1';
---                    down_i<='1';
---                when "0010"=>
---                    right_i<='1';
---                    left_i<='1';
---                    up_i<='0';
---                    down_i<='1';
---                when "0001"=> 
---                    right_i<='1';
---                    left_i<='1';
---                    up_i<='1';
---                    down_i<='0';
---                when others=>
---            end case;
---        end if;
-        
--- end process;
+--    collision_i: entity work.navigation_check(Behavioral)
+--    port map (  x_pos => pacman_x_int_i,
+--                y_pos => pacman_y_int_i,
+--                right=>right,
+--                left=> left,
+--                up=> up,
+--                down=> down,
+--                clk=>clk, 
+--                collision => pac_crash
+--                );
+
     
     process
         begin        
@@ -149,7 +136,49 @@ begin
             count_i <= count_i +1;          --increment
             if count_i = 2000000 then
                 moving_i <= not(moving_i);  --toggle pacman mouth
-                count_i <= 0;               --reset counter
+                count_i <= 0; 
+                
+                --Collision Check
+                if right='0' then
+                    pac_loc_x<= (pacman_x_int_i-124)/14;
+                    pac_loc_y<= (pacman_y_int_i-6)/14;
+                    if (walls(pac_loc_y)(pac_loc_x+1)='1') then
+                        pac_crash<='1';
+                    else
+                        pac_crash<='0';
+                    end if;  
+                    
+                elsif left='0' then
+                    pac_loc_x<= (pacman_x_int_i-124)/14;
+                    pac_loc_y<= (pacman_y_int_i-6+13)/14;
+                    if (walls(pac_loc_y)(pac_loc_x-1)='1') then
+                        pac_crash<='1';
+                    else
+                        pac_crash<='0';
+                    end if;
+                    
+                 elsif up='0' then
+                    pac_loc_x<= (pacman_x_int_i-124)/14;
+                    pac_loc_y<= (pacman_y_int_i-6+13)/14;
+                    if (walls(pac_loc_y-1)(pac_loc_x)='1') then
+                        pac_crash<='1';
+                    else
+                        pac_crash<='0';
+                    end if;        
+                    
+                elsif down='0' then
+                    pac_loc_x<= (pacman_x_int_i-124)/14;
+                    pac_loc_y<= (pacman_y_int_i-6)/14;
+                    if (walls(pac_loc_y+1)(pac_loc_x)='1') then
+                        pac_crash<='1';
+                    else
+                        pac_crash<='0';
+                    end if;
+                end if;  
+                
+                --End Collision Check
+                
+                
                 --move right
                 if (right = '0' and pac_crash='0' )then --and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i+1;

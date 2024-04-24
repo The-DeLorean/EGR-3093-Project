@@ -202,6 +202,20 @@ begin
                         pinky_x_int_i<=pinky_x_int_i+1;
                     end if;
              end if;         
+             if pinky_x_int_i= 123 then
+                pinky_x_int_i<=124;
+             end if;
+             if pinky_y_int_i= 5 then
+                pinky_y_int_i<=6;
+             end if;
+             if pinky_y_int_i= 399 then
+                pinky_y_int_i<=398;
+             end if;
+             if pinky_x_int_i = 475 then
+                pinky_x_int_i<=474;
+             end if;
+             
+             
            end if;
         end if;
     end process;
