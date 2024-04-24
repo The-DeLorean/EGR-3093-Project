@@ -53,7 +53,7 @@ begin
                     --Moving quickly only staying in escape state for 5us
                     When escape_state=> 
                         count <= count+1;
-                        if count =  5000 then
+                        if count =  100000000 then
                             ghost_state_machine := chase_state;
                             count<=0;
                         end if;        

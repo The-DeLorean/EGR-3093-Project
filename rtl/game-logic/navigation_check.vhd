@@ -52,7 +52,6 @@ constant rom_depth : natural := 29; --30
 constant rom_width : natural := 26;--27
 signal collision_i : std_logic:='0';
 
-signal wall_bit: std_logic:='0';
 signal y_pos_i : integer;
 signal x_pos_i : integer;
 

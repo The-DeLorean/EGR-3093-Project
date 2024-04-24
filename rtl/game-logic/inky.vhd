@@ -30,12 +30,12 @@ entity inky is
             up       : in std_logic;
             down     : in std_logic;
             moving   : in boolean;
-            pacman_x_int   : in integer range 0 to 640:=240;
-            pacman_y_int   : in integer range 0 to 480:=340;
-            inky_x_int    : in integer range 0 to 640:=240;
-            inky_y_int    : in integer range 0 to 480:=100;
-            inky_x_int_out : out integer range 0 to 640:=240;
-            inky_y_int_out : out integer range 0 to 480:=100;
+            pacman_x_int   : in integer range 0 to 640;
+            pacman_y_int   : in integer range 0 to 480;
+            inky_x_int    : in integer range 0 to 640;
+            inky_y_int    : in integer range 0 to 480;
+            inky_x_int_out : out integer range 0 to 640;
+            inky_y_int_out : out integer range 0 to 480;
             powerup     : in std_logic;
             ghost_state_vec   : in std_logic_vector(4 downto 0)
             );
@@ -44,10 +44,10 @@ end inky;
 architecture Behavioral of inky is
 
  --internal signals
-signal pacman_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
-signal pacman_y_int_i     : integer range 0 to 480:=340; 
-signal inky_x_int_i     : integer range 0 to 640:=240; -- starting coordinates (240,340)
-signal inky_y_int_i     : integer range 0 to 480:=340; 
+signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
+signal pacman_y_int_i     : integer range 0 to 480:=314; 
+signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
+signal inky_y_int_i     : integer range 0 to 480:=146; 
 signal count_i          : integer;
 signal moving_i : boolean := moving;
 

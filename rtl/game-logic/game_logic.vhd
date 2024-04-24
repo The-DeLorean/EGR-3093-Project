@@ -47,14 +47,14 @@ entity game_logic is
             death_out       : out integer range 0 to 4;
             pacman_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
             pacman_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(340, OBJECT_SIZE));
-            inky_x          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-            inky_y          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
-            pinky_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-            pinky_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
-            blinky_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-            blinky_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
-            clyde_x         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(300, OBJECT_SIZE));
-            clyde_y         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(100, OBJECT_SIZE));
+            inky_x          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(299, OBJECT_SIZE));
+            inky_y          : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(160, OBJECT_SIZE));
+            pinky_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(299, OBJECT_SIZE));
+            pinky_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(160, OBJECT_SIZE));
+            blinky_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(299, OBJECT_SIZE));
+            blinky_y        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(160, OBJECT_SIZE));
+            clyde_x         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(299, OBJECT_SIZE));
+            clyde_y         : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(160, OBJECT_SIZE));
             pacman_x_int_out   : out integer range 0 to 640;
             pacman_y_int_out   : out integer range 0 to 340
          );
@@ -67,20 +67,20 @@ architecture Behavioral of game_logic is
     signal pacman_y_int     : integer range 0 to 480:=340; 
     
     --Inky Location
-    signal inky_x_int       : integer range 0 to 640:=300; -- starting coordinates (640, 480)
-    signal inky_y_int       : integer range 0 to 480:=100;
+    signal inky_x_int       : integer range 0 to 640:=299; -- starting coordinates (640, 480)
+    signal inky_y_int       : integer range 0 to 480:=160;
 
     --Pinky
-    signal pinky_x_int       : integer range 0 to 640:=300; -- starting coordinates (300, 100)
-    signal pinky_y_int       : integer range 0 to 480:=100;
+    signal pinky_x_int       : integer range 0 to 640:=299; -- starting coordinates (300, 100)
+    signal pinky_y_int       : integer range 0 to 480:=160;
     
     --Blinky
-    signal blinky_x_int       : integer range 0 to 640:=300; -- starting coordinates (300, 100)
-    signal blinky_y_int       : integer range 0 to 480:=100;
+    signal blinky_x_int       : integer range 0 to 640:=299; -- starting coordinates (300, 100)
+    signal blinky_y_int       : integer range 0 to 480:=160;
     
     --Clyde 
-    signal clyde_x_int      : integer range 0 to 640:=100;
-    signal clyde_y_int      : integer range 0 to 480:=100;
+    signal clyde_x_int      : integer range 0 to 640:=299;
+    signal clyde_y_int      : integer range 0 to 480:=160;
     
     --ghost state machine semaphores
     constant prison_time : integer:= 5000000;
@@ -173,10 +173,6 @@ architecture Behavioral of game_logic is
     pinky_i: entity work.pinky(Behavioral)
     port map (  clk => clk,
                 rst => rst,
-                right => right,
-                left => left,
-                up => up,
-                down => down,
                 moving => moving,
                 pacman_x_int => pacman_x_int, 
                 pacman_y_int => pacman_y_int,
@@ -195,10 +191,6 @@ architecture Behavioral of game_logic is
     blinky_i: entity work.blinky(Behavioral)
     port map (  clk => clk,
                 rst => rst,
-                right => right,
-                left => left,
-                up => up,
-                down => down,
                 --moving => moving,
                 pacman_x_int => pacman_x_int, 
                 pacman_y_int => pacman_y_int,

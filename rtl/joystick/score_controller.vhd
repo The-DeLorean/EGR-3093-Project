@@ -59,11 +59,11 @@ Score_int_i <= score_int;
 
 process 
 begin
-    wait on score_int_i;
+    wait on score_int;
         digit_3<= (score_int_i) /1000;
-        digit_2<= (score_int_i- digit_3) /100;
-        digit_1<= (score_int_i - digit_3 - digit_2)/10;
-        digit_0<= (score_int_i - digit_3 - digit_2 - digit_1);
+        digit_2<= (score_int_i - (digit_3*1000)) /100;
+        digit_1<= (score_int_i - (digit_3*1000) - (digit_2*100))/10;
+        digit_0<= (score_int_i - (digit_3*1000) - (digit_2*100) - (digit_1*10));
 end process;
 
     --drive internal signals with component calls for each place value

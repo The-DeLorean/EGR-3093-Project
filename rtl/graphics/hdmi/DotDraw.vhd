@@ -53,32 +53,29 @@ begin
     
     process
     begin
-        if ( (pacman_x_int=dot_x AND pacman_y_int=dot_y) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x+1 AND pacman_y_int=dot_y) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x+2 AND pacman_y_int=dot_y) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x-1 AND pacman_y_int=dot_y) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x-2 AND pacman_y_int=dot_y) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+1) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+2) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y-1) ) then
-            dot_crash <= '1';
-        elsif ( (pacman_x_int=dot_x AND pacman_y_int= (dot_y-2)) ) then
-            dot_crash <= '1';
-        else
-            dot_crash <= '0';
-        end if;
-    end process;
-    
-    
-    process --(visible)
-    begin
+        if(eaten = '0') then
+            if ( (pacman_x_int=dot_x AND pacman_y_int=dot_y) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x+1 AND pacman_y_int=dot_y) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x+2 AND pacman_y_int=dot_y) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x-1 AND pacman_y_int=dot_y) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x-2 AND pacman_y_int=dot_y) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+1) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+2) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y-1) ) then
+                dot_crash <= '1';
+            elsif ( (pacman_x_int=dot_x AND pacman_y_int= (dot_y-2)) ) then
+                dot_crash <= '1';
+            else
+                dot_crash <= '0';
+            end if;
+         end if;
         if ( rising_edge(dot_crash) AND eaten = '0') then
              eaten <= '1';
              score_out <= '1';
