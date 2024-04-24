@@ -112,7 +112,7 @@ begin
                 blinky_x_int_i<=299;
                 blinky_y_int_i<=146;
             -- Chase state
-            if ghost_state_vec="00100" then
+            elsif ghost_state_vec="00100" then
                     --head pacman hunter 
                     --top left
                     if t_l_corner = '1' then
