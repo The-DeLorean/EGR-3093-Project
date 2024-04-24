@@ -94,6 +94,7 @@ begin
     count<=count +1;
         if count >=2000000 then
             count<=0;
+            --Prison state logic
             if ghost_state_vec="10000" then
                 if prison_right='0' then
                     pinky_x_int_i<=pinky_x_int_i+1;
@@ -107,9 +108,11 @@ begin
                     end if;
                 end if;
                 pinky_y_int_i<=174;
+            -- Escape state
             elsif ghost_state_vec="01000" then
                 pinky_x_int_i<=299;
                 pinky_y_int_i<=146;
+            -- Chase state logic
             elsif ghost_state_vec="00100" then
                     --x pacman hunter 
                     --top left
@@ -172,6 +175,7 @@ begin
                         b_l_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
+             -- Scatter logic
             elsif ghost_state_vec="00010" then
                    --Scattering to Top Right corner
                     if pinky_y_int_i = 6 or (pinky_y_int_i = 150 and (pinky_x_int_i = 240 or pinky_x_int_i = 241)) then
@@ -182,6 +186,7 @@ begin
                     elsif pinky_y_int_i > 6 then
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
+            -- retreat logic
             elsif ghost_state_vec="00001" then
                    --x pacman hunter hard coded values for walls (for now)
                     if pinky_x_int_i = pacman_x_int_i or (pinky_x_int_i = 150 and (pinky_y_int_i = 240 or pinky_y_int_i = 241)) then

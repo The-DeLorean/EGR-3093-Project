@@ -79,6 +79,7 @@ begin
     count<=count +1;
         if count>=2000000 then
             count<=0;
+            --Prison state
             if ghost_state_vec="10000" then
                 if prison_right='1' then
                     blinky_x_int_i<=blinky_x_int_i+1;
@@ -92,9 +93,11 @@ begin
                     end if;
                 end if;
                 blinky_y_int_i<=188;
+            --Escape state
             elsif ghost_state_vec="01000" then
                 blinky_x_int_i<=299;
                 blinky_y_int_i<=146;
+            -- Chase state
             if ghost_state_vec="00100" then
                     --head pacman hunter 
                     --top left
@@ -204,6 +207,7 @@ begin
                         blinky_y_int_i<=blinky_y_int_i-1;
                     end if;
                end if;
+           --Scatter state
            elsif ghost_state_vec="00010" then
                --Scattering to bot right corner
                 if blinky_y_int_i = 6 or (blinky_y_int_i = 150 and (blinky_x_int_i = 240 or blinky_x_int_i = 241)) then
@@ -214,6 +218,7 @@ begin
                 elsif blinky_y_int_i > 6 then
                     blinky_y_int_i<=blinky_y_int_i+1;
                 end if;
+            --Retreat state
             elsif ghost_state_vec="00001" then
                --head pacman hunter hard coded values for walls (for now)
                 if blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
