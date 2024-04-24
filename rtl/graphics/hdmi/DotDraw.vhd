@@ -87,10 +87,10 @@ begin
 --             eaten <= '1';
 --             score_out <= '1';
 --        end if;
-    end process;
+--    end process;
     
-    process
-    begin
+--    process
+--    begin
         if(eaten= '0')then
             if ((dot_x+Dot_SIZE) <= pix_x and 
             pix_x <=(dot_x + OBJECT_SIZE-Dot_SIZE) and 

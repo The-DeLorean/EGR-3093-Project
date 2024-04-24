@@ -25,10 +25,10 @@ use ieee.numeric_std.all;
 entity pacman is
 Port (  clk     : in std_logic;
         rst      : in std_logic;
-        right    : in std_logic;
-        left     : in std_logic;
-        up       : in std_logic;
-        down     : in std_logic;
+        right_in    : in std_logic;
+        left_in     : in std_logic;
+        up_in       : in std_logic;
+        down_in     : in std_logic;
         moving   : in boolean;
         death    : out integer range 0 to 4;
         moving_out   : out boolean;
@@ -60,7 +60,11 @@ signal prev_direction : std_logic_vector (3 downto 0):="0000";
 signal new_direction : std_logic_vector (3 downto 0):="0000";
 
 
-signal pac_crash : std_logic :='0';
+signal pac_crash_right : std_logic :='0';
+signal pac_crash_left : std_logic :='0';
+signal pac_crash_up : std_logic :='0';
+signal pac_crash_down : std_logic :='0';
+
 
 signal death_i : integer range 0 to 4 :=0;
 
@@ -72,8 +76,10 @@ signal pixel_clk   : std_logic;
 constant rom_depth : natural := 29; --30
 constant rom_width : natural := 26;--27
 
-signal pac_loc_x :integer range 0 to 30;
-signal pac_loc_y :integer range 0 to 30;
+signal pac_loc_x_left :integer range 0 to 30;
+signal pac_loc_y_left :integer range 0 to 30;
+signal pac_loc_x_right :integer range 0 to 30;
+signal pac_loc_y_right :integer range 0 to 30;
 
 type wall_type is array (0 to rom_depth -1) of std_logic_vector(rom_width - 1 downto 0);
 constant walls : wall_type :=(
@@ -107,6 +113,11 @@ constant walls : wall_type :=(
                             "01111111111011011111111110",
                             "00000000000000000000000000"
                             );
+                            
+          signal right : std_logic:='1';
+          signal left : std_logic:='1';
+          signal up : std_logic:='1';
+          signal down : std_logic:='1';
 
 begin
 
@@ -129,8 +140,12 @@ begin
 --                );
 
     
-    process
+    process(right, left, up, down) 
         begin        
+        right<=right_in;
+        left<=left_in;
+        up<=up_in;
+        down<=down_in;
         --PacMan movement, reimplement as state machine
         if rising_edge(clk) then
             count_i <= count_i +1;          --increment
@@ -140,39 +155,51 @@ begin
                 
                 --Collision Check
                 if right='0' then
-                    pac_loc_x<= (pacman_x_int_i-124)/14;
-                    pac_loc_y<= (pacman_y_int_i-6)/14;
-                    if (walls(pac_loc_y)(pac_loc_x+1)='1') then
-                        pac_crash<='1';
+                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                    
+                    pac_loc_x_right<= (pacman_x_int_i-124+2)/14;
+                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                    if (walls(pac_loc_y_left)(pac_loc_x_left+1)='1' or walls(pac_loc_y_right)(pac_loc_x_right+1)='1') then
+                        pac_crash_right<='1';
                     else
-                        pac_crash<='0';
+                        pac_crash_right<='0';
                     end if;  
                     
                 elsif left='0' then
-                    pac_loc_x<= (pacman_x_int_i-124)/14;
-                    pac_loc_y<= (pacman_y_int_i-6+13)/14;
-                    if (walls(pac_loc_y)(pac_loc_x-1)='1') then
-                        pac_crash<='1';
+                    pac_loc_x_left<= (pacman_x_int_i-124+11)/14;
+                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                    
+                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                    if (walls(pac_loc_y_left)(pac_loc_x_left-1)='1' or  walls(pac_loc_y_right)(pac_loc_x_right-1)='1') then
+                        pac_crash_left<='1';
                     else
-                        pac_crash<='0';
+                        pac_crash_left<='0';
                     end if;
                     
                  elsif up='0' then
-                    pac_loc_x<= (pacman_x_int_i-124)/14;
-                    pac_loc_y<= (pacman_y_int_i-6+13)/14;
-                    if (walls(pac_loc_y-1)(pac_loc_x)='1') then
-                        pac_crash<='1';
+                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                    pac_loc_y_left<= (pacman_y_int_i-6+11)/14;
+                    
+                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                    if (walls(pac_loc_y_left-1)(pac_loc_x_left)='1' or walls(pac_loc_y_right-1)(pac_loc_x_right)='1') then
+                        pac_crash_up<='1';
                     else
-                        pac_crash<='0';
+                        pac_crash_up<='0';
                     end if;        
                     
                 elsif down='0' then
-                    pac_loc_x<= (pacman_x_int_i-124)/14;
-                    pac_loc_y<= (pacman_y_int_i-6)/14;
-                    if (walls(pac_loc_y+1)(pac_loc_x)='1') then
-                        pac_crash<='1';
+                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                    
+                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                    pac_loc_y_right<= (pacman_y_int_i-6+2)/14;
+                    if (walls(pac_loc_y_left+1)(pac_loc_x_left)='1' or walls(pac_loc_y_right+1)(pac_loc_x_right)='1') then
+                        pac_crash_down<='1';
                     else
-                        pac_crash<='0';
+                        pac_crash_down<='0';
                     end if;
                 end if;  
                 
@@ -180,7 +207,7 @@ begin
                 
                 
                 --move right
-                if (right = '0' and pac_crash='0' )then --and not(death_i=3)) then
+                if (right = '0' and pac_crash_right='0' )then --and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i+1;
                     if (pacman_x_int_i=474 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
                         pacman_x_int_i<=124;
@@ -189,7 +216,7 @@ begin
                     end if;
                 
                 --move left
-                elsif (left = '0' and pac_crash='0' )then -- and not(death_i=3)) then
+                elsif (left = '0' and pac_crash_left='0' )then -- and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i-1;
                     if (pacman_x_int_i=124 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
                         pacman_x_int_i<=474;
@@ -198,19 +225,19 @@ begin
                     end if;
                 
                 --move down
-                elsif (down = '0' and pac_crash='0' )then -- and not(death_i=3)) then
+                elsif (down = '0' and pac_crash_down='0' )then -- and not(death_i=3)) then
                     pacman_y_int_i <= pacman_y_int_i+1;
                     if pacman_y_int_i = 399 then
                         pacman_y_int_i <= 398;
                     end if;
                     
                 --move up
-                elsif (up = '0' and pac_crash='0' )then -- and not(death_i=3)) then
+                elsif (up = '0' and pac_crash_up='0' )then -- and not(death_i=3)) then
                     pacman_y_int_i <= pacman_y_int_i-1;
                     if pacman_y_int_i = 5 then
                         pacman_y_int_i <= 6;
                     end if;
-                elsif (pac_crash='1') then
+--                elsif (pac_crash='1') then
 --                    if down='0' then
 --                        pacman_y_int_i<= pacman_y_int_i-1;
 --                    end if;
