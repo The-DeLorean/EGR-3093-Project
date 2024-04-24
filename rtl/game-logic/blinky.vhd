@@ -60,6 +60,18 @@ signal b_l_corner : std_logic :='0';
 --Signal to move ghost back and forth in prison
 signal prison_right : std_logic:='0';
 
+component Ghost_navigation_check is
+  Port (  
+        Ghost_x_pos        : in integer;
+        Ghost_y_pos        : in integer;
+        clk                : in std_logic;
+        right_collision    : out std_logic;
+        left_collision     : out std_logic;
+        up_collision       : out std_logic;
+        down_collision     : out std_logic
+        );
+end component;
+
 --signals for collisions
 signal right_i : std_logic:='1';
 signal left_i : std_logic:='1';
@@ -72,6 +84,8 @@ begin
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
     ghost_state_vec_i <= ghost_state_vec;
+    
+    Ghost_collisons_all_directions: Ghost_navigation_check port map (ghost_x_pos=>blinky_x_int_i, ghost_y_pos=>blinky_y_int_i, clk=>clk, right_collision=>right_i, left_collision=>left_i, up_collision=>up_i, down_collision=>down_i);
     
     process
     begin

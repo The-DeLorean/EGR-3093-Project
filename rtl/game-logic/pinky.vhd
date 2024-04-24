@@ -180,7 +180,7 @@ begin
                    --Scattering to Top Right corner
                     if pinky_y_int_i = 6 or (pinky_y_int_i = 150 and (pinky_x_int_i = 240 or pinky_x_int_i = 241)) then
                     --do y hunting
-                        if pinky_x_int_i > 124 then
+                        if pinky_x_int_i < 474 then
                             pinky_x_int_i<=pinky_x_int_i+1;
                         end if; 
                     elsif pinky_y_int_i > 6 then

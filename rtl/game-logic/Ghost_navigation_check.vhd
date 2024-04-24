@@ -35,7 +35,7 @@ entity Ghost_navigation_check is
   Port (  
         Ghost_x_pos        : in integer;
         Ghost_y_pos        : in integer;
-        clk                :in std_logic;
+        clk                : in std_logic;
         right_collision    : out std_logic;
         left_collision     : out std_logic;
         up_collision       : out std_logic;
@@ -113,17 +113,17 @@ begin
     --Works for right and Down.
     ghost_loc_x<= (ghost_x_pos_i-124)/14;
     ghost_loc_y<= (ghost_y_pos_i-6)/14;
-    --ghost_loc_x_fright<=(ghost_x_pos_i-124+1)/14;
-    --ghost_loc_y_fdown<= (ghost_y_pos_i-6+1)/14;
+    ghost_loc_x_fright<=(ghost_x_pos_i-124+1)/14;
+    ghost_loc_y_fdown<= (ghost_y_pos_i-6+1)/14;
     --Use one of these for left and Up moving the corner to the spo its supposed to be
-    ghost_loc_x_left<= (ghost_x_pos_i-124+14)/14;
-    ghost_loc_y_up<= (ghost_y_pos_i-6+14)/14;
+    ghost_loc_x_left<= (ghost_x_pos_i-124+13)/14;
+    ghost_loc_y_up<= (ghost_y_pos_i-6+13)/14;
     if (rising_edge(clk)) then
     count_i <= count_i +1;          --increment
         if count_i = 2000000 then
             count_i <= 0;
             --Checking for right collision
-            if (walls(ghost_loc_y+1)(ghost_loc_x+1+1)='1') then
+            if (walls(ghost_loc_y+1)(ghost_loc_x_fright+1+1)='1') then
                 right_collision_i<='0';
             else
                 right_collision_i<='1';
@@ -137,7 +137,7 @@ begin
             end if; 
             
             --Checking for down collision
-            if (walls(ghost_loc_y+1+1)(ghost_loc_x+1)='1') then
+            if (walls(ghost_loc_y_fdown+1+1)(ghost_loc_x+1)='1') then
                 down_collision_i<='0';
             else
                 down_collision_i<='1';

@@ -153,14 +153,18 @@ begin
                 --move right
                 if (right = '0' and pac_crash='0' )then --and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i+1;
-                    if pacman_x_int_i = 475 then
+                    if (pacman_x_int_i=474 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
+                        pacman_x_int_i<=124;
+                    elsif pacman_x_int_i = 475 then
                         pacman_x_int_i <= 474;
                     end if;
                 
                 --move left
                 elsif (left = '0' and pac_crash='0' )then -- and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i-1;
-                    if pacman_x_int_i = 123 then
+                    if (pacman_x_int_i=124 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
+                        pacman_x_int_i<=474;
+                    elsif pacman_x_int_i = 123 then
                         pacman_x_int_i<= 124;
                     end if;
                 

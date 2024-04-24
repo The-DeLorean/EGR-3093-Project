@@ -108,7 +108,7 @@ architecture Behavioral of game_logic is
     clyde_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> prison_time,
+                prison_time=> 10000000,
                 powerup => powerup, 
                 ghost_state_vec=> clyde_state_vec);
     pinky_state_i: entity work.ghost_state(Behavioral)
@@ -120,7 +120,7 @@ architecture Behavioral of game_logic is
     blinky_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> prison_time,
+                prison_time=> 15000000,
                 powerup => powerup, 
                 ghost_state_vec=> blinky_state_vec);
     --PacMan port map
@@ -209,10 +209,6 @@ architecture Behavioral of game_logic is
     clyde_i: entity work.clyde(Behavioral)
     --generic map (SERIES6=>SERIES6)
     port map (  
-                right => right,
-                left => left,
-                up => up,
-                down => down,
                 pacman_x_int => pacman_x_int, 
                 pacman_y_int => pacman_y_int, 
                 clyde_x_int => clyde_x_int, 
