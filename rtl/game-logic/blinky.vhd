@@ -114,7 +114,7 @@ begin
             -- Chase state
             elsif ghost_state_vec="00100" then
                     --head pacman hunter 
-                    --top left
+                    --top left stuck
                     if t_l_corner = '1' then
                         blinky_y_int_i<=blinky_y_int_i+1;
                         if left_i = '1' then
@@ -122,7 +122,7 @@ begin
                             t_l_corner<='0'; 
                             alternate <= 1;
                         end if;   
-                    --top right
+                    --top right stuck
                     elsif t_r_corner = '1' then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         if up_i = '1' then
@@ -130,7 +130,7 @@ begin
                             t_r_corner<='0'; 
                             alternate <= 0;
                         end if;
-                    --bot right
+                    --bot right stuck
                     elsif b_r_corner = '1' then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         if down_i = '1' then
@@ -138,7 +138,7 @@ begin
                             b_r_corner<='0'; 
                             alternate <= 0;
                         end if;
-                    --bot left
+                    --bot left stuck
                     elsif b_l_corner = '1' then
                         blinky_y_int_i<=blinky_y_int_i-1;
                         if left_i = '1' then
@@ -146,7 +146,7 @@ begin
                             b_l_corner<='0';
                             alternate <= 1; 
                         end if;
-                    --down right
+                    --down right move
                     elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                         --right
                         if alternate = 1 and right_i = '1' then
@@ -157,7 +157,7 @@ begin
                             blinky_y_int_i<=blinky_y_int_i+1;
                             alternate <= 1;
                         end if;
-                    --up right
+                    --up rightmove
                     elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                         if alternate = 1 and right_i = '1' then
                             blinky_x_int_i<=blinky_x_int_i+1;
@@ -166,7 +166,7 @@ begin
                             blinky_y_int_i<=blinky_y_int_i-1;
                             alternate <= 1;
                         end if;
-                    --left down
+                    --left down move
                     elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
                         if alternate = 1 and left_i = '1' then
                             blinky_x_int_i<=blinky_x_int_i-1;
@@ -175,7 +175,7 @@ begin
                             blinky_y_int_i<=blinky_y_int_i+1;
                             alternate <= 1;
                         end if;
-                    --left up
+                    --left up move
                     elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
                         if alternate = 1 and left_i = '1' then
                             blinky_x_int_i<=blinky_x_int_i-1;
@@ -184,19 +184,19 @@ begin
                             blinky_y_int_i<=blinky_y_int_i-1;
                             alternate <= 1;
                         end if;
-                    --down
+                    --down move
                     elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i and down_i = '1' then
                         blinky_y_int_i<=blinky_y_int_i+1;
                         alternate <= 0;
-                    --up
+                    --up move
                     elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i and up_i = '1' then
                         blinky_y_int_i<=blinky_y_int_i-1;
                         alternate <= 0;   
-                    --right
+                    --right move
                     elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         alternate <= 1; 
-                    --left
+                    --left move
                     elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and left_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i-1;
                         alternate <= 1; 
