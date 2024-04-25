@@ -225,17 +225,17 @@ begin
                --Scattering to bot right corner
                 if b_r_corner = '1' then
                     blinky_y_int_i<=blinky_y_int_i-1;
-                    if right = '1' then
+                    if right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         b_r_corner<='0';
-                elsif blinky_y_int_i = 398 or (up = '0' and down = '0') then
+                elsif blinky_y_int_i = 398 or (up_i = '0' and down_i = '0') then
                 --do y hunting
                     if blinky_x_int_i < 464 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                     end if; 
                 elsif blinky_y_int_i < 398 then
                     blinky_y_int_i<=blinky_y_int_i+1;
-                elsif down = '1' and right = '1' then
+                elsif down_i = '1' and right_i = '1' then
                     b_r_corner<='1';
                     blinky_y_int_i<=blinky_y_int_i-1;
                 end if;
