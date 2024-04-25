@@ -179,7 +179,7 @@ begin
                             inky_y_int_i<=inky_y_int_i+1;
                             b_l_corner<='0';
                         end if;
-                    elsif inky_y_int_i = 398 or up_i='0' then
+                    elsif inky_y_int_i = 398 or down_i='0' then
                     --do x hunting
                         if inky_x_int_i > 124 and left_i = '1' then
                             inky_x_int_i<=inky_x_int_i-1;
