@@ -18,7 +18,10 @@ entity ghost_state is
            start_game : in std_logic;
            clk        : in STD_LOGIC;
            prison_time: in integer;
-           --death_int  : in integer range 0 to 4;
+           pac_death_clyde : in std_logic;
+           pac_death_pinky : in std_logic;
+           pac_death_blinky : in std_logic;
+           pac_death_inky : in std_logic;
            powerup    : in STD_LOGIC;
            ghost_state_vec   : out std_logic_vector(4 downto 0));
 end ghost_state;
@@ -60,8 +63,8 @@ begin
                         end if;        
                     --In the chase state for 20s          
                     When chase_state =>
-                        If powerup= '1' then
-                            ghost_state_machine := reatreat_state;
+                        If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
+                            ghost_state_machine := prison_state;
                             count <=0;
                         elsif scatter_tracker /=4 then
                             count <=count+1; 
@@ -78,8 +81,8 @@ begin
                             scatter_tracker <= scatter_tracker+1;
                             chase_prev<='0';
                         end if;
-                        If powerup= '1' then
-                            ghost_state_machine:= reatreat_state;
+                        If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
+                            ghost_state_machine:= prison_state;
                             count <=0;
                         else
                             count <=count+1; 

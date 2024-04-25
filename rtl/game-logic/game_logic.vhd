@@ -94,7 +94,10 @@ architecture Behavioral of game_logic is
     --misc. game data
     signal start_time      : integer;
     signal start_game     : std_logic:='0';
-    signal pac_death    : std_logic:='0';
+    signal pac_death_clyde    : std_logic:='0';
+    signal pac_death_pinky    : std_logic:='0';
+    signal pac_death_blinky    : std_logic:='0';
+    signal pac_death_inky    : std_logic:='0';
     
     --mouth moving (wokka wokka)
     signal moving              : boolean;
@@ -110,18 +113,30 @@ architecture Behavioral of game_logic is
     port map(   start_game => start_game, 
                 clk => clk, 
                 prison_time=> 10000000,
+                pac_death_clyde=> pac_death_clyde,
+                pac_death_pinky=> pac_death_pinky,
+                pac_death_blinky=> pac_death_blinky,
+                pac_death_inky=> pac_death_inky,
                 powerup => powerup, 
                 ghost_state_vec=> clyde_state_vec);
     pinky_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
                 prison_time=> prison_time,
+                pac_death_clyde=> pac_death_clyde,
+                pac_death_pinky=> pac_death_pinky,
+                pac_death_blinky=> pac_death_blinky,
+                pac_death_inky=> pac_death_inky,
                 powerup => powerup, 
                 ghost_state_vec=> pinky_state_vec);
     blinky_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
                 prison_time=> 15000000,
+                pac_death_clyde=> pac_death_clyde,
+                pac_death_pinky=> pac_death_pinky,
+                pac_death_blinky=> pac_death_blinky,
+                pac_death_inky=> pac_death_inky,
                 powerup => powerup, 
                 ghost_state_vec=> blinky_state_vec);
     --PacMan port map
@@ -140,7 +155,10 @@ architecture Behavioral of game_logic is
                 pacman_x_int_out => pacman_x_int, 
                 pacman_y_int_out => pacman_y_int,
                 powerup => powerup, 
-                pac_death => pac_death);
+                pac_death_clyde=> pac_death_clyde,
+                pac_death_pinky=> pac_death_pinky,
+                pac_death_blinky=> pac_death_blinky,
+                pac_death_inky=> pac_death_inky);
     
     --drive Pacman position signals
     pac_moving_out<= moving;
@@ -230,7 +248,13 @@ architecture Behavioral of game_logic is
                 obj_a_y => pacman_y_int, 
                 obj_b_x => clyde_x_int, 
                 obj_b_y => clyde_y_int,
-                collision => pac_death);
+                collision => pac_death_clyde);
+    pinky_hit: entity work.collides(Behavioral)
+    port map (  obj_a_x => pacman_x_int, 
+                obj_a_y => pacman_y_int, 
+                obj_b_x => pinky_x_int, 
+                obj_b_y => pinky_y_int,
+                collision => pac_death_pinky);
     
     --Game delay/start time process
     process
@@ -248,4 +272,5 @@ architecture Behavioral of game_logic is
     --drive int outputs
     pacman_x_int_out <= pacman_x_int;
     pacman_y_int_out <= pacman_y_int;
+    death_out<=death_out_i;
 end Behavioral;

@@ -37,7 +37,10 @@ Port (  clk     : in std_logic;
         pacman_x_int_out     : out integer range 0 to 640:=240; -- starting coordinates (240,340)
         pacman_y_int_out     : out integer range 0 to 480:=340;
         powerup     : in std_logic;
-        pac_death : in std_logic
+        pac_death_clyde : in std_logic;
+        pac_death_pinky : in std_logic;
+        pac_death_blinky : in std_logic;
+        pac_death_inky : in std_logic
         );
 end pacman;
 
@@ -209,7 +212,7 @@ begin
                 --move right
                 if (right = '0' and pac_crash_right='0' )then --and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i+1;
-                    if (pacman_x_int_i=474 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
+                    if (pacman_x_int_i=474 and (Pacman_y_int_i=202 )) then
                         pacman_x_int_i<=124;
                     elsif pacman_x_int_i = 475 then
                         pacman_x_int_i <= 474;
@@ -218,7 +221,7 @@ begin
                 --move left
                 elsif (left = '0' and pac_crash_left='0' )then -- and not(death_i=3)) then
                     pacman_x_int_i <= pacman_x_int_i-1;
-                    if (pacman_x_int_i=124 and (Pacman_y_int_i=202 or Pacman_y_int_i=201 or Pacman_y_int_i=200 or Pacman_y_int_i=203 or Pacman_y_int_i=204) )then
+                    if (pacman_x_int_i=124 and (Pacman_y_int_i=202 )) then
                         pacman_x_int_i<=474;
                     elsif pacman_x_int_i = 123 then
                         pacman_x_int_i<= 124;
@@ -244,7 +247,7 @@ begin
                       
                 end if;
                 
-                if (pac_death = '1') then
+                If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
                     --reset pacman coordinates
                     pacman_x_int_i <= 299;
                     pacman_y_int_i <= 314;
