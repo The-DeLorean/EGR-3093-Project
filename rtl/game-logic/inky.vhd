@@ -172,7 +172,24 @@ begin
                     end if;
                 --scatter
                 elsif ghost_state_vec_i="00010" then 
-                    
+                    --Scattering to bot LEft corner
+                    if b_l_corner = 1 then
+                        inky_x_int_i<=inky_x_int_i+1;
+                        if down_i = '1' then
+                            inky_y_int_i<=inky_y_int_i+1;
+                            b_l_corner<='0';
+                        end if;
+                    elsif inky_y_int_i = 398 or (up_i = '0' and down_i = '0') then
+                    --do x hunting
+                        if inky_x_int_i > 124 and left_i = '1' then
+                            inky_x_int_i<=inky_x_int_i-1;
+                        end if; 
+                    elsif inky_y_int_i < 398 and down_i ='1' then
+                        inky_y_int_i<=inky_y_int_i+1;
+                    elsif down_i = '0' and left_i = '0' then
+                        inky_x_int_i<=inky_x_int_i+1;
+                        t_l_corner<='1';
+                    end if;    
                 end if;
                 
             end if;
