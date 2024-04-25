@@ -282,12 +282,12 @@ begin
              -- Scatter logic
             elsif ghost_state_vec="00010" then
                    --Scattering to Top Right corner
-                    if pinky_y_int_i = 6 or (pinky_y_int_i = 150 and (pinky_x_int_i = 240 or pinky_x_int_i = 241)) then
+                    if pinky_y_int_i = 6 or up_i = '0' then
                     --do y hunting
-                        if pinky_x_int_i < 474 then
+                        if pinky_x_int_i < 474 and right_i = '1' then
                             pinky_x_int_i<=pinky_x_int_i+1;
                         end if; 
-                    elsif pinky_y_int_i > 6 then
+                    elsif pinky_y_int_i > 6 and up_i = '1' then
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
             -- retreat logic
