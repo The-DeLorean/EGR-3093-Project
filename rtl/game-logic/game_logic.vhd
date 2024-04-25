@@ -86,10 +86,10 @@ architecture Behavioral of game_logic is
     constant prison_time : integer:= 5000000;
     signal powerup       : std_logic:='0';
  
-    signal clyde_state_vec   : std_logic_vector(4 downto 0);
-    signal inky_state_vec   : std_logic_vector(4 downto 0);
-    signal pinky_state_vec   : std_logic_vector(4 downto 0);
-    signal blinky_state_vec   : std_logic_vector(4 downto 0);
+    signal clyde_state_vec   : std_logic_vector(4 downto 0) :="10000";
+    signal inky_state_vec   : std_logic_vector(4 downto 0) :="10000";
+    signal pinky_state_vec   : std_logic_vector(4 downto 0) :="10000";
+    signal blinky_state_vec   : std_logic_vector(4 downto 0) :="10000";
     
     --misc. game data
     signal start_time      : integer;
@@ -112,7 +112,7 @@ architecture Behavioral of game_logic is
     clyde_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> 10000000,
+                prison_time=> 10,
                 pac_death_clyde=> pac_death_clyde,
                 pac_death_pinky=> pac_death_pinky,
                 pac_death_blinky=> pac_death_blinky,
@@ -139,6 +139,16 @@ architecture Behavioral of game_logic is
                 pac_death_inky=> pac_death_inky,
                 powerup => powerup, 
                 ghost_state_vec=> blinky_state_vec);
+    inky_state_i: entity work.ghost_state(Behavioral)
+    port map(   start_game => start_game, 
+                clk => clk, 
+                prison_time=> 15000000,
+                pac_death_clyde=> pac_death_clyde,
+                pac_death_pinky=> pac_death_pinky,
+                pac_death_blinky=> pac_death_blinky,
+                pac_death_inky=> pac_death_inky,
+                powerup => powerup, 
+                ghost_state_vec=> inky_state_vec);
     --PacMan port map
     pacman_i: entity work.pacman(Behavioral)
     port map (  clk => clk,
@@ -255,6 +265,18 @@ architecture Behavioral of game_logic is
                 obj_b_x => pinky_x_int, 
                 obj_b_y => pinky_y_int,
                 collision => pac_death_pinky);
+    blinky_hit: entity work.collides(Behavioral)
+    port map (  obj_a_x => pacman_x_int, 
+                obj_a_y => pacman_y_int, 
+                obj_b_x => blinky_x_int, 
+                obj_b_y => blinky_y_int,
+                collision => pac_death_blinky);
+    inky_hit: entity work.collides(Behavioral)
+    port map (  obj_a_x => pacman_x_int, 
+                obj_a_y => pacman_y_int, 
+                obj_b_x => inky_x_int, 
+                obj_b_y => inky_y_int,
+                collision => pac_death_inky);
     
     --Game delay/start time process
     process

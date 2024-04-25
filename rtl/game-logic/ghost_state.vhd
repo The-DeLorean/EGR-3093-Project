@@ -35,7 +35,7 @@ architecture Behavioral of ghost_state is
 signal ghost_state_vec_i        :  std_logic_vector(4 downto 0):="10000";
 signal chase_prev      :  std_logic :='0';
 signal count          :  integer :=0; 
-signal scatter_tracker : integer range 0 to 4:=0;
+signal scatter_tracker : integer range 0 to 10:=0;
 
 --Every ghost is in one of three states.  Each of these states 
 type Ghost is (prison_state, escape_state,chase_state, scatter_state, reatreat_state);
@@ -50,23 +50,23 @@ begin
                     --Waiting the prison time in the prison state
                     When prison_state =>
                         count <= count+1;
-                        if count = prison_time then
-                            ghost_state_machine := escape_state;
+                        if count >= prison_time then
                             count<=0;
+                            ghost_state_machine := escape_state;
                         end if;
                     --Moving quickly only staying in escape state for 5us
                     When escape_state=> 
                         count <= count+1;
                         if count =  100000000 then
-                            ghost_state_machine := chase_state;
                             count<=0;
+                            ghost_state_machine := chase_state;
                         end if;        
                     --In the chase state for 20s          
                     When chase_state =>
                         If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
-                            ghost_state_machine := prison_state;
                             count <=0;
-                        elsif scatter_tracker /=4 then
+                            ghost_state_machine := prison_state;
+                        elsif scatter_tracker /=10 then
                             count <=count+1; 
                             if count = 2000000000 then   
                                 ghost_state_machine:= scatter_state;
@@ -77,26 +77,26 @@ begin
                                        
                         end if;
                     When scatter_state => 
-                        if scatter_tracker /=4 and chase_prev='1' then
+                        if scatter_tracker /=10 and chase_prev='1' then
                             scatter_tracker <= scatter_tracker+1;
                             chase_prev<='0';
                         end if;
                         If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
-                            ghost_state_machine:= prison_state;
                             count <=0;
+                            ghost_state_machine:= prison_state;
                         else
                             count <=count+1; 
-                                if scatter_tracker <3 then 
+                                if scatter_tracker <5 then 
                                     if count = 700000000 then   
                                         ghost_state_machine:= chase_state;
                                         count <=0;
                                     end if;
-                                elsif scatter_tracker <4 then
+                                elsif scatter_tracker <6 then
                                     if count = 500000000 then   
                                         ghost_state_machine:= chase_state;
                                         count <=0;
                                     end if;
-                                elsif scatter_tracker =4 then
+                                elsif scatter_tracker =10 then
                                     ghost_state_machine:= chase_state;
                                     count <=0;
                                 end if;                            

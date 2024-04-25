@@ -47,7 +47,7 @@ architecture Behavioral of inky is
 signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=314; 
 signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
-signal inky_y_int_i     : integer range 0 to 480:=146; 
+signal inky_y_int_i     : integer range 0 to 480:=202; 
 signal count_i          : integer;
 signal moving_i : boolean := moving;
 --signal moving_i : boolean := moving;
@@ -131,6 +131,8 @@ signal inky_loc_y_down_lc :integer range 0 to 30;
 signal inky_loc_x_down_rc :integer range 0 to 30;
 signal inky_loc_y_down_rc :integer range 0 to 30;
 
+--Signal to move ghost back and forth in prison
+signal prison_right : std_logic:='0';
 
 begin
     --assign internals
@@ -204,8 +206,26 @@ begin
             
             --End Ghost COllision Logic
                 
-                
-                if ghost_state_vec_i="00100" then
+                --Prison state logic
+            if ghost_state_vec="10000" then
+                if prison_right='0' then
+                    inky_x_int_i<=inky_x_int_i+1;
+                    if inky_x_int_i >=334 then
+                        prison_right<='1';
+                    end if;
+                else
+                    inky_x_int_i<=inky_x_int_i-1;
+                    if inky_x_int_i <=264 then
+                        prison_right<='0';
+                    end if;
+                end if;
+                inky_y_int_i<=202;
+            -- Escape state
+            elsif ghost_state_vec="01000" then
+                inky_x_int_i<=299;
+                inky_y_int_i<=146;
+            -- Chase state logic
+                elsif ghost_state_vec_i="00100" then
                     --top left
                     if t_l_corner = '1' then
                         inky_x_int_i<=inky_x_int_i+1;
