@@ -154,12 +154,12 @@ begin
                 end if;
        elsif ghost_state_vec_i="00010" then
                --Scattering to Top LEft corner
-                if clydeyy = 6 or (clydeyy = 150 and (clydexx = 240 or clydexx = 241)) then
+                if clydeyy = 6 or (up_i = '0' and down_i = '0') then
                 --do x hunting
-                    if clydexx > 124 then
+                    if clydexx > 124 and left = '1' then
                         clydexx<=clydexx-1;
                     end if; 
-                elsif clydeyy > 6 then
+                elsif clydeyy > 6 and up ='1' then
                     clydeyy<=clydeyy-1;
                 end if;
         --retreat
