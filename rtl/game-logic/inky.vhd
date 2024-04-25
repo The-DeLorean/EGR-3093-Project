@@ -50,6 +50,16 @@ signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (
 signal inky_y_int_i     : integer range 0 to 480:=146; 
 signal count_i          : integer;
 signal moving_i : boolean := moving;
+--signal moving_i : boolean := moving;
+signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
+--top left
+signal t_l_corner : std_logic :='0';
+--top right
+signal t_r_corner : std_logic :='0';
+--bot right
+signal b_r_corner : std_logic :='0';
+--bot left
+signal b_l_corner : std_logic :='0';
 
 begin
     --assign internals
