@@ -228,14 +228,14 @@ begin
                     if right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         b_r_corner<='0';
-                elsif blinky_y_int_i = 398 or (up_i = '0' and down_i = '0') then
+                elsif blinky_y_int_i = 398 or up_i = '0' or down_i = '0' then
                 --do y hunting
-                    if blinky_x_int_i < 464 then
+                    if blinky_x_int_i < 464 and right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                     end if; 
-                elsif blinky_y_int_i < 398 then
+                elsif blinky_y_int_i < 398 and down_i = '1' then
                     blinky_y_int_i<=blinky_y_int_i+1;
-                elsif down_i = '1' and right_i = '1' then
+                elsif down_i = '0' and right_i = '0' then
                     b_r_corner<='1';
                     blinky_y_int_i<=blinky_y_int_i-1;
                 end if;
