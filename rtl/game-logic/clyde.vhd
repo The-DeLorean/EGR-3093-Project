@@ -160,14 +160,14 @@ begin
                         clydeyy<=clydeyy-1;
                         t_l_corner<='0';
                     end if;
-                elsif clydeyy = 6 or (up_i = '0' and down_i = '0') then
+                elsif clydeyy = 6 or up_i = '0' or down_i = '0' then
                 --do x hunting
                     if clydexx > 124 and left_i = '1' then
                         clydexx<=clydexx-1;
                     end if; 
                 elsif clydeyy > 6 and up_i ='1' then
                     clydeyy<=clydeyy-1;
-                elsif up_i = '1' and left_i = '1' then
+                elsif up_i = '0' and left_i = '0' then
                     clydexx<=clydexx+1;
                     t_l_corner<='1';
                 end if;
