@@ -38,17 +38,6 @@ architecture Behavioral of clyde is
         --bot left
         signal b_l_corner : std_logic :='0';
         
-        component Ghost_navigation_check is
-        Port (  
-        Ghost_x_pos        : in integer;
-        Ghost_y_pos        : in integer;
-        clk                : in std_logic;
-        right_collision    : out std_logic;
-        left_collision     : out std_logic;
-        up_collision       : out std_logic;
-        down_collision     : out std_logic
-        );
-        end component;
         
         --signals for collisions
         signal right_i : std_logic:='1';
@@ -61,6 +50,68 @@ architecture Behavioral of clyde is
         
         signal ghost_state_vec_i : std_logic_vector(4 downto 0); 
         
+        --Collision Signals
+        constant rom_depth : natural := 29; --30
+        constant rom_width : natural := 26;--27
+        
+        --Array of Bit to represent map
+        type wall_type is array (0 to rom_depth -1) of std_logic_vector(rom_width - 1 downto 0);
+        constant walls : wall_type :=(
+                                    "00000000000011000000000000",
+                                    "01111011111011011111011110",
+                                    "01111011111011011111011110",
+                                    "01111011111011011111011110",
+                                    "00000000000000000000000000",
+                                    "01111011011111111011011110",
+                                    "01111011011111111011011110",
+                                    "00000011000011000011000000",
+                                    "11111011111011011111011111",
+                                    "00001011111011011111010000",
+                                    "00001011000000000011010000",
+                                    "00001011011111111011010000",
+                                    "11111011010000001011011111",
+                                    "00000000010000001000000000",
+                                    "11111011010000001011011111",
+                                    "00001011011111111011010000",
+                                    "00001011000000000011010000",
+                                    "00001011011111111011010000",
+                                    "11111011011111111011011111",
+                                    "00000000000011000000000000",
+                                    "01111011111011011111011110",
+                                    "01111011111011011111011110",
+                                    "00011000000000000000011000",
+                                    "11011011011111111011011011",
+                                    "11011011011111111011011011",
+                                    "00000011000011000011000000",
+                                    "01111111111011011111111110",
+                                    "01111111111011011111111110",
+                                    "00000000000000000000000000"
+                                    );
+        
+        --Integer values to store top left corner and bottom right integer values for when moving right
+        signal clyde_loc_x_right_lc :integer range 0 to 30;
+        signal clyde_loc_y_right_lc :integer range 0 to 30;
+        signal clyde_loc_x_right_rc :integer range 0 to 30;
+        signal clyde_loc_y_right_rc :integer range 0 to 30;
+        
+        --Integer values to store top left corner and bottom rightinteger values for when moving left
+        signal clyde_loc_x_left_lc :integer range 0 to 30;
+        signal clyde_loc_y_left_lc :integer range 0 to 30;
+        signal clyde_loc_x_left_rc :integer range 0 to 30;
+        signal clyde_loc_y_left_rc :integer range 0 to 30;
+        
+        --Integer values to store top left corner and bottom rightinteger values for when moving up
+        signal clyde_loc_x_up_lc :integer range 0 to 30;
+        signal clyde_loc_y_up_lc :integer range 0 to 30;
+        signal clyde_loc_x_up_rc :integer range 0 to 30;
+        signal clyde_loc_y_up_rc :integer range 0 to 30;
+        
+        --Integer values to store top left corner and bottom rightinteger values for when moving down
+        signal clyde_loc_x_down_lc :integer range 0 to 30;
+        signal clyde_loc_y_down_lc :integer range 0 to 30;
+        signal clyde_loc_x_down_rc :integer range 0 to 30;
+        signal clyde_loc_y_down_rc :integer range 0 to 30;
+        
 begin
     clydexx <= clyde_x_int;
     clydeyy <= clyde_y_int;
@@ -68,7 +119,6 @@ begin
     ydirr <= pacman_y_int;
     ghost_state_vec_i <= ghost_state_vec;
     
-    clyde_collide: Ghost_navigation_check port map (ghost_x_pos=>clydexx, ghost_y_pos=>clydeyy, clk=>clk, right_collision=> right_i, left_collision=> left_i, up_collision=> up_i, down_collision=> down_i);
     
     process
     begin
@@ -76,7 +126,63 @@ begin
     count<=count +1;
         if count >=2000000 then
             count<=0;
-         --prison stte
+            
+            --Pinky Collision Check
+            --Collision check right
+            --Calculating pinky's top left for moving right
+            clyde_loc_x_right_lc<= (clydexx-124)/14;
+            clyde_loc_y_right_lc<= (clydeyy-6)/14;
+            --Calculating pinky's bototm right for moving right
+            clyde_loc_x_right_rc<= (clydexx-124+2)/14;
+            clyde_loc_y_right_rc<= (clydeyy-6+13)/14;
+            if (walls(clyde_loc_y_right_lc)(clyde_loc_x_right_lc+1)='1' or walls(clyde_loc_y_right_rc)(clyde_loc_x_right_rc+1)='1') then
+                right_i<='0';
+            else
+                right_i<='1';
+            end if;  
+            
+            --Collision check left
+            --Calculating pinky's top left for moving left
+            clyde_loc_x_left_lc<= (clydexx-124+11)/14;
+            clyde_loc_y_left_lc<= (clydeyy-6)/14;
+            --Calculating pinky's bototm right for moving left
+            clyde_loc_x_left_rc<= (clydexx-124+13)/14;
+            clyde_loc_y_left_rc<= (clydeyy-6+13)/14;
+            if (walls(clyde_loc_y_left_lc)(clyde_loc_x_left_lc-1)='1' or  walls(clyde_loc_y_left_rc)(clyde_loc_x_left_rc-1)='1') then
+                left_i<='0';
+            else
+                left_i<='1';
+            end if;
+            
+            --Collision check up
+            --Calculating pinky's top left for moving up
+            clyde_loc_x_up_lc<= (clydexx-124)/14;
+            clyde_loc_y_up_lc<= (clydeyy-6+11)/14;
+            --Calculating pinky's bototm right for moving up
+            clyde_loc_x_up_rc<= (clydexx-124+13)/14;
+            clyde_loc_y_up_rc<= (clydeyy-6+13)/14;
+            if (walls(clyde_loc_y_up_lc-1)(clyde_loc_x_up_lc)='1' or walls(clyde_loc_y_up_rc-1)(clyde_loc_x_up_rc)='1') then
+                up_i<='0';
+            else
+                up_i<='1';
+            end if;        
+            
+            --Collision check Down
+            --Calculating pinky's top left for moving down
+            clyde_loc_x_down_lc<= (clydexx-124)/14;
+            clyde_loc_y_down_lc<= (clydeyy-6)/14;
+            --Calculating pinky's bototm right for moving down
+            clyde_loc_x_down_rc<= (clydexx-124+13)/14;
+            clyde_loc_y_down_rc<= (clydeyy-6+2)/14;
+            if (walls(clyde_loc_y_down_lc+1)(clyde_loc_x_down_lc)='1' or walls(clyde_loc_y_down_rc+1)(clyde_loc_x_down_rc)='1') then
+                down_i<='0';
+            else
+                down_i<='1';
+            end if;
+            
+            --End Ghost COllision Logic
+            
+         --prison state
          if ghost_state_vec_i="10000" then   
                 if prison_right='1' then
                     clydexx<=clydexx+1;

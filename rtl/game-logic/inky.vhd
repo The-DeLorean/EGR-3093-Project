@@ -61,23 +61,76 @@ signal b_r_corner : std_logic :='0';
 --bot left
 signal b_l_corner : std_logic :='0';
 
-component Ghost_navigation_check is
-  Port (  
-        Ghost_x_pos        : in integer;
-        Ghost_y_pos        : in integer;
-        clk                : in std_logic;
-        right_collision    : out std_logic;
-        left_collision     : out std_logic;
-        up_collision       : out std_logic;
-        down_collision     : out std_logic
-        );
-end component;
 
 --signals for collisions
 signal right_i : std_logic:='1';
 signal left_i : std_logic:='1';
 signal up_i : std_logic:='1';
 signal down_i : std_logic:='1';
+
+--Collision Signals
+constant rom_depth : natural := 29; --30
+constant rom_width : natural := 26;--27
+
+--Array of Bit to represent map
+type wall_type is array (0 to rom_depth -1) of std_logic_vector(rom_width - 1 downto 0);
+constant walls : wall_type :=(
+                            "00000000000011000000000000",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "00000000000000000000000000",
+                            "01111011011111111011011110",
+                            "01111011011111111011011110",
+                            "00000011000011000011000000",
+                            "11111011111011011111011111",
+                            "00001011111011011111010000",
+                            "00001011000000000011010000",
+                            "00001011011111111011010000",
+                            "11111011010000001011011111",
+                            "00000000010000001000000000",
+                            "11111011010000001011011111",
+                            "00001011011111111011010000",
+                            "00001011000000000011010000",
+                            "00001011011111111011010000",
+                            "11111011011111111011011111",
+                            "00000000000011000000000000",
+                            "01111011111011011111011110",
+                            "01111011111011011111011110",
+                            "00011000000000000000011000",
+                            "11011011011111111011011011",
+                            "11011011011111111011011011",
+                            "00000011000011000011000000",
+                            "01111111111011011111111110",
+                            "01111111111011011111111110",
+                            "00000000000000000000000000"
+                            );
+
+
+--Integer values to store top left corner and bottom right integer values for when moving right
+signal inky_loc_x_right_lc :integer range 0 to 30;
+signal inky_loc_y_right_lc :integer range 0 to 30;
+signal inky_loc_x_right_rc :integer range 0 to 30;
+signal inky_loc_y_right_rc :integer range 0 to 30;
+
+--Integer values to store top left corner and bottom rightinteger values for when moving left
+signal inky_loc_x_left_lc :integer range 0 to 30;
+signal inky_loc_y_left_lc :integer range 0 to 30;
+signal inky_loc_x_left_rc :integer range 0 to 30;
+signal inky_loc_y_left_rc :integer range 0 to 30;
+
+--Integer values to store top left corner and bottom rightinteger values for when moving up
+signal inky_loc_x_up_lc :integer range 0 to 30;
+signal inky_loc_y_up_lc :integer range 0 to 30;
+signal inky_loc_x_up_rc :integer range 0 to 30;
+signal inky_loc_y_up_rc :integer range 0 to 30;
+
+--Integer values to store top left corner and bottom rightinteger values for when moving down
+signal inky_loc_x_down_lc :integer range 0 to 30;
+signal inky_loc_y_down_lc :integer range 0 to 30;
+signal inky_loc_x_down_rc :integer range 0 to 30;
+signal inky_loc_y_down_rc :integer range 0 to 30;
+
 
 begin
     --assign internals
@@ -87,8 +140,6 @@ begin
     inky_y_int_i <= inky_y_int;
     ghost_state_vec_i <= ghost_state_vec;
     
-    inky_collide: Ghost_navigation_check port map (ghost_x_pos=>inky_x_int_i, ghost_y_pos=>inky_y_int_i, clk=>clk, right_collision=> right_i, left_collision=> left_i, up_collision=> up_i, down_collision=> down_i);
-
     --Inky's movements are the inverse of PacMan's
     process
         begin
@@ -97,6 +148,63 @@ begin
             count_i <= count_i +1;
             if count_i = 2000000 then
                 count_i <= 0; --reset counter
+                
+                --Pinky Collision Check
+            --Collision check right
+            --Calculating pinky's top left for moving right
+            inky_loc_x_right_lc<= (inky_x_int_i-124)/14;
+            inky_loc_y_right_lc<= (inky_y_int_i-6)/14;
+            --Calculating pinky's bototm right for moving right
+            inky_loc_x_right_rc<= (inky_x_int_i-124+2)/14;
+            inky_loc_y_right_rc<= (inky_y_int_i-6+13)/14;
+            if (walls(inky_loc_y_right_lc)(inky_loc_x_right_lc+1)='1' or walls(inky_loc_y_right_rc)(inky_loc_x_right_rc+1)='1') then
+                right_i<='0';
+            else
+                right_i<='1';
+            end if;  
+            
+            --Collision check left
+            --Calculating pinky's top left for moving left
+            inky_loc_x_left_lc<= (inky_x_int_i-124+11)/14;
+            inky_loc_y_left_lc<= (inky_y_int_i-6)/14;
+            --Calculating pinky's bototm right for moving left
+            inky_loc_x_left_rc<= (inky_x_int_i-124+13)/14;
+            inky_loc_y_left_rc<= (inky_y_int_i-6+13)/14;
+            if (walls(inky_loc_y_left_lc)(inky_loc_x_left_lc-1)='1' or  walls(inky_loc_y_left_rc)(inky_loc_x_left_rc-1)='1') then
+                left_i<='0';
+            else
+                left_i<='1';
+            end if;
+            
+            --Collision check up
+            --Calculating pinky's top left for moving up
+            inky_loc_x_up_lc<= (inky_x_int_i-124)/14;
+            inky_loc_y_up_lc<= (inky_y_int_i-6+11)/14;
+            --Calculating pinky's bototm right for moving up
+            inky_loc_x_up_rc<= (inky_x_int_i-124+13)/14;
+            inky_loc_y_up_rc<= (inky_y_int_i-6+13)/14;
+            if (walls(inky_loc_y_up_lc-1)(inky_loc_x_up_lc)='1' or walls(inky_loc_y_up_rc-1)(inky_loc_x_up_rc)='1') then
+                up_i<='0';
+            else
+                up_i<='1';
+            end if;        
+            
+            --Collision check Down
+            --Calculating pinky's top left for moving down
+            inky_loc_x_down_lc<= (inky_x_int_i-124)/14;
+            inky_loc_y_down_lc<= (inky_y_int_i-6)/14;
+            --Calculating pinky's bototm right for moving down
+            inky_loc_x_down_rc<= (inky_x_int_i-124+13)/14;
+            inky_loc_y_down_rc<= (inky_y_int_i-6+2)/14;
+            if (walls(inky_loc_y_down_lc+1)(inky_loc_x_down_lc)='1' or walls(inky_loc_y_down_rc+1)(inky_loc_x_down_rc)='1') then
+                down_i<='0';
+            else
+                down_i<='1';
+            end if;
+            
+            --End Ghost COllision Logic
+                
+                
                 if ghost_state_vec_i="00100" then
                     --top left
                     if t_l_corner = '1' then
@@ -191,6 +299,20 @@ begin
                         t_l_corner<='1';
                     end if;    
                 end if;
+                
+                --Hard coding pinky border      
+             if inky_x_int_i= 123 then
+                inky_x_int_i<=124;
+             end if;
+             if inky_y_int_i= 5 then
+                inky_y_int_i<=6;
+             end if;
+             if inky_y_int_i= 399 then
+                inky_y_int_i<=398;
+             end if;
+             if inky_x_int_i = 475 then
+                inky_x_int_i<=474;
+             end if;
                 
             end if;
         end if;
