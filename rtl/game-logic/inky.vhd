@@ -96,28 +96,28 @@ begin
                 count_i <= 0; --reset counter
                 
                 --move left
-                if right = '0' then
+                if right = '0' and left_i = '1' then
                     inky_x_int_i <= inky_x_int_i-1;
                     if inky_x_int_i =123 then
                         inky_x_int_i<=124;
                     end if;
                 
                 --move right
-                elsif left = '0' then
+                elsif left = '0' and right_i = '1' then
                     inky_x_int_i <= inky_x_int_i+1;
                     if inky_x_int_i = 503 then
                         inky_x_int_i<=502;
                     end if;
                 
                 --move up
-                elsif down = '0' then
+                elsif down = '0' and up_i = '1' then
                     inky_y_int_i <= inky_y_int_i-1;
                     if inky_y_int_i = 4 then
                         inky_y_int_i <= 5;
                     end if;
                 
                 --move down
-                elsif up = '0' then
+                elsif up = '0' and down_i = '1' then
                     inky_y_int_i <= inky_y_int_i+1;
                     if inky_y_int_i = 440 then
                         inky_y_int_i<= 439;
