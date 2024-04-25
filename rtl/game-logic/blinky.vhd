@@ -228,7 +228,7 @@ begin
                     if right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
                         b_r_corner<='0';
-                elsif blinky_y_int_i = 398 or up_i = '0' or down_i = '0' then
+                elsif blinky_y_int_i = 398 or down_i = '0' then
                 --do y hunting
                     if blinky_x_int_i < 464 and right_i = '1' then
                         blinky_x_int_i<=blinky_x_int_i+1;
