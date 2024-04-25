@@ -97,79 +97,84 @@ begin
             count_i <= count_i +1;
             if count_i = 2000000 then
                 count_i <= 0; --reset counter
-                --top left
-                if t_l_corner = '1' then
-                    inky_x_int_i<=inky_x_int_i+1;
-                    if up_i = '1' then
-                        inky_y_int_i<=inky_y_int_i-1;
-                        t_l_corner<='0'; 
-                    end if;   
-                --top right
-                elsif t_r_corner = '1' then
-                    inky_x_int_i<=inky_x_int_i-1;
-                    if up_i = '1' then
-                        inky_y_int_i<=inky_y_int_i-1;
-                        t_r_corner<='0'; 
+                if ghost_state_vec_i="00100" then
+                    --top left
+                    if t_l_corner = '1' then
+                        inky_x_int_i<=inky_x_int_i+1;
+                        if up_i = '1' then
+                            inky_y_int_i<=inky_y_int_i-1;
+                            t_l_corner<='0'; 
+                        end if;   
+                    --top right
+                    elsif t_r_corner = '1' then
+                        inky_x_int_i<=inky_x_int_i-1;
+                        if up_i = '1' then
+                            inky_y_int_i<=inky_y_int_i-1;
+                            t_r_corner<='0'; 
+                        end if;
+                    --bot right
+                    elsif b_r_corner = '1' then
+                        inky_x_int_i<=inky_x_int_i-1;
+                        if down_i = '1' then
+                            inky_y_int_i<=inky_y_int_i+1;
+                            b_r_corner<='0'; 
+                        end if;
+                    --bot left
+                    elsif b_l_corner = '1' then
+                        inky_x_int_i<=inky_x_int_i+1;
+                        if down_i = '1' then
+                            inky_y_int_i<=inky_y_int_i+1;
+                            b_l_corner<='0'; 
+                        end if;
+                    --move left
+                    elsif right = '0' and left_i = '1' then
+                        inky_x_int_i <= inky_x_int_i-1;
+                        if inky_x_int_i =123 then
+                            inky_x_int_i<=124;
+                        end if;
+                    
+                    --move right
+                    elsif left = '0' and right_i = '1' then
+                        inky_x_int_i <= inky_x_int_i+1;
+                        if inky_x_int_i = 503 then
+                            inky_x_int_i<=502;
+                        end if;
+                    
+                    --move up
+                    elsif down = '0' and up_i = '1' then
+                        inky_y_int_i <= inky_y_int_i-1;
+                        if inky_y_int_i = 4 then
+                            inky_y_int_i <= 5;
+                        end if;
+                    
+                    --move down
+                    elsif up = '0' and down_i = '1' then
+                        inky_y_int_i <= inky_y_int_i+1;
+                        if inky_y_int_i = 440 then
+                            inky_y_int_i<= 439;
+                        end if;
+                    --top left corner stuck
+                    elsif up_i = '0' and left_i = '0' then
+                        t_l_corner<='1';
+                        inky_x_int_i<=inky_x_int_i+1;
+                    --top right corner stuck
+                    elsif up_i = '0' and right_i = '0' then
+                        t_r_corner<='1';
+                        inky_x_int_i<=inky_x_int_i-1;
+                    --bot right corner stuck
+                    elsif down_i = '0' and right_i = '0' then
+                        b_r_corner<='1';
+                        inky_x_int_i<=inky_x_int_i-1;
+                    --bot left corner stuck
+                    elsif down_i = '0' and left_i = '0' then
+                        b_l_corner<='1';
+                        inky_x_int_i<=inky_x_int_i+1;
                     end if;
-                --bot right
-                elsif b_r_corner = '1' then
-                    inky_x_int_i<=inky_x_int_i-1;
-                    if down_i = '1' then
-                        inky_y_int_i<=inky_y_int_i+1;
-                        b_r_corner<='0'; 
-                    end if;
-                --bot left
-                elsif b_l_corner = '1' then
-                    inky_x_int_i<=inky_x_int_i+1;
-                    if down_i = '1' then
-                        inky_y_int_i<=inky_y_int_i+1;
-                        b_l_corner<='0'; 
-                    end if;
-                --move left
-                elsif right = '0' and left_i = '1' then
-                    inky_x_int_i <= inky_x_int_i-1;
-                    if inky_x_int_i =123 then
-                        inky_x_int_i<=124;
-                    end if;
-                
-                --move right
-                elsif left = '0' and right_i = '1' then
-                    inky_x_int_i <= inky_x_int_i+1;
-                    if inky_x_int_i = 503 then
-                        inky_x_int_i<=502;
-                    end if;
-                
-                --move up
-                elsif down = '0' and up_i = '1' then
-                    inky_y_int_i <= inky_y_int_i-1;
-                    if inky_y_int_i = 4 then
-                        inky_y_int_i <= 5;
-                    end if;
-                
-                --move down
-                elsif up = '0' and down_i = '1' then
-                    inky_y_int_i <= inky_y_int_i+1;
-                    if inky_y_int_i = 440 then
-                        inky_y_int_i<= 439;
-                    end if;
-                --top left corner stuck
-                elsif up_i = '0' and left_i = '0' then
-                    t_l_corner<='1';
-                    inky_x_int_i<=inky_x_int_i+1;
-                --top right corner stuck
-                elsif up_i = '0' and right_i = '0' then
-                    t_r_corner<='1';
-                    inky_x_int_i<=inky_x_int_i-1;
-                --bot right corner stuck
-                elsif down_i = '0' and right_i = '0' then
-                    b_r_corner<='1';
-                    inky_x_int_i<=inky_x_int_i-1;
-                --bot left corner stuck
-                elsif down_i = '0' and left_i = '0' then
-                    b_l_corner<='1';
-                    inky_x_int_i<=inky_x_int_i+1;
+                --scatter
+                elsif ghost_state_vec_i="00010" then 
+                    
                 end if;
-                end if;
+                
             end if;
         end if;
     end process;
