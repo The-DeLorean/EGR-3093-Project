@@ -158,7 +158,7 @@ begin
                     clydexx<=clydexx+1;
                     if up = '1' then
                         clydeyy<=clydeyy-1;
-                        t_l_corner = 0;
+                        t_l_corner<='0';
                     end if;
                 elsif clydeyy = 6 or (up_i = '0' and down_i = '0') then
                 --do x hunting
