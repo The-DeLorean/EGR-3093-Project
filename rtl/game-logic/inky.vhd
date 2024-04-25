@@ -61,6 +61,24 @@ signal b_r_corner : std_logic :='0';
 --bot left
 signal b_l_corner : std_logic :='0';
 
+component Ghost_navigation_check is
+  Port (  
+        Ghost_x_pos        : in integer;
+        Ghost_y_pos        : in integer;
+        clk                : in std_logic;
+        right_collision    : out std_logic;
+        left_collision     : out std_logic;
+        up_collision       : out std_logic;
+        down_collision     : out std_logic
+        );
+end component;
+
+--signals for collisions
+signal right_i : std_logic:='1';
+signal left_i : std_logic:='1';
+signal up_i : std_logic:='1';
+signal down_i : std_logic:='1';
+
 begin
     --assign internals
     pacman_x_int_i <= pacman_x_int;
