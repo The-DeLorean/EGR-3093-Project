@@ -125,6 +125,23 @@ begin
                     if inky_y_int_i = 440 then
                         inky_y_int_i<= 439;
                     end if;
+                --top left corner stuck
+                elsif up_i = '0' and left_i = '0' then
+                    t_l_corner<='1';
+                    inky_x_int_i<=inky_x_int_i+1;
+                --top right corner stuck
+                elsif up_i = '0' and right_i = '0' then
+                    t_r_corner<='1';
+                    inky_x_int_i<=inky_x_int_i-1;
+                --bot right corner stuck
+                elsif down_i = '0' and right_i = '0' then
+                    b_r_corner<='1';
+                    inky_x_int_i<=inky_x_int_i-1;
+                --bot left corner stuck
+                elsif down_i = '0' and left_i = '0' then
+                    b_l_corner<='1';
+                    inky_x_int_i<=inky_x_int_i+1;
+                end if;
                 end if;
             end if;
         end if;
