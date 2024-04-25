@@ -265,6 +265,10 @@ begin
                         elsif alternate = 0 and down_i = '1' then
                             blinky_y_int_i<=blinky_y_int_i+1;
                             alternate <= 1;
+                        elsif alternate = 0 then
+                            alternate <= 1;
+                        elsif alternate = 1 then
+                            alternate <= 0;
                         end if;
                     --up rightmove
                     elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
@@ -274,6 +278,10 @@ begin
                         elsif alternate = 0 and up_i = '1' then
                             blinky_y_int_i<=blinky_y_int_i-1;
                             alternate <= 1;
+                        elsif alternate = 0 then
+                            alternate <= 1;
+                        elsif alternate = 1 then
+                            alternate <= 0;
                         end if;
                     --left down move
                     elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
@@ -283,6 +291,10 @@ begin
                         elsif alternate = 0 and down_i = '1' then
                             blinky_y_int_i<=blinky_y_int_i+1;
                             alternate <= 1;
+                        elsif alternate = 0 then
+                            alternate <= 1;
+                        elsif alternate = 1 then
+                            alternate <= 0;
                         end if;
                     --left up move
                     elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
@@ -292,6 +304,10 @@ begin
                         elsif alternate = 0 and up_i = '1' then
                             blinky_y_int_i<=blinky_y_int_i-1;
                             alternate <= 1;
+                        elsif alternate = 0 then
+                            alternate <= 1;
+                        elsif alternate = 1 then
+                            alternate <= 0;
                         end if;
                     --down move
                     elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i and down_i = '1' then
