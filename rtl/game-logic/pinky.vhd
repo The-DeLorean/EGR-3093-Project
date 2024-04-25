@@ -247,7 +247,7 @@ begin
                             pinky_x_int_i<=pinky_x_int_i-1;
                             b_l_corner<='0'; 
                         end if;
-                    elsif pinky_x_int_i = pacman_x_int_i or (left_i = '0' and right_i = '0') then
+                    elsif pinky_x_int_i = pacman_x_int_i or (left_i = '0' or right_i = '0') then
                     --do y hunting
                         --down
                         if pinky_y_int_i < pacman_y_int_i and down_i = '1' then
@@ -282,13 +282,22 @@ begin
              -- Scatter logic
             elsif ghost_state_vec="00010" then
                    --Scattering to Top Right corner
-                    if pinky_y_int_i = 6 or up_i = '0' then
+                    if t_r_corner = '1' then
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                        if up_i = '1' then
+                            pinky_x_int_i<=pinky_x_int_i+1;
+                            t_r_corner<='0';
+                        end if;    
+                    elsif pinky_y_int_i = 6 or up_i = '0' then
                     --do y hunting
                         if pinky_x_int_i < 474 and right_i = '1' then
                             pinky_x_int_i<=pinky_x_int_i+1;
                         end if; 
                     elsif pinky_y_int_i > 6 and up_i = '1' then
                         pinky_y_int_i<=pinky_y_int_i-1;
+                    elsif up_i = '0' and right_i = '0' then
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                        t_r_corner<='1';
                     end if;
             -- retreat logic
             elsif ghost_state_vec="00001" then
