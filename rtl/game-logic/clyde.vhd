@@ -124,7 +124,7 @@ begin
                         clydeyy<=clydeyy+1;
                         b_l_corner<='0'; 
                     end if;
-                elsif clydeyy = ydirr and (down_i = '0' or up_i = '0') then
+                elsif clydeyy = ydirr or (down_i = '0' or up_i = '0') then
                 --do x hunting
                     if clydexx < xdirr and right_i = '1' then
                         clydexx<=clydexx+1;
@@ -160,7 +160,7 @@ begin
                         clydeyy<=clydeyy-1;
                         t_l_corner<='0';
                     end if;
-                elsif clydeyy = 6 then
+                elsif clydeyy = 6 or up_i = '0' then
                 --do x hunting
                     if clydexx > 124 and left_i = '1' then
                         clydexx<=clydexx-1;
