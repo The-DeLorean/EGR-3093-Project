@@ -173,7 +173,7 @@ begin
                 --scatter
                 elsif ghost_state_vec_i="00010" then 
                     --Scattering to bot LEft corner
-                    if b_l_corner = 1 then
+                    if b_l_corner = '1' then
                         inky_x_int_i<=inky_x_int_i+1;
                         if down_i = '1' then
                             inky_y_int_i<=inky_y_int_i+1;

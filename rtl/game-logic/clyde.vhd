@@ -154,7 +154,7 @@ begin
                 end if;
        elsif ghost_state_vec_i="00010" then
                --Scattering to Top LEft corner
-                if t_l_corner = 1 then
+                if t_l_corner = '1' then
                     clydexx<=clydexx+1;
                     if up_i = '1' then
                         clydeyy<=clydeyy-1;
