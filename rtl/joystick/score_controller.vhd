@@ -45,10 +45,10 @@ signal nD1: std_logic:='0';
 signal nD2: std_logic:='0';
 signal nD3: std_logic:='0';
 
-signal digit_0: integer range 0 to 9;
-signal digit_1: integer range 0 to 9;
-signal digit_2: integer range 0 to 9;
-signal digit_3: integer range 0 to 9;
+signal ones: integer range 0 to 9;
+signal tens: integer range 0 to 9;
+signal hundreds: integer range 0 to 9;
+signal thousands: integer range 0 to 9;
 
 --score int sginals
 signal score_int_i : integer;
@@ -60,10 +60,10 @@ Score_int_i <= score_int;
 process 
 begin
     wait on score_int;
-        digit_3<= (score_int_i) /1000;
-        digit_2<= (score_int_i - (digit_3*1000)) /100;
-        digit_1<= (score_int_i - (digit_3*1000) - (digit_2*100))/10;
-        digit_0<= (score_int_i - (digit_3*1000) - (digit_2*100) - (digit_1*10));
+        thousands<= (score_int_i) /1000;
+        hundreds<= (score_int_i - (thousands*1000)) /100;
+        tens<= (score_int_i - (thousands*1000) - (hundreds*100))/10;
+        ones<= (score_int_i - (thousands*1000) - (hundreds*100) - (tens*10));
 end process;
 
     --drive internal signals with component calls for each place value
@@ -72,6 +72,6 @@ end process;
 --    dig_2: place_value_driver port map(button => nD1, value => hex_val_2, next_digit => nD2);           --hundreds
 --    dig_3: place_value_driver port map(button => nD2, value => hex_val_3, next_digit => nD3);           --thousands
     --compoent call for displaying the data
-    display: sev_seg_driver port map(data_0 => digit_3, data_1 => digit_2, data_2 => digit_1, data_3 => digit_0, 
+    display: sev_seg_driver port map(data_0 => thousands, data_1 => hundreds, data_2 => tens, data_3 => ones, 
                                      clk => clk, rst => rst, display_data => score_segment, display_digit => score_anode); 
 end Behavioral;

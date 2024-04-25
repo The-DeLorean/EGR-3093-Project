@@ -25,7 +25,7 @@ entity DotDraw is
         Dot_on             : out std_logic;
         pacman_x_int        : in integer range 0 to 640;
         pacman_y_int        : in integer range 0 to 480;
-        score_out           : out std_logic :='0'
+        score_out           : out std_logic
   );
 end DotDraw;
 
@@ -35,10 +35,10 @@ architecture Behavioral of DotDraw is
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
     --signal pacman_x_int : integer;
     --signal pacman_y_int : integer;
-    signal dot_x : integer;
-    signal dot_y : integer;
+    signal dot_x : integer range 0 to 640;
+    signal dot_y : integer range 0 to 480;
     
-    signal dot_crash: std_logic := '0';
+    --signal dot_crash: std_logic := '0';
     signal eaten : std_logic := '0';
 
 
@@ -51,38 +51,33 @@ begin
     pix_y <= unsigned(pixel_y);
     
     
-    process
+    process --(eaten)
     begin
-        if(eaten = '0') then
-            if ( (pacman_x_int=dot_x AND pacman_y_int=dot_y) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x+1 AND pacman_y_int=dot_y) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x+2 AND pacman_y_int=dot_y) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x-1 AND pacman_y_int=dot_y) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x-2 AND pacman_y_int=dot_y) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+1) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+2) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y-1) ) then
-                eaten <= '1';
-                score_out <= '1';
-            elsif ( (pacman_x_int=dot_x AND pacman_y_int= (dot_y-2)) ) then
-                eaten <= '1';
-                score_out <= '1';
-            end if;
-         end if;
+--            elsif ( (pacman_x_int=dot_x+1 AND pacman_y_int=dot_y) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x+2 AND pacman_y_int=dot_y) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x-1 AND pacman_y_int=dot_y) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x-2 AND pacman_y_int=dot_y) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+1) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+2) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y-1) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+--            elsif ( (pacman_x_int=dot_x AND pacman_y_int= (dot_y-2)) ) then
+--                eaten <= '1';
+--                score_out <= '1';
+
 --        if ( rising_edge(dot_crash) AND eaten = '0') then
 --             eaten <= '1';
 --             score_out <= '1';
@@ -91,18 +86,30 @@ begin
     
 --    process
 --    begin
-        if(eaten= '0')then
+-- check if on top of dot
+
+        
+        if(eaten = '0')then
+              
             if ((dot_x+Dot_SIZE) <= pix_x and 
-            pix_x <=(dot_x + OBJECT_SIZE-Dot_SIZE) and 
-            pix_y <= (dot_y + OBJECT_SIZE-Dot_SIZE) and 
-            (dot_y+Dot_SIZE) <= pix_y ) then
-                Dot_on<='1';
+                pix_x <=(dot_x + OBJECT_SIZE-Dot_SIZE) and 
+                pix_y <= (dot_y + OBJECT_SIZE-Dot_SIZE) and 
+                (dot_y+Dot_SIZE) <= pix_y ) then
+                dot_on <= '1';
             else
                 dot_on <= '0';
+            end if; 
+            
+            if ( (pacman_x_int = (Dot_XL*OBJECT_SIZE + start_X)) AND 
+             (pacman_y_int = (Dot_YT*OBJECT_SIZE + start_Y)) ) then
+                eaten <= '1';
             end if;
+            
         else 
             Dot_on<='0';
         end if;
         
     end process;
+    
+    score_out <= eaten;
 end Behavioral;
