@@ -85,7 +85,10 @@ begin
     pacman_y_int_i <= pacman_y_int;
     inky_x_int_i <= inky_x_int;
     inky_y_int_i <= inky_y_int;
+    ghost_state_vec_i <= ghost_state_vec;
     
+    inky_collide: Ghost_navigation_check port map (ghost_x_pos=>clydexx, ghost_y_pos=>clydeyy, clk=>clk, right_collision=> right_i, left_collision=> left_i, up_collision=> up_i, down_collision=> down_i);
+
     --Inky's movements are the inverse of PacMan's
     process
         begin
