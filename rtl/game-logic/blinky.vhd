@@ -223,13 +223,21 @@ begin
            --Scatter state
            elsif ghost_state_vec="00010" then
                --Scattering to bot right corner
-                if blinky_y_int_i = 6 or (blinky_y_int_i = 150 and (blinky_x_int_i = 240 or blinky_x_int_i = 241)) then
+                if b_r_corner = '1' then
+                    blinky_y_int_i<=blinky_y_int_i-1;
+                    if right = '1' then
+                        blinky_x_int_i<=blinky_x_int_i+1;
+                        b_r_corner<='0';
+                elsif blinky_y_int_i = 398 or (up = '0' and down = '0') then
                 --do y hunting
-                    if blinky_x_int_i > 124 then
+                    if blinky_x_int_i < 464 then
                         blinky_x_int_i<=blinky_x_int_i+1;
                     end if; 
-                elsif blinky_y_int_i > 6 then
+                elsif blinky_y_int_i < 398 then
                     blinky_y_int_i<=blinky_y_int_i+1;
+                elsif down = '1' and right = '1' then
+                    b_r_corner<='1';
+                    blinky_y_int_i<=blinky_y_int_i-1;
                 end if;
             --Retreat state
             elsif ghost_state_vec="00001" then
