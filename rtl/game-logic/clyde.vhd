@@ -297,7 +297,7 @@ begin
                         clyde_y_int_i<=clyde_y_int_i-1;
                     elsif up_i = '0' and left_i = '0' then
                         clyde_x_int_i<=clyde_x_int_i+1;
-                        t_l_corner<='0';
+                        t_l_corner<='1';
                 end if;
             -- retreat logic
             elsif ghost_state_vec="00001" then
