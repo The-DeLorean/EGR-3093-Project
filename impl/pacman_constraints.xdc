@@ -3,7 +3,7 @@ set_property -dict {PACKAGE_PIN F14 IOSTANDARD LVCMOS33} [get_ports {clk}]
 create_clock -add -name sys_clk_pin -period 10.00 -waveform {0 6} [get_ports { clk }];
 
 ##Reset button
-set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports {rst}]; #IO_L4P_T0_35 Sch=btn[0]
+set_property -dict { PACKAGE_PIN J2   IOSTANDARD LVCMOS33 } [get_ports { rst }]; #IO_L4P_T0_35 Sch=btn[0]
 
 ##HDMI Tx
 set_property -dict { PACKAGE_PIN T14   IOSTANDARD TMDS_33  } [get_ports { clk_n }]; #IO_L11N_T1_SRCC_35 Sch=hdmi_tx_clk_n
@@ -36,10 +36,10 @@ set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports led_down]
 #set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
 #******
 #changed L/R/U/D (pins P5/R5/R6/T6) to onboard switches for testing purposes
-set_property -dict {PACKAGE_PIN J2 IOSTANDARD LVCMOS33} [get_ports left_raw]
-set_property -dict {PACKAGE_PIN J5 IOSTANDARD LVCMOS33} [get_ports right_raw]
-set_property -dict {PACKAGE_PIN H2 IOSTANDARD LVCMOS33} [get_ports down_raw]
-set_property -dict {PACKAGE_PIN J1 IOSTANDARD LVCMOS33} [get_ports up_raw]
+set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports left_raw]
+set_property -dict {PACKAGE_PIN K2 IOSTANDARD LVCMOS33} [get_ports right_raw]
+set_property -dict {PACKAGE_PIN L1 IOSTANDARD LVCMOS33} [get_ports down_raw]
+set_property -dict {PACKAGE_PIN M1 IOSTANDARD LVCMOS33} [get_ports up_raw]
 #******
 
 #On board button for score counter
