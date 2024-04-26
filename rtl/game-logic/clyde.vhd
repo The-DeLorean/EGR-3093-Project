@@ -300,20 +300,20 @@ begin
                         t_l_corner<='1';
                 end if;
             -- retreat logic
-            elsif ghost_state_vec="00001" then
-                   --x pacman hunter hard coded values for walls (for now)
-                    if clyde_x_int_i = pacman_x_int_i or (clyde_x_int_i = 150 and (clyde_y_int_i = 240 or clyde_y_int_i = 241)) then
-                    --do y hunting
-                        if clyde_y_int_i < pacman_y_int_i then
-                            clyde_y_int_i<=clyde_y_int_i-1;
-                        elsif clyde_y_int_i > pacman_y_int_i then
-                            clyde_y_int_i<=clyde_y_int_i+1;
-                        end if;
-                    elsif clyde_x_int_i < pacman_x_int_i then
-                        clyde_x_int_i<=clyde_x_int_i-1;
-                    elsif clyde_x_int_i > pacman_x_int_i then
-                        clyde_x_int_i<=clyde_x_int_i+1;
-                    end if;
+--            elsif ghost_state_vec="00001" then
+--                   --x pacman hunter hard coded values for walls (for now)
+--                    if clyde_x_int_i = pacman_x_int_i or (clyde_x_int_i = 150 and (clyde_y_int_i = 240 or clyde_y_int_i = 241)) then
+--                    --do y hunting
+--                        if clyde_y_int_i < pacman_y_int_i then
+--                            clyde_y_int_i<=clyde_y_int_i-1;
+--                        elsif clyde_y_int_i > pacman_y_int_i then
+--                            clyde_y_int_i<=clyde_y_int_i+1;
+--                        end if;
+--                    elsif clyde_x_int_i < pacman_x_int_i then
+--                        clyde_x_int_i<=clyde_x_int_i-1;
+--                    elsif clyde_x_int_i > pacman_x_int_i then
+--                        clyde_x_int_i<=clyde_x_int_i+1;
+--                    end if;
              end if;   
              
              --Hard coding clyde border      

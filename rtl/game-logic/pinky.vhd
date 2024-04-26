@@ -284,7 +284,7 @@ begin
                    --Scattering to Top Right corner
                     if t_r_corner = '1' then
                         pinky_y_int_i<=pinky_y_int_i+1;
-                        if up_i = '1' then
+                        if right_i = '1' then
                             pinky_x_int_i<=pinky_x_int_i+1;
                             t_r_corner<='0';
                         end if;    
