@@ -253,7 +253,7 @@ architecture Behavioral of game_logic is
     
     --Drive Clyde position signals
     clyde_x <= std_logic_vector(to_unsigned(clyde_x_int, OBJECT_SIZE));
-    clyde_y <= std_logic_vector(to_unsigned(pacman_y_int, OBJECT_SIZE));
+    clyde_y <= std_logic_vector(to_unsigned(clyde_y_int, OBJECT_SIZE));
     
     clyde_hit: entity work.collides(Behavioral)
     port map (  obj_a_x => pacman_x_int, 
