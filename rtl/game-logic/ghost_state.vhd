@@ -63,7 +63,7 @@ begin
                         end if;        
                     --In the chase state for 20s          
                     When chase_state =>
-                        If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
+                        if (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
                             count <=0;
                             ghost_state_machine := prison_state;
                         elsif scatter_tracker /=10 then
@@ -81,7 +81,7 @@ begin
                             scatter_tracker <= scatter_tracker+1;
                             chase_prev<='0';
                         end if;
-                        If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
+                        if (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
                             count <=0;
                             ghost_state_machine:= prison_state;
                         else
