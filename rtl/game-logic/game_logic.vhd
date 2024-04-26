@@ -237,16 +237,18 @@ architecture Behavioral of game_logic is
     --Clyde port map 
     clyde_i: entity work.clyde(Behavioral)
     --generic map (SERIES6=>SERIES6)
-    port map (  
+    port map ( 
+                clk => clk,
+                rst => rst,
+                moving => moving,
                 pacman_x_int => pacman_x_int, 
-                pacman_y_int => pacman_y_int, 
+                pacman_y_int => pacman_y_int,
                 clyde_x_int => clyde_x_int, 
                 clyde_y_int => clyde_y_int,
-                clyde_x_out => clyde_x_int, 
-                clyde_y_out => clyde_y_int, 
-                clk => clk, 
+                clyde_x_int_out => clyde_x_int, 
+                clyde_y_int_out => clyde_y_int,
                 powerup => powerup, 
-                ghost_state_vec => clyde_state_vec
+                ghost_state_vec => clyde_state_vec 
                 );
     
     --Drive Clyde position signals
