@@ -159,6 +159,7 @@ architecture Behavioral of game_logic is
                 up_in => up,
                 down_in => down,
                 moving => moving,
+                start_game=> start_game,
                 death=> death_out_i,
                 moving_out => moving,
                 pacman_x_int => pacman_x_int, 

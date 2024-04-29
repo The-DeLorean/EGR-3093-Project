@@ -43,7 +43,7 @@ architecture Behavioral of clyde is
 signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=314; 
 signal clyde_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
-signal clyde_y_int_i     : integer range 0 to 480:=174; 
+signal clyde_y_int_i     : integer range 0 to 480:=188; 
 signal count          : integer;
 signal moving_i : boolean;
 signal ghost_state_vec_i : std_logic_vector(4 downto 0); 

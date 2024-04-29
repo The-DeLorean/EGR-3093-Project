@@ -154,107 +154,109 @@ begin
         if rising_edge(clk) then
             count_i <= count_i +1;          --increment
             if count_i = 2000000 then
-                moving_i <= not(moving_i);  --toggle pacman mouth
-                count_i <= 0; 
                 
-                --Collision Check
-                if right='0' then
-                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
-                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
-                    
-                    pac_loc_x_right<= (pacman_x_int_i-124+2)/14;
-                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
-                    if (walls(pac_loc_y_left)(pac_loc_x_left+1)='1' or walls(pac_loc_y_right)(pac_loc_x_right+1)='1') then
-                        pac_crash_right<='1';
-                    else
-                        pac_crash_right<='0';
+                count_i <= 0; 
+                if start_game='1' then
+                    moving_i <= not(moving_i);  --toggle pacman mouth
+                    --Collision Check
+                    if right='0' then
+                        pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                        pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                        
+                        pac_loc_x_right<= (pacman_x_int_i-124+2)/14;
+                        pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                        if (walls(pac_loc_y_left)(pac_loc_x_left+1)='1' or walls(pac_loc_y_right)(pac_loc_x_right+1)='1') then
+                            pac_crash_right<='1';
+                        else
+                            pac_crash_right<='0';
+                        end if;  
+                        
+                    elsif left='0' then
+                        pac_loc_x_left<= (pacman_x_int_i-124+11)/14;
+                        pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                        
+                        pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                        pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                        if (walls(pac_loc_y_left)(pac_loc_x_left-1)='1' or  walls(pac_loc_y_right)(pac_loc_x_right-1)='1') then
+                            pac_crash_left<='1';
+                        else
+                            pac_crash_left<='0';
+                        end if;
+                        
+                     elsif up='0' then
+                        pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                        pac_loc_y_left<= (pacman_y_int_i-6+11)/14;
+                        
+                        pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                        pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
+                        if (walls(pac_loc_y_left-1)(pac_loc_x_left)='1' or walls(pac_loc_y_right-1)(pac_loc_x_right)='1') then
+                            pac_crash_up<='1';
+                        else
+                            pac_crash_up<='0';
+                        end if;        
+                        
+                    elsif down='0' then
+                        pac_loc_x_left<= (pacman_x_int_i-124)/14;
+                        pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                        
+                        pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
+                        pac_loc_y_right<= (pacman_y_int_i-6+2)/14;
+                        if (walls(pac_loc_y_left+1)(pac_loc_x_left)='1' or walls(pac_loc_y_right+1)(pac_loc_x_right)='1') then
+                            pac_crash_down<='1';
+                        else
+                            pac_crash_down<='0';
+                        end if;
                     end if;  
                     
-                elsif left='0' then
-                    pac_loc_x_left<= (pacman_x_int_i-124+11)/14;
-                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
+                    --End Collision Check
                     
-                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
-                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
-                    if (walls(pac_loc_y_left)(pac_loc_x_left-1)='1' or  walls(pac_loc_y_right)(pac_loc_x_right-1)='1') then
-                        pac_crash_left<='1';
-                    else
-                        pac_crash_left<='0';
+                    
+                    --move right
+                    if (right = '0' and pac_crash_right='0' )then --and not(death_i=3)) then
+                        pacman_x_int_i <= pacman_x_int_i+1;
+                        if (pacman_x_int_i=474 and (Pacman_y_int_i=202 )) then
+                            pacman_x_int_i<=124;
+                        elsif pacman_x_int_i = 475 then
+                            pacman_x_int_i <= 474;
+                        end if;
+                    
+                    --move left
+                    elsif (left = '0' and pac_crash_left='0' )then -- and not(death_i=3)) then
+                        pacman_x_int_i <= pacman_x_int_i-1;
+                        if (pacman_x_int_i=124 and (Pacman_y_int_i=202 )) then
+                            pacman_x_int_i<=474;
+                        elsif pacman_x_int_i = 123 then
+                            pacman_x_int_i<= 124;
+                        end if;
+                    
+                    --move down
+                    elsif (down = '0' and pac_crash_down='0' )then -- and not(death_i=3)) then
+                        pacman_y_int_i <= pacman_y_int_i+1;
+                        if pacman_y_int_i = 399 then
+                            pacman_y_int_i <= 398;
+                        end if;
+                        
+                    --move up
+                    elsif (up = '0' and pac_crash_up='0' )then -- and not(death_i=3)) then
+                        pacman_y_int_i <= pacman_y_int_i-1;
+                        if pacman_y_int_i = 5 then
+                            pacman_y_int_i <= 6;
+                        end if;
+    --                elsif (pac_crash='1') then
+    --                    if down='0' then
+    --                        pacman_y_int_i<= pacman_y_int_i-1;
+    --                    end if;
+                          
                     end if;
                     
-                 elsif up='0' then
-                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
-                    pac_loc_y_left<= (pacman_y_int_i-6+11)/14;
-                    
-                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
-                    pac_loc_y_right<= (pacman_y_int_i-6+13)/14;
-                    if (walls(pac_loc_y_left-1)(pac_loc_x_left)='1' or walls(pac_loc_y_right-1)(pac_loc_x_right)='1') then
-                        pac_crash_up<='1';
-                    else
-                        pac_crash_up<='0';
-                    end if;        
-                    
-                elsif down='0' then
-                    pac_loc_x_left<= (pacman_x_int_i-124)/14;
-                    pac_loc_y_left<= (pacman_y_int_i-6)/14;
-                    
-                    pac_loc_x_right<= (pacman_x_int_i-124+13)/14;
-                    pac_loc_y_right<= (pacman_y_int_i-6+2)/14;
-                    if (walls(pac_loc_y_left+1)(pac_loc_x_left)='1' or walls(pac_loc_y_right+1)(pac_loc_x_right)='1') then
-                        pac_crash_down<='1';
-                    else
-                        pac_crash_down<='0';
-                    end if;
-                end if;  
-                
-                --End Collision Check
-                
-                
-                --move right
-                if (right = '0' and pac_crash_right='0' )then --and not(death_i=3)) then
-                    pacman_x_int_i <= pacman_x_int_i+1;
-                    if (pacman_x_int_i=474 and (Pacman_y_int_i=202 )) then
-                        pacman_x_int_i<=124;
-                    elsif pacman_x_int_i = 475 then
-                        pacman_x_int_i <= 474;
-                    end if;
-                
-                --move left
-                elsif (left = '0' and pac_crash_left='0' )then -- and not(death_i=3)) then
-                    pacman_x_int_i <= pacman_x_int_i-1;
-                    if (pacman_x_int_i=124 and (Pacman_y_int_i=202 )) then
-                        pacman_x_int_i<=474;
-                    elsif pacman_x_int_i = 123 then
-                        pacman_x_int_i<= 124;
-                    end if;
-                
-                --move down
-                elsif (down = '0' and pac_crash_down='0' )then -- and not(death_i=3)) then
-                    pacman_y_int_i <= pacman_y_int_i+1;
-                    if pacman_y_int_i = 399 then
-                        pacman_y_int_i <= 398;
-                    end if;
-                    
-                --move up
-                elsif (up = '0' and pac_crash_up='0' )then -- and not(death_i=3)) then
-                    pacman_y_int_i <= pacman_y_int_i-1;
-                    if pacman_y_int_i = 5 then
-                        pacman_y_int_i <= 6;
-                    end if;
---                elsif (pac_crash='1') then
---                    if down='0' then
---                        pacman_y_int_i<= pacman_y_int_i-1;
---                    end if;
-                      
-                end if;
-                
-                If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
-                    --reset pacman coordinates
-                    pacman_x_int_i <= 299;
-                    pacman_y_int_i <= 314;
-                    death_i<=death_i+1;
-                    if death_i >=4 then
-                        death_i<=3;
+                    If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then
+                        --reset pacman coordinates
+                        pacman_x_int_i <= 299;
+                        pacman_y_int_i <= 314;
+                        death_i<=death_i+1;
+                        if death_i >=4 then
+                            death_i<=3;
+                        end if;
                     end if;
                 end if;
             end if;
