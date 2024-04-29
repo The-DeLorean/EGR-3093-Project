@@ -10,7 +10,7 @@ Port (
     --Pins of the tactile buttons on breadboard
     right,left, up, down, clk, rst : in STD_LOGIC;
     --LED's to ensure buttons are working correctly
-    led_right, led_left, led_up, led_down : out STD_LOGIC;
+    led_right, led_left, led_up, led_down, user_name_out : out STD_LOGIC;
     -- Anode: Controls which segment is active at any given time
     name_anode : out std_logic_vector (3 downto 0):= "1111";
     
@@ -32,7 +32,7 @@ signal data_2_i_f : integer range -2 to 17:= 16;
 
 
 --Variables to allow for the user name to be chosen
-signal userName: STD_LOGIC := '1';
+signal userName_i: STD_LOGIC := '1';
 signal digitSelector : integer range 0 to 4:= 0;
 
 --Signals to hold previous button press
@@ -68,7 +68,7 @@ begin
    --Making rButton change the digit selector when userName is being edited
    process
    begin
-       if userName= '1' then
+       if userName_i= '1' then
           if (falling_edge(right)) then
             digitSelector <= digitSelector + 1;
             if digitSelector= 4 then
@@ -133,7 +133,7 @@ end process;
     process 
     begin
        --If user name editing is active
-       if userName= '1' then
+       if userName_i= '1' then
          if(rising_edge(clk)) then
          if digitSelector=0 then
                 -- Button 0 adds 1 when pressed and does nothing when not pressed
@@ -184,7 +184,7 @@ end process;
                     data_2_i <= 0;
                 end if;
          elsif digitselector = 3 then
-            userName <='0'; 
+            userName_i <='0'; 
          end if;
          end if;
        --making nothing happen once userName = 0
@@ -195,7 +195,8 @@ end process;
          led_down <= NOT(down);
        end if ;
     end process;
-
+    
+    user_Name_out<=userName_i;
     --controls right side LEDs on boolean board, displays username
     c1: sev_seg_driver port map(data_0 => data_0_i_f, 
                                 data_1 => data_1_i_f, 

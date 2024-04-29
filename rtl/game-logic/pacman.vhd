@@ -23,13 +23,14 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity pacman is
-Port (  clk     : in std_logic;
-        rst      : in std_logic;
+Port (  clk         : in std_logic;
+        rst         : in std_logic;
         right_in    : in std_logic;
         left_in     : in std_logic;
         up_in       : in std_logic;
         down_in     : in std_logic;
-        moving   : in boolean;
+        moving      : in boolean;
+        start_game  : in std_logic;
         death    : out integer range 0 to 4;
         moving_out   : out boolean;
         pacman_x_int     : in integer range 0 to 640:=240; -- starting coordinates (240,340)

@@ -43,7 +43,7 @@ end component;
 component username_select is
 Port ( 
     right, left, up, down, clk, rst : in STD_LOGIC;
-    led_right, led_left, led_up, led_down : out STD_LOGIC;
+    led_right, led_left, led_up, led_down, user_name_out: out STD_LOGIC;
     -- Anode: Controls which segment is active at any given time
     name_anode : out std_logic_vector (3 downto 0):= "1111";
     name_segment : out std_logic_vector (7 downto 0));
@@ -64,6 +64,7 @@ Component hdmi_out is
         left     : in std_logic;
         up       : in std_logic;
         down     : in std_logic;
+        user_name_in : in std_logic;
         -- tmds output ports
         clk_p    : out std_logic;
         clk_n    : out std_logic;
@@ -96,6 +97,7 @@ signal right_i: STD_LOGIC:='1';
 signal left_i: STD_LOGIC:='1';
 signal score_button_i: STD_LOGIC:='1';
 signal score_out: INTEGER;
+signal User_name_out: std_logic;
 
 begin
     --the following calls map the raw input to debounced output signals
@@ -107,7 +109,7 @@ begin
 
     username_select_i: username_select port map(right => right_i, left => left_i, 
     up => up_i, down => down_i, clk => clk, rst => rst, led_right => led_right, led_left => led_left, 
-    led_up => led_up, led_down => led_down, name_anode => name_anode, name_segment => name_segment);
+    led_up => led_up, led_down => led_down, user_name_out => user_name_out, name_anode => name_anode, name_segment => name_segment);
     
     score_controller_i: score_controller port map(score_button => score_button_i, clk => clk, 
     rst => rst, score_anode => score_anode, score_segment => score_segment, score_int => score_out);
@@ -119,6 +121,7 @@ begin
         left => left_i,
         up => up_i,
         down => down_i,
+        user_name_in=> user_name_out,
         -- tmds output ports
         clk_p => clk_p,
         clk_n => clk_n,
@@ -127,7 +130,8 @@ begin
         chase_led => chase_led,
         scatter_led => scatter_led,
         retreat_led => retreat_led,
-        score_out => score_out);
+        score_out => score_out
+        );
     
     
 end Behavioral;

@@ -43,6 +43,7 @@ entity game_logic is
             up       : in std_logic;
             down     : in std_logic;
             pac_moving: in boolean;
+            user_name_in : in std_logic;
             pac_moving_out  : out boolean;
             death_out       : out integer range 0 to 4;
             pacman_x        : out std_logic_vector(OBJECT_SIZE-1 downto 0) := std_logic_vector(to_unsigned(240, OBJECT_SIZE));
@@ -67,20 +68,20 @@ architecture Behavioral of game_logic is
     signal pacman_y_int     : integer range 0 to 480:=340; 
     
     --Inky Location
-    signal inky_x_int       : integer range 0 to 640:=299; -- starting coordinates (640, 480)
-    signal inky_y_int       : integer range 0 to 480:=160;
+    signal inky_x_int       : integer range 0 to 640; -- starting coordinates (640, 480)
+    signal inky_y_int       : integer range 0 to 480;
 
     --Pinky
-    signal pinky_x_int       : integer range 0 to 640:=299; -- starting coordinates (300, 100)
-    signal pinky_y_int       : integer range 0 to 480:=160;
+    signal pinky_x_int       : integer range 0 to 640; -- starting coordinates (300, 100)
+    signal pinky_y_int       : integer range 0 to 480;
     
     --Blinky
-    signal blinky_x_int       : integer range 0 to 640:=299; -- starting coordinates (300, 100)
-    signal blinky_y_int       : integer range 0 to 480:=160;
+    signal blinky_x_int       : integer range 0 to 640; -- starting coordinates (300, 100)
+    signal blinky_y_int       : integer range 0 to 480;
     
     --Clyde 
-    signal clyde_x_int      : integer range 0 to 640:=299;
-    signal clyde_y_int      : integer range 0 to 480:=160;
+    signal clyde_x_int      : integer range 0 to 640;
+    signal clyde_y_int      : integer range 0 to 480;
     
     --ghost state machine semaphores
     constant prison_time : integer:= 5000000;
@@ -112,7 +113,7 @@ architecture Behavioral of game_logic is
     clyde_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> 10,
+                prison_time=> 100,
                 pac_death_clyde=> pac_death_clyde,
                 pac_death_pinky=> pac_death_pinky,
                 pac_death_blinky=> pac_death_blinky,
@@ -284,9 +285,10 @@ architecture Behavioral of game_logic is
     process
     begin
         if rising_edge(clk) then
-            start_time<=start_time+1;
-            if start_time = 1700000000 then --17 secondds
-                start_time<=0;
+            --start_time<=start_time+1;
+            --if start_time = 1700000000 then --17 secondds
+              if user_name_in ='0' then
+                --start_time<=0;
                 start_game<='1';
             end if;
         end if;

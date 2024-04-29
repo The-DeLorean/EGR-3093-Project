@@ -26,6 +26,7 @@ entity hdmi_out is
         left     : in std_logic;
         up       : in std_logic;
         down     : in std_logic;
+        user_name_in    : in std_logic;
         -- tmds output ports
         clk_p    : out std_logic;
         clk_n    : out std_logic;
@@ -95,6 +96,7 @@ begin
                     down => down,
                     pac_moving => pac_moving,
                     pac_moving_out=> pac_moving,
+                    user_name_in=> user_name_in,
                     death_out=> death,
                     pacman_x => pacman_x, 
                     pacman_y => pacman_y,
