@@ -53,42 +53,6 @@ begin
     
     process --(eaten)
     begin
---            elsif ( (pacman_x_int=dot_x+1 AND pacman_y_int=dot_y) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x+2 AND pacman_y_int=dot_y) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x-1 AND pacman_y_int=dot_y) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x-2 AND pacman_y_int=dot_y) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+1) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y+2) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x AND pacman_y_int=dot_y-1) ) then
---                eaten <= '1';
---                score_out <= '1';
---            elsif ( (pacman_x_int=dot_x AND pacman_y_int= (dot_y-2)) ) then
---                eaten <= '1';
---                score_out <= '1';
-
---        if ( rising_edge(dot_crash) AND eaten = '0') then
---             eaten <= '1';
---             score_out <= '1';
---        end if;
---    end process;
-    
---    process
---    begin
--- check if on top of dot
-
-        
         if(eaten = '0')then
               
             if ((dot_x+Dot_SIZE) <= pix_x and 
