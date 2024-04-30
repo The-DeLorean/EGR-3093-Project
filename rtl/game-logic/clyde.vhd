@@ -143,13 +143,13 @@ begin
         if count >=2000000 then
             count<=0;
             
-            --clyde Collision Check
+            --Clyde Collision Check
             --Collision check right
             --Calculating clyde's top left for moving right
             clyde_loc_x_right_lc<= (clyde_x_int_i-124)/14;
             clyde_loc_y_right_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving right
-            clyde_loc_x_right_rc<= (clyde_x_int_i-124+1)/14;
+            clyde_loc_x_right_rc<= (clyde_x_int_i-124+2)/14;
             clyde_loc_y_right_rc<= (clyde_y_int_i-6+13)/14;
             if (walls(clyde_loc_y_right_lc)(clyde_loc_x_right_lc+1)='1' or walls(clyde_loc_y_right_rc)(clyde_loc_x_right_rc+1)='1') then
                 right_i<='0';
@@ -159,7 +159,7 @@ begin
             
             --Collision check left
             --Calculating clyde's top left for moving left
-            clyde_loc_x_left_lc<= (clyde_x_int_i-124+12)/14;
+            clyde_loc_x_left_lc<= (clyde_x_int_i-124+11)/14;
             clyde_loc_y_left_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving left
             clyde_loc_x_left_rc<= (clyde_x_int_i-124+13)/14;
@@ -173,7 +173,7 @@ begin
             --Collision check up
             --Calculating clyde's top left for moving up
             clyde_loc_x_up_lc<= (clyde_x_int_i-124)/14;
-            clyde_loc_y_up_lc<= (clyde_y_int_i-6+12)/14;
+            clyde_loc_y_up_lc<= (clyde_y_int_i-6+11)/14;
             --Calculating clyde's bototm right for moving up
             clyde_loc_x_up_rc<= (clyde_x_int_i-124+13)/14;
             clyde_loc_y_up_rc<= (clyde_y_int_i-6+13)/14;
@@ -189,7 +189,7 @@ begin
             clyde_loc_y_down_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving down
             clyde_loc_x_down_rc<= (clyde_x_int_i-124+13)/14;
-            clyde_loc_y_down_rc<= (clyde_y_int_i-6+1)/14;
+            clyde_loc_y_down_rc<= (clyde_y_int_i-6+2)/14;
             if (walls(clyde_loc_y_down_lc+1)(clyde_loc_x_down_lc)='1' or walls(clyde_loc_y_down_rc+1)(clyde_loc_x_down_rc)='1') then
                 down_i<='0';
             else
@@ -283,19 +283,19 @@ begin
                         clyde_x_int_i<=clyde_x_int_i-1;
                             
                     --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
+                    elsif up_i = '0' and left_i = '0' and clyde_y_int_i > pacman_y_int_i and clyde_x_int_i > pacman_x_int_i then
                         t_l_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i+1;
                     --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
+                    elsif up_i = '0' and right_i = '0' and clyde_y_int_i > pacman_y_int_i and clyde_x_int_i < pacman_x_int_i then
                         t_r_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i+1;
                     --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
+                    elsif down_i = '0' and right_i = '0' and clyde_y_int_i < pacman_y_int_i and clyde_x_int_i < pacman_x_int_i then
                         b_r_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i-1;
                     --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
+                    elsif down_i = '0' and left_i = '0' and clyde_y_int_i < pacman_y_int_i and clyde_x_int_i > pacman_x_int_i then
                         b_l_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i-1;
                     end if;
@@ -319,21 +319,6 @@ begin
                         clyde_x_int_i<=clyde_x_int_i+1;
                         t_l_corner<='1';
                 end if;
-            -- retreat logic
---            elsif ghost_state_vec="00001" then
---                   --x pacman hunter hard coded values for walls (for now)
---                    if clyde_x_int_i = pacman_x_int_i or (clyde_x_int_i = 150 and (clyde_y_int_i = 240 or clyde_y_int_i = 241)) then
---                    --do y hunting
---                        if clyde_y_int_i < pacman_y_int_i then
---                            clyde_y_int_i<=clyde_y_int_i-1;
---                        elsif clyde_y_int_i > pacman_y_int_i then
---                            clyde_y_int_i<=clyde_y_int_i+1;
---                        end if;
---                    elsif clyde_x_int_i < pacman_x_int_i then
---                        clyde_x_int_i<=clyde_x_int_i-1;
---                    elsif clyde_x_int_i > pacman_x_int_i then
---                        clyde_x_int_i<=clyde_x_int_i+1;
---                    end if;
              end if;   
              
              --Hard coding clyde border      
