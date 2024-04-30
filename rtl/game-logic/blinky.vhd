@@ -233,15 +233,15 @@ begin
                     --y188
                     elsif count_blinky = 1 then
                         if blinky_y_int_i < 188 then
-                            inky_y_int_i <= inky_y_int_i+1;
-                        elsif inky_y_int_i >= 188 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 188 then
                             count_blinky <= count_blinky+1;
                         end if;
                     --x194
                     elsif count_blinky = 2 then
                         if blinky_x_int_i > 194 then
                             blinky_x_int_i <= blinky_x_int_i-1;
-                        elsif inky_x_int_i <= 194 then
+                        elsif blinky_x_int_i <= 194 then
                             count_blinky <= count_blinky+1;
                         end if;
                     --y356
