@@ -283,19 +283,19 @@ begin
                         pinky_y_int_i<=pinky_y_int_i+1;
                             
                     --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' then
+                    elsif up_i = '0' and left_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
                         t_l_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i+1;
                     --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' then
+                    elsif up_i = '0' and right_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
                         t_r_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i+1;
                     --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' then
+                    elsif down_i = '0' and right_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
                         b_r_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i-1;
                     --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' then
+                    elsif down_i = '0' and left_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
                         b_l_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
