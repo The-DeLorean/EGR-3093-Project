@@ -175,6 +175,10 @@ end component;
      
      --Pac_mans Visibility signal
      signal Pac_visible : std_logic:='1';
+     
+     --Signals to make user win screen
+     signal user_win    : std_logic :='0';
+     signal dot_eaten   : integer :=0;
 
 begin
     
@@ -288,13 +292,13 @@ begin
                     rgb <= x"FFFFFF";
                 end if;
             end loop doton;
-            if Clyde_on='1' then
+            if Clyde_on='1' and user_win='0' then
                 rgb<= Clyde_rgb;
-            elsif Inky_on='1' then
+            elsif Inky_on='1' and user_win='0' then
                 rgb<= Inky_rgb;
-            elsif Blinky_on='1' then
+            elsif Blinky_on='1' and user_win='0'then
                 rgb<= Blinky_rgb;
-            elsif Pinky_on='1' then
+            elsif Pinky_on='1' and user_win='0' then
                 rgb<= Pinky_rgb;
             elsif PacMan_on='1' then
                 rgb <= PacMan_rgb;
@@ -306,6 +310,20 @@ begin
                     --Making game over Red
                     rgb<= blinky_rgb;
             end if;
+        end if;
+    end process;
+    
+    --trying to see if user won
+     process
+     begin
+     dot_eaten<=0;
+     win_checker: for i in 0 to dot_num - 1 loop
+            if (score_out_arr(i)='1') then
+                dot_eaten <= dot_eaten+1;
+             end if;
+        end loop win_checker;
+        if dot_eaten= dot_num-5 then
+            user_win<='1';
         end if;
     end process;
 
