@@ -256,20 +256,31 @@ begin
                         elsif pinky_y_int_i > pacman_y_int_i and up_i = '1' then
                             pinky_y_int_i<=pinky_y_int_i-1;
                         end if;
-                    elsif left_i = '0' and right_i = '0' then
-                        --down
-                        if pinky_y_int_i < pacman_y_int_i and down_i = '1' then
-                            pinky_y_int_i<=pinky_y_int_i+1;
-                        --up
-                        elsif pinky_y_int_i > pacman_y_int_i and up_i = '1' then
-                            pinky_y_int_i<=pinky_y_int_i-1;
-                        end if;
                     --right
                     elsif pinky_x_int_i < pacman_x_int_i and right_i = '1' then
                         pinky_x_int_i<=pinky_x_int_i+1;
                     --left
                     elsif pinky_x_int_i > pacman_x_int_i and left_i = '1' then
                         pinky_x_int_i<=pinky_x_int_i-1;
+                    --no left only up
+                    elsif left_i = '0' and up_i = '1' and pinky_y_int_i > pacman_y_int_i then
+                        --up
+                        pinky_y_int_i<=pinky_y_int_i-1;
+                        
+                    --no left only down
+                    elsif left_i = '0' and down_i = '1' and pinky_y_int_i < pacman_y_int_i then
+                        --down
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                        
+                    --no right only up
+                    elsif right_i = '0' and up_i = '1' and pinky_y_int_i > pacman_y_int_i then
+                        --up
+                        pinky_y_int_i<=pinky_y_int_i-1;
+                        
+                    elsif right_i = '0' and down_i = '1' and pinky_y_int_i < pacman_y_int_i then
+                        --down
+                        pinky_y_int_i<=pinky_y_int_i+1;
+                            
                     --top left corner stuck
                     elsif up_i = '0' and left_i = '0' then
                         t_l_corner<='1';
