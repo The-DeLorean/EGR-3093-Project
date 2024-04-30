@@ -149,6 +149,8 @@ begin
         backgrnd_rgb=>backgrnd_rgb, rgb=>video_data, MVariable=> pac_moving, death_int=>death,
         score_out=>score_out,
         pacman_x_int => pacman_x_int,
-        pacman_y_int => pacman_y_int);
+        pacman_y_int => pacman_y_int,
+        clk=>clk
+        );
     end generate;
 end rtl;

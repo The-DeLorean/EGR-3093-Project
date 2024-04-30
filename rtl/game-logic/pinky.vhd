@@ -247,7 +247,7 @@ begin
                             pinky_x_int_i<=pinky_x_int_i-1;
                             b_l_corner<='0'; 
                         end if;
-                    elsif pinky_x_int_i = pacman_x_int_i then
+                    elsif pinky_x_int_i = pacman_x_int_i or (left_i = '0' or right_i = '0') then
                     --do y hunting
                         --down
                         if pinky_y_int_i < pacman_y_int_i and down_i = '1' then
@@ -262,40 +262,20 @@ begin
                     --left
                     elsif pinky_x_int_i > pacman_x_int_i and left_i = '1' then
                         pinky_x_int_i<=pinky_x_int_i-1;
-                    --no left only up
-                    elsif left_i = '0' and up_i = '1' and pinky_y_int_i > pacman_y_int_i then
-                        --up
-                        pinky_y_int_i<=pinky_y_int_i-1;
-                        
-                    --no left only down
-                    elsif left_i = '0' and down_i = '1' and pinky_y_int_i < pacman_y_int_i then
-                        --down
-                        pinky_y_int_i<=pinky_y_int_i+1;
-                        
-                    --no right only up
-                    elsif right_i = '0' and up_i = '1' and pinky_y_int_i > pacman_y_int_i then
-                        --up
-                        pinky_y_int_i<=pinky_y_int_i-1;
-
-                    --no right only down
-                    elsif right_i = '0' and down_i = '1' and pinky_y_int_i < pacman_y_int_i then
-                        --down
-                        pinky_y_int_i<=pinky_y_int_i+1;
-                            
                     --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
+                    elsif up_i = '0' and left_i = '0' then
                         t_l_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i+1;
                     --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' and pinky_y_int_i > pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
+                    elsif up_i = '0' and right_i = '0' then
                         t_r_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i+1;
                     --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i < pacman_x_int_i then
+                    elsif down_i = '0' and right_i = '0' then
                         b_r_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i-1;
                     --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' and pinky_y_int_i < pacman_y_int_i and pinky_x_int_i > pacman_x_int_i then
+                    elsif down_i = '0' and left_i = '0' then
                         b_l_corner<='1';
                         pinky_y_int_i<=pinky_y_int_i-1;
                     end if;
@@ -319,22 +299,7 @@ begin
                         pinky_y_int_i<=pinky_y_int_i+1;
                         t_r_corner<='1';
                     end if;
-            -- retreat logic
-            elsif ghost_state_vec="00001" then
-                   --x pacman hunter hard coded values for walls (for now)
-                    if pinky_x_int_i = pacman_x_int_i or (pinky_x_int_i = 150 and (pinky_y_int_i = 240 or pinky_y_int_i = 241)) then
-                    --do y hunting
-                        if pinky_y_int_i < pacman_y_int_i then
-                            pinky_y_int_i<=pinky_y_int_i-1;
-                        elsif pinky_y_int_i > pacman_y_int_i then
-                            pinky_y_int_i<=pinky_y_int_i+1;
-                        end if;
-                    elsif pinky_x_int_i < pacman_x_int_i then
-                        pinky_x_int_i<=pinky_x_int_i-1;
-                    elsif pinky_x_int_i > pacman_x_int_i then
-                        pinky_x_int_i<=pinky_x_int_i+1;
-                    end if;
-             end if;   
+                end if;
              
              --Hard coding pinky border      
              if pinky_x_int_i= 123 then
