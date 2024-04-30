@@ -35,16 +35,16 @@ end objectbuffer;
 
 architecture rtl of objectbuffer is
     -- create a 5 pixel vertical wall
-    constant WALL_X_L0: integer := 118;
-    constant WALL_X_R0: integer := 123;
+    constant WALL_X_L0: integer := 117;
+    constant WALL_X_R0: integer := 122;
     
-    constant WALL_X_L1: integer := 489;
-    constant WALL_X_R1: integer := 494;
+    constant WALL_X_L1: integer := 490;
+    constant WALL_X_R1: integer := 495;
     
-    constant WALL_Y_B2: integer := 5;
+    constant WALL_Y_B2: integer := 4;
     
-    constant WALL_Y_T3: integer := 412;
-    constant WALL_Y_B3: integer := 417;
+    constant WALL_Y_T3: integer := 413;
+    constant WALL_Y_B3: integer := 418;
     
     constant Ghost_GateXL: integer :=(124+(OBJECT_SIZE*12));
     constant Ghost_GateXR: integer :=(124+(OBJECT_SIZE*14));
