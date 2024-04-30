@@ -203,16 +203,18 @@ begin
                     --move right
                     if (right = '0' and pac_crash_right='0' and pacman_x_int_i<474 )then --and not(death_i=3)) then
                         pacman_x_int_i <= pacman_x_int_i+1;
-                        if (pacman_x_int_i=473 and (Pacman_y_int_i=202 )) then
-                            pacman_x_int_i<=124;
-                        end if;
-                    
+                        
+                    --making pac man teleport when moving right
+                    elsif right='0' and pacman_x_int_i=474 and Pacman_y_int_i=188 then 
+                        pacman_x_int_i<=124;
+                        
                     --move left
                     elsif (left = '0' and pac_crash_left='0' and pacman_x_int_i>124 )then -- and not(death_i=3)) then
                         pacman_x_int_i <= pacman_x_int_i-1;
-                        if (pacman_x_int_i=125 and (Pacman_y_int_i=202 )) then
-                            pacman_x_int_i<=474;
-                        end if;
+                    
+                    --making pac man teleport when moving left
+                    elsif left='0' and pacman_x_int_i=124 and Pacman_y_int_i=188 then 
+                        pacman_x_int_i<=474;
                     
                     --move down
                     elsif (down = '0' and pac_crash_down='0' and pacman_y_int_i<398 )then -- and not(death_i=3)) then

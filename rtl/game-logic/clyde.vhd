@@ -149,7 +149,7 @@ begin
             clyde_loc_x_right_lc<= (clyde_x_int_i-124)/14;
             clyde_loc_y_right_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving right
-            clyde_loc_x_right_rc<= (clyde_x_int_i-124)/14;
+            clyde_loc_x_right_rc<= (clyde_x_int_i-124+2)/14;
             clyde_loc_y_right_rc<= (clyde_y_int_i-6+13)/14;
             if (walls(clyde_loc_y_right_lc)(clyde_loc_x_right_lc+1)='1' or walls(clyde_loc_y_right_rc)(clyde_loc_x_right_rc+1)='1') then
                 right_i<='0';
@@ -159,7 +159,7 @@ begin
             
             --Collision check left
             --Calculating clyde's top left for moving left
-            clyde_loc_x_left_lc<= (clyde_x_int_i-124+13)/14;
+            clyde_loc_x_left_lc<= (clyde_x_int_i-124+11)/14;
             clyde_loc_y_left_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving left
             clyde_loc_x_left_rc<= (clyde_x_int_i-124+13)/14;
@@ -173,7 +173,7 @@ begin
             --Collision check up
             --Calculating clyde's top left for moving up
             clyde_loc_x_up_lc<= (clyde_x_int_i-124)/14;
-            clyde_loc_y_up_lc<= (clyde_y_int_i-6+13)/14;
+            clyde_loc_y_up_lc<= (clyde_y_int_i-6+11)/14;
             --Calculating clyde's bototm right for moving up
             clyde_loc_x_up_rc<= (clyde_x_int_i-124+13)/14;
             clyde_loc_y_up_rc<= (clyde_y_int_i-6+13)/14;
@@ -189,7 +189,7 @@ begin
             clyde_loc_y_down_lc<= (clyde_y_int_i-6)/14;
             --Calculating clyde's bototm right for moving down
             clyde_loc_x_down_rc<= (clyde_x_int_i-124+13)/14;
-            clyde_loc_y_down_rc<= (clyde_y_int_i-6)/14;
+            clyde_loc_y_down_rc<= (clyde_y_int_i-6+2)/14;
             if (walls(clyde_loc_y_down_lc+1)(clyde_loc_x_down_lc)='1' or walls(clyde_loc_y_down_rc+1)(clyde_loc_x_down_rc)='1') then
                 down_i<='0';
             else
@@ -211,7 +211,7 @@ begin
                         prison_right<='0';
                     end if;
                 end if;
-                clyde_y_int_i<=188;
+                clyde_y_int_i<=202;
             -- Escape state
             elsif ghost_state_vec="01000" then
                 clyde_x_int_i<=299;

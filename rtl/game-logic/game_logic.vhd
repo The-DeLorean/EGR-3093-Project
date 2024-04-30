@@ -84,7 +84,6 @@ architecture Behavioral of game_logic is
     signal clyde_y_int      : integer range 0 to 480;
     
     --ghost state machine semaphores
-    constant prison_time : integer:= 1500000000;
     signal powerup       : std_logic:='0';
  
     signal clyde_state_vec   : std_logic_vector(4 downto 0) :="10000";
@@ -113,7 +112,7 @@ architecture Behavioral of game_logic is
     clyde_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> 1500000000,
+                prison_time=> 2000000000,
                 pac_death_clyde=> pac_death_clyde,
                 pac_death_pinky=> pac_death_pinky,
                 pac_death_blinky=> pac_death_blinky,
@@ -123,7 +122,7 @@ architecture Behavioral of game_logic is
     pinky_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> prison_time,
+                prison_time=> 1000000000,
                 pac_death_clyde=> pac_death_clyde,
                 pac_death_pinky=> pac_death_pinky,
                 pac_death_blinky=> pac_death_blinky,
@@ -133,7 +132,7 @@ architecture Behavioral of game_logic is
     blinky_state_i: entity work.ghost_state(Behavioral)
     port map(   start_game => start_game, 
                 clk => clk, 
-                prison_time=> 2000000000,
+                prison_time=> 1500000000,
                 pac_death_clyde=> pac_death_clyde,
                 pac_death_pinky=> pac_death_pinky,
                 pac_death_blinky=> pac_death_blinky,
@@ -181,13 +180,6 @@ architecture Behavioral of game_logic is
     inky_i: entity work.inky(Behavioral)
     port map (  clk => clk,
                 rst => rst,
-                right => right,
-                left => left,
-                up => up,
-                down => down,
-                moving => moving,
-                pacman_x_int => pacman_x_int, 
-                pacman_y_int => pacman_y_int,
                 inky_x_int => inky_x_int, 
                 inky_y_int => inky_y_int,
                 inky_x_int_out => inky_x_int, 
@@ -222,9 +214,6 @@ architecture Behavioral of game_logic is
     blinky_i: entity work.blinky(Behavioral)
     port map (  clk => clk,
                 rst => rst,
-                --moving => moving,
-                pacman_x_int => pacman_x_int, 
-                pacman_y_int => pacman_y_int,
                 blinky_x_int => blinky_x_int, 
                 blinky_y_int => blinky_y_int,
                 blinky_x_int_out => blinky_x_int, 

@@ -196,6 +196,7 @@ end process;
        end if ;
     end process;
     
+    --sending the user name to top module
     user_Name_out<=userName_i;
     --controls right side LEDs on boolean board, displays username
     c1: sev_seg_driver port map(data_0 => data_0_i_f, 
