@@ -159,7 +159,7 @@ begin
                 if start_game='1' then
                     moving_i <= not(moving_i);  --toggle pacman mouth
                     --Collision Check
-                    if right='0' then
+                    if right='0'  then
                         pac_loc_x_left<= (pacman_x_int_i-124)/14;
                         pac_loc_y_left<= (pacman_y_int_i-6)/14;
                         
@@ -183,7 +183,7 @@ begin
                             pac_crash_left<='0';
                         end if;
                         
-                     elsif up='0' then
+                     elsif up='0'  then
                         pac_loc_x_left<= (pacman_x_int_i-124)/14;
                         pac_loc_y_left<= (pacman_y_int_i-6+11)/14;
                         
@@ -195,7 +195,7 @@ begin
                             pac_crash_up<='0';
                         end if;        
                         
-                    elsif down='0' then
+                    elsif down='0'  then
                         pac_loc_x_left<= (pacman_x_int_i-124)/14;
                         pac_loc_y_left<= (pacman_y_int_i-6)/14;
                         
@@ -212,41 +212,30 @@ begin
                     
                     
                     --move right
-                    if (right = '0' and pac_crash_right='0' )then --and not(death_i=3)) then
+                    if (right = '0' and pac_crash_right='0' and pacman_x_int_i<474 )then --and not(death_i=3)) then
                         pacman_x_int_i <= pacman_x_int_i+1;
-                        if (pacman_x_int_i=474 and (Pacman_y_int_i=202 )) then
+                        if (pacman_x_int_i=473 and (Pacman_y_int_i=202 )) then
                             pacman_x_int_i<=124;
-                        elsif pacman_x_int_i = 475 then
-                            pacman_x_int_i <= 474;
                         end if;
                     
                     --move left
-                    elsif (left = '0' and pac_crash_left='0' )then -- and not(death_i=3)) then
+                    elsif (left = '0' and pac_crash_left='0' and pacman_x_int_i>124 )then -- and not(death_i=3)) then
                         pacman_x_int_i <= pacman_x_int_i-1;
-                        if (pacman_x_int_i=124 and (Pacman_y_int_i=202 )) then
+                        if (pacman_x_int_i=125 and (Pacman_y_int_i=202 )) then
                             pacman_x_int_i<=474;
-                        elsif pacman_x_int_i = 123 then
-                            pacman_x_int_i<= 124;
                         end if;
                     
                     --move down
-                    elsif (down = '0' and pac_crash_down='0' )then -- and not(death_i=3)) then
+                    elsif (down = '0' and pac_crash_down='0' and pacman_y_int_i<398 )then -- and not(death_i=3)) then
                         pacman_y_int_i <= pacman_y_int_i+1;
-                        if pacman_y_int_i = 399 then
-                            pacman_y_int_i <= 398;
-                        end if;
                         
                     --move up
-                    elsif (up = '0' and pac_crash_up='0' )then -- and not(death_i=3)) then
+                    elsif (up = '0' and pac_crash_up='0' and pacman_y_int_i>6 )then -- and not(death_i=3)) then
                         pacman_y_int_i <= pacman_y_int_i-1;
-                        if pacman_y_int_i = 5 then
-                            pacman_y_int_i <= 6;
-                        end if;
     --                elsif (pac_crash='1') then
     --                    if down='0' then
     --                        pacman_y_int_i<= pacman_y_int_i-1;
     --                    end if;
-                          
                     end if;
                     
                     If (pac_death_clyde= '1' or pac_death_pinky= '1' or pac_death_blinky= '1' or pac_death_inky= '1') then

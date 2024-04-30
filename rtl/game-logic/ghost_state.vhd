@@ -46,11 +46,12 @@ begin
     begin
        -- if start_game='1' then
             if rising_edge(clk) then
+                count<=count+1;
                 case ghost_state_machine is
                     --Waiting the prison time in the prison state
                     When prison_state =>
                         if start_game='1' then
-                            count <= count+1;
+                            --count <= count+1;
                             if count >= prison_time  then
                                 count<=0;
                                 ghost_state_machine := escape_state;
@@ -58,7 +59,7 @@ begin
                         end if;
                     --Moving quickly only staying in escape state for 5us
                     When escape_state=> 
-                        count <= count+1;
+                        --count <= count+1;
                         if count =  100000000 then
                             count<=0;
                             ghost_state_machine := chase_state;
@@ -69,7 +70,7 @@ begin
                             count <=0;
                             ghost_state_machine := prison_state;
                         elsif scatter_tracker /=10 then
-                            count <=count+1; 
+                            --count <=count+1; 
                             if count = 2000000000 then   
                                 ghost_state_machine:= scatter_state;
                                 count <=0;
@@ -87,7 +88,7 @@ begin
                             count <=0;
                             ghost_state_machine:= prison_state;
                         else
-                            count <=count+1; 
+                            --count <=count+1; 
                                 if scatter_tracker <5 then 
                                     if count = 700000000 then   
                                         ghost_state_machine:= chase_state;

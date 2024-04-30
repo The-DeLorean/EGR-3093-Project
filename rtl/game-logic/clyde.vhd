@@ -211,7 +211,7 @@ begin
                         prison_right<='0';
                     end if;
                 end if;
-                clyde_y_int_i<=174;
+                clyde_y_int_i<=188;
             -- Escape state
             elsif ghost_state_vec="01000" then
                 clyde_x_int_i<=299;
