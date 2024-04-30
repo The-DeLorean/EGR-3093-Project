@@ -247,8 +247,16 @@ begin
                             pinky_x_int_i<=pinky_x_int_i-1;
                             b_l_corner<='0'; 
                         end if;
-                    elsif pinky_x_int_i = pacman_x_int_i or (left_i = '0' or right_i = '0') then
+                    elsif pinky_x_int_i = pacman_x_int_i then
                     --do y hunting
+                        --down
+                        if pinky_y_int_i < pacman_y_int_i and down_i = '1' then
+                            pinky_y_int_i<=pinky_y_int_i+1;
+                        --up
+                        elsif pinky_y_int_i > pacman_y_int_i and up_i = '1' then
+                            pinky_y_int_i<=pinky_y_int_i-1;
+                        end if;
+                    elsif left_i = '0' and right_i = '0' then
                         --down
                         if pinky_y_int_i < pacman_y_int_i and down_i = '1' then
                             pinky_y_int_i<=pinky_y_int_i+1;
