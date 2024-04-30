@@ -45,6 +45,7 @@ signal pacman_y_int_i     : integer range 0 to 480:=314;
 signal blinky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal blinky_y_int_i     : integer range 0 to 480:=188; 
 signal count : integer;
+signal count_blinky : integer range 0 to 17:=0;
 signal alternate : integer:=0;
 --signal moving_i : boolean := moving;
 signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
