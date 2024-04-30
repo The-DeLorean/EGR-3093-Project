@@ -247,21 +247,21 @@ begin
                             clyde_x_int_i<=clyde_x_int_i-1;
                             b_l_corner<='0'; 
                         end if;
-                    elsif clyde_y_int_i = pacman_y_int_i or (up_i = '0' or down_i = '0') then
-                    --do x hunting
-                        --right
-                        if clyde_x_int_i < pacman_x_int_i and right_i = '1' then
-                            clyde_x_int_i<=clyde_x_int_i+1;
-                        --left
-                        elsif clyde_x_int_i > pacman_x_int_i and left_i = '1' then
-                            clyde_x_int_i<=clyde_x_int_i-1;
+                    elsif clyde_x_int_i = pacman_x_int_i or (left_i = '0' or right_i = '0') then
+                    --do y hunting
+                        --down
+                        if clyde_y_int_i < pacman_y_int_i and down_i = '1' then
+                            clyde_y_int_i<=clyde_y_int_i+1;
+                        --up
+                        elsif clyde_y_int_i > pacman_y_int_i and up_i = '1' then
+                            clyde_y_int_i<=clyde_y_int_i-1;
                         end if;
-                    --down
-                    elsif clyde_y_int_i < pacman_y_int_i and down_i = '1' then
-                        clyde_y_int_i<=clyde_y_int_i+1;
-                    --up
-                    elsif clyde_y_int_i > pacman_y_int_i and up_i = '1' then
-                        clyde_y_int_i<=clyde_y_int_i-1;
+                    --right
+                    elsif clyde_x_int_i < pacman_x_int_i and right_i = '1' then
+                        clyde_x_int_i<=clyde_x_int_i+1;
+                    --left
+                    elsif clyde_x_int_i > pacman_x_int_i and left_i = '1' then
+                        clyde_x_int_i<=clyde_x_int_i-1;
                     --top left corner stuck
                     elsif up_i = '0' and left_i = '0' then
                         t_l_corner<='1';
