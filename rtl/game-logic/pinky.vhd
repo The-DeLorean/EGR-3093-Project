@@ -276,7 +276,8 @@ begin
                     elsif right_i = '0' and up_i = '1' and pinky_y_int_i > pacman_y_int_i then
                         --up
                         pinky_y_int_i<=pinky_y_int_i-1;
-                        
+
+                    --no right only down
                     elsif right_i = '0' and down_i = '1' and pinky_y_int_i < pacman_y_int_i then
                         --down
                         pinky_y_int_i<=pinky_y_int_i+1;
