@@ -247,7 +247,7 @@ begin
                             clyde_x_int_i<=clyde_x_int_i-1;
                             b_l_corner<='0'; 
                         end if;
-                    elsif clyde_y_int_i = pacman_y_int_i then
+                    elsif clyde_y_int_i = pacman_y_int_i or (up_i = '0' or down_i = '0') then
                     --do x hunting
                         --right
                         if clyde_x_int_i < pacman_x_int_i and right_i = '1' then
@@ -262,40 +262,20 @@ begin
                     --up
                     elsif clyde_y_int_i > pacman_y_int_i and up_i = '1' then
                         clyde_y_int_i<=clyde_y_int_i-1;
-                    --no up only right
-                    elsif up_i = '0' and right_i = '1' and clyde_x_int_i < pacman_x_int_i then
-                        --right
-                        clyde_y_int_i<=clyde_x_int_i+1;
-                        
-                    --no up only left
-                    elsif up_i = '0' and left_i = '1' and clyde_x_int_i > pacman_x_int_i then
-                        --LEFT
-                        clyde_x_int_i<=clyde_x_int_i-1;
-                        
-                    --no down only right
-                    elsif down_i = '0' and right_i = '1' and clyde_x_int_i > pacman_y_int_i then
-                        --right
-                        clyde_x_int_i<=clyde_x_int_i+1;
-
-                    --no down only left
-                    elsif down_i = '0' and left_i = '1' and clyde_x_int_i < pacman_x_int_i then
-                        --left
-                        clyde_x_int_i<=clyde_x_int_i-1;
-                            
                     --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' and clyde_y_int_i > pacman_y_int_i and clyde_x_int_i > pacman_x_int_i then
+                    elsif up_i = '0' and left_i = '0' then
                         t_l_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i+1;
                     --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' and clyde_y_int_i > pacman_y_int_i and clyde_x_int_i < pacman_x_int_i then
+                    elsif up_i = '0' and right_i = '0' then
                         t_r_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i+1;
                     --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' and clyde_y_int_i < pacman_y_int_i and clyde_x_int_i < pacman_x_int_i then
+                    elsif down_i = '0' and right_i = '0' then
                         b_r_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i-1;
                     --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' and clyde_y_int_i < pacman_y_int_i and clyde_x_int_i > pacman_x_int_i then
+                    elsif down_i = '0' and left_i = '0' then
                         b_l_corner<='1';
                         clyde_y_int_i<=clyde_y_int_i-1;
                     end if;
