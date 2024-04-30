@@ -49,6 +49,8 @@ signal pacman_y_int_i     : integer range 0 to 480:=314;
 signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal inky_y_int_i     : integer range 0 to 480:=202; 
 signal count_i          : integer;
+--where to move inky
+signal count_inky          : integer:=0;
 signal moving_i : boolean := moving;
 --signal moving_i : boolean := moving;
 signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
@@ -226,78 +228,96 @@ begin
                 inky_y_int_i<=146;
             -- Chase state logic
                 elsif ghost_state_vec_i="00100" then
-                    --top left
-                    if t_l_corner = '1' then
-                        inky_x_int_i<=inky_x_int_i+1;
-                        if up_i = '1' then
-                            inky_y_int_i<=inky_y_int_i-1;
-                            t_l_corner<='0'; 
-                        end if;   
-                    --top right
-                    elsif t_r_corner = '1' then
-                        inky_x_int_i<=inky_x_int_i-1;
-                        if up_i = '1' then
-                            inky_y_int_i<=inky_y_int_i-1;
-                            t_r_corner<='0'; 
-                        end if;
-                    --bot right
-                    elsif b_r_corner = '1' then
-                        inky_x_int_i<=inky_x_int_i-1;
-                        if down_i = '1' then
-                            inky_y_int_i<=inky_y_int_i+1;
-                            b_r_corner<='0'; 
-                        end if;
-                    --bot left
-                    elsif b_l_corner = '1' then
-                        inky_x_int_i<=inky_x_int_i+1;
-                        if down_i = '1' then
-                            inky_y_int_i<=inky_y_int_i+1;
-                            b_l_corner<='0'; 
-                        end if;
-                    --move left
-                    elsif right = '0' and left_i = '1' then
-                        inky_x_int_i <= inky_x_int_i-1;
-                        if inky_x_int_i =123 then
-                            inky_x_int_i<=124;
-                        end if;
-                    
-                    --move right
-                    elsif left = '0' and right_i = '1' then
-                        inky_x_int_i <= inky_x_int_i+1;
-                        if inky_x_int_i = 503 then
-                            inky_x_int_i<=502;
-                        end if;
-                    
-                    --move up
-                    elsif down = '0' and up_i = '1' then
-                        inky_y_int_i <= inky_y_int_i-1;
-                        if inky_y_int_i = 4 then
-                            inky_y_int_i <= 5;
-                        end if;
-                    
-                    --move down
-                    elsif up = '0' and down_i = '1' then
-                        inky_y_int_i <= inky_y_int_i+1;
-                        if inky_y_int_i = 440 then
-                            inky_y_int_i<= 439;
-                        end if;
-                    --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' then
-                        t_l_corner<='1';
-                        inky_x_int_i<=inky_x_int_i+1;
-                    --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' then
-                        t_r_corner<='1';
-                        inky_x_int_i<=inky_x_int_i-1;
-                    --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' then
-                        b_r_corner<='1';
-                        inky_x_int_i<=inky_x_int_i-1;
-                    --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' then
-                        b_l_corner<='1';
-                        inky_x_int_i<=inky_x_int_i+1;
-                    end if;
+                    if count_inky = 0 then
+                        if inky_x_int_i < 362 then
+                            inky_x_int_i <= inky_x_int_i+1;
+                        elsif inky_x_int_i >= 362 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 1 then
+                        if inky_y_int_i < 188 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 188 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 2 then
+                        if inky_x_int_i < 404 then
+                            inky_x_int_i <= inky_x_int_i+1;
+                        elsif inky_x_int_i >= 404 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 3 then
+                        if inky_y_int_i < 356 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 356 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 4 then
+                        if inky_x_int_i < 474 then
+                            inky_x_int_i <= inky_x_int_i+1;
+                        elsif inky_x_int_i >= 474 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 5 then
+                        if inky_y_int_i < 398 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 398 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 6 then
+                        if inky_x_int_i > 278 then
+                            inky_x_int_i <= inky_x_int_i-1;
+                        elsif inky_x_int_i <= 278 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 7 then
+                        if inky_y_int_i > 356 then
+                            inky_y_int_i <= inky_y_int_i-1;
+                        elsif inky_y_int_i <= 356 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 8 then
+                        if inky_x_int_i > 236 then
+                            inky_x_int_i <= inky_x_int_i-1;
+                        elsif inky_x_int_i <= 236 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 9 then
+                        if inky_y_int_i > 314 then
+                            inky_y_int_i <= inky_y_int_i-1;
+                        elsif inky_y_int_i <= 314 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 10 then
+                        if inky_x_int_i > 194 then
+                            inky_x_int_i <= inky_x_int_i-1;
+                        elsif inky_x_int_i <= 194 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 11 then
+                        if inky_y_int_i > 6 then
+                            inky_y_int_i <= inky_y_int_i-1;
+                        elsif inky_x_int_i <= 6 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 12 then
+                        if inky_x_int_i < 278 then
+                            inky_x_int_i <= inky_x_int_i+1;
+                        elsif inky_x_int_i >= 278 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 13 then
+                        if inky_y_int_i < 62 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 62 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 14 then
+                        if inky_x_int_i < 362 then
+                            inky_x_int_i <= inky_x_int_i+1;
+                        elsif inky_x_int_i >= 362 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 15 then
+                        if inky_y_int_i < 104 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 104 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 16 then
+                        if inky_x_int_i > 320 then
+                            inky_x_int_i <= inky_x_int_i-1;
+                        elsif inky_x_int_i <= 320 then
+                            count_inky <= count_inky+1;
+                    elsif count_inky = 17 then
+                        if inky_y_int_i < 146 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 146 then
+                            count_inky <= 0;
                 --scatter
                 elsif ghost_state_vec_i="00010" then 
                     --Scattering to bot LEft corner
