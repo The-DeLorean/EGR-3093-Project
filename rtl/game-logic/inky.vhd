@@ -147,7 +147,6 @@ begin
     --Inky's movements are the inverse of PacMan's
     process
         begin
-        wait for 10 ns;
         if rising_edge(clk) then
             count_i <= count_i +1;
             if count_i = 2000000 then
@@ -233,91 +232,110 @@ begin
                             inky_x_int_i <= inky_x_int_i+1;
                         elsif inky_x_int_i >= 362 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 1 then
                         if inky_y_int_i < 188 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 188 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 2 then
                         if inky_x_int_i < 404 then
                             inky_x_int_i <= inky_x_int_i+1;
                         elsif inky_x_int_i >= 404 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 3 then
                         if inky_y_int_i < 356 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 356 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 4 then
                         if inky_x_int_i < 474 then
                             inky_x_int_i <= inky_x_int_i+1;
                         elsif inky_x_int_i >= 474 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 5 then
                         if inky_y_int_i < 398 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 398 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 6 then
                         if inky_x_int_i > 278 then
                             inky_x_int_i <= inky_x_int_i-1;
                         elsif inky_x_int_i <= 278 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 7 then
                         if inky_y_int_i > 356 then
                             inky_y_int_i <= inky_y_int_i-1;
                         elsif inky_y_int_i <= 356 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 8 then
                         if inky_x_int_i > 236 then
                             inky_x_int_i <= inky_x_int_i-1;
                         elsif inky_x_int_i <= 236 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 9 then
                         if inky_y_int_i > 314 then
                             inky_y_int_i <= inky_y_int_i-1;
                         elsif inky_y_int_i <= 314 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 10 then
                         if inky_x_int_i > 194 then
                             inky_x_int_i <= inky_x_int_i-1;
                         elsif inky_x_int_i <= 194 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 11 then
                         if inky_y_int_i > 6 then
                             inky_y_int_i <= inky_y_int_i-1;
                         elsif inky_x_int_i <= 6 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 12 then
                         if inky_x_int_i < 278 then
                             inky_x_int_i <= inky_x_int_i+1;
                         elsif inky_x_int_i >= 278 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 13 then
                         if inky_y_int_i < 62 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 62 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 14 then
                         if inky_x_int_i < 362 then
                             inky_x_int_i <= inky_x_int_i+1;
                         elsif inky_x_int_i >= 362 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 15 then
                         if inky_y_int_i < 104 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 104 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 16 then
                         if inky_x_int_i > 320 then
                             inky_x_int_i <= inky_x_int_i-1;
                         elsif inky_x_int_i <= 320 then
                             count_inky <= count_inky+1;
+                        end if;
                     elsif count_inky = 17 then
                         if inky_y_int_i < 146 then
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 146 then
                             count_inky <= 0;
+                        end if;
+                    end if;
                 --scatter
                 elsif ghost_state_vec_i="00010" then 
                     --Scattering to bot LEft corner
