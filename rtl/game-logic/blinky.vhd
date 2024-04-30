@@ -222,128 +222,132 @@ begin
                 blinky_y_int_i<=146;
             -- Chase state
             elsif ghost_state_vec="00100" then
-                    --head pacman hunter 
-                    --top left stuck
-                    if t_l_corner = '1' then
-                        blinky_y_int_i<=blinky_y_int_i+1;
-                        if left_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i-1;
-                            t_l_corner<='0'; 
-                            alternate <= 1;
-                        end if;   
-                    --top right stuck
-                    elsif t_r_corner = '1' then
-                        blinky_x_int_i<=blinky_x_int_i-1;
-                        if up_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i-1;
-                            t_r_corner<='0'; 
-                            alternate <= 0;
+                    --x236
+                    if count_blinky = 0 then
+                        if blinky_x_int_i > 236 then
+                            blinky_x_int_i <= blinky_x_int_i-1;
+                        elsif blinky_x_int_i >= 236 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --bot right stuck
-                    elsif b_r_corner = '1' then
-                        blinky_x_int_i<=blinky_x_int_i-1;
-                        if down_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i+1;
-                            b_r_corner<='0'; 
-                            alternate <= 0;
+                    --y188
+                    elsif count_blinky = 1 then
+                        if blinky_y_int_i < 188 then
+                            inky_y_int_i <= inky_y_int_i+1;
+                        elsif inky_y_int_i >= 188 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --bot left stuck
-                    elsif b_l_corner = '1' then
-                        blinky_y_int_i<=blinky_y_int_i-1;
-                        if left_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i-1;
-                            b_l_corner<='0';
-                            alternate <= 1; 
+                    --x194
+                    elsif count_blinky = 2 then
+                        if blinky_x_int_i > 194 then
+                            blinky_x_int_i <= blinky_x_int_i-1;
+                        elsif inky_x_int_i <= 194 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --down right move
-                    elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
-                        --right
-                        if alternate = 1 and right_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i+1;
-                            alternate <= 0;
-                        --down
-                        elsif alternate = 0 and down_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i+1;
-                            alternate <= 1;
-                        elsif alternate = 0 then
-                            alternate <= 1;
-                        elsif alternate = 1 then
-                            alternate <= 0;
+                    --y356
+                    elsif count_blinky = 3 then
+                        if blinky_y_int_i < 356 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 356 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --up rightmove
-                    elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
-                        if alternate = 1 and right_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i+1;
-                            alternate <= 0;
-                        elsif alternate = 0 and up_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i-1;
-                            alternate <= 1;
-                        elsif alternate = 0 then
-                            alternate <= 1;
-                        elsif alternate = 1 then
-                            alternate <= 0;
+                    --x124
+                    elsif count_blinky = 4 then
+                        if blinky_x_int_i > 124 then
+                            blinky_x_int_i <= blinky_x_int_i-1;
+                        elsif blinky_x_int_i <= 124 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --left down move
-                    elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i < pacman_y_int_i then
-                        if alternate = 1 and left_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i-1;
-                            alternate <= 0;
-                        elsif alternate = 0 and down_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i+1;
-                            alternate <= 1;
-                        elsif alternate = 0 then
-                            alternate <= 1;
-                        elsif alternate = 1 then
-                            alternate <= 0;
+                    --y398
+                    elsif count_blinky = 5 then
+                        if blinky_y_int_i < 398 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 398 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --left up move
-                    elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i > pacman_y_int_i then
-                        if alternate = 1 and left_i = '1' then
-                            blinky_x_int_i<=blinky_x_int_i-1;
-                            alternate <= 0;
-                        elsif alternate = 0 and up_i = '1' then
-                            blinky_y_int_i<=blinky_y_int_i-1;
-                            alternate <= 1;
-                        elsif alternate = 0 then
-                            alternate <= 1;
-                        elsif alternate = 1 then
-                            alternate <= 0;
+                    --x320
+                    elsif count_blinky = 6 then
+                        if blinky_x_int_i < 320 then
+                            blinky_x_int_i <= blinky_x_int_i+1;
+                        elsif blinky_x_int_i >= 320 then
+                            count_blinky <= count_blinky+1;
                         end if;
-                    --down move
-                    elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i < pacman_y_int_i and down_i = '1' then
-                        blinky_y_int_i<=blinky_y_int_i+1;
-                        alternate <= 0;
-                    --up move
-                    elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i > pacman_y_int_i and up_i = '1' then
-                        blinky_y_int_i<=blinky_y_int_i-1;
-                        alternate <= 0;   
-                    --right move
-                    elsif blinky_x_int_i < pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and right_i = '1' then
-                        blinky_x_int_i<=blinky_x_int_i+1;
-                        alternate <= 1; 
-                    --left move
-                    elsif blinky_x_int_i > pacman_x_int_i and blinky_y_int_i = pacman_y_int_i and left_i = '1' then
-                        blinky_x_int_i<=blinky_x_int_i-1;
-                        alternate <= 1; 
-                    --game over
-                    elsif blinky_x_int_i = pacman_x_int_i and blinky_y_int_i = pacman_y_int_i then
-                        --gameover
-                    --top left corner stuck
-                    elsif up_i = '0' and left_i = '0' then
-                        t_l_corner<='1';
-                        blinky_y_int_i<=blinky_y_int_i+1;
-                    --top right corner stuck
-                    elsif up_i = '0' and right_i = '0' then
-                        t_r_corner<='1';
-                        blinky_x_int_i<=blinky_x_int_i-1;
-                    --bot right corner stuck
-                    elsif down_i = '0' and right_i = '0' then
-                        b_r_corner<='1';
-                        blinky_x_int_i<=blinky_x_int_i-1;
-                    --bot left corner stuck
-                    elsif down_i = '0' and left_i = '0' then
-                        b_l_corner<='1';
-                        blinky_y_int_i<=blinky_y_int_i-1;
+                    --y356
+                    elsif count_blinky = 7 then
+                        if blinky_y_int_i > 356 then
+                            blinky_y_int_i <= blinky_y_int_i-1;
+                        elsif blinky_y_int_i <= 356 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --x362
+                    elsif count_blinky = 8 then
+                        if blinky_x_int_i < 362 then
+                            blinky_x_int_i <= blinky_x_int_i+1;
+                        elsif blinky_x_int_i >= 362 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --y314
+                    elsif count_blinky = 9 then
+                        if blinky_y_int_i > 314 then
+                            blinky_y_int_i <= blinky_y_int_i-1;
+                        elsif blinky_y_int_i <= 314 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --x404
+                    elsif count_blinky = 10 then
+                        if blinky_x_int_i < 404 then
+                            blinky_x_int_i <= blinky_x_int_i+1;
+                        elsif blinky_x_int_i >= 404 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --y6
+                    elsif count_blinky = 11 then
+                        if blinky_y_int_i > 6 then
+                            blinky_y_int_i <= blinky_y_int_i-1;
+                        elsif blinky_y_int_i <= 6 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --x320
+                    elsif count_blinky = 12 then
+                        if blinky_x_int_i > 320 then
+                            blinky_x_int_i <= blinky_x_int_i-1;
+                        elsif blinky_x_int_i <= 320 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --y62
+                    elsif count_blinky = 13 then
+                        if blinky_y_int_i < 62 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 62 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --x236
+                    elsif count_blinky = 14 then
+                        if blinky_x_int_i > 236 then
+                            blinky_x_int_i <= blinky_x_int_i-1;
+                        elsif blinky_x_int_i <= 236 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --y104
+                    elsif count_blinky = 15 then
+                        if blinky_y_int_i < 104 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 104 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --x278
+                    elsif count_blinky = 16 then
+                        if blinky_x_int_i < 278 then
+                            blinky_x_int_i <= blinky_x_int_i+1;
+                        elsif blinky_x_int_i >= 278 then
+                            count_blinky <= count_blinky+1;
+                        end if;
+                    --y146
+                    elsif count_blinky = 17 then
+                        if blinky_y_int_i < 146 then
+                            blinky_y_int_i <= blinky_y_int_i+1;
+                        elsif blinky_y_int_i >= 146 then
+                            count_blinky <= 0;
+                        end if;
                     end if;
            --Scatter state
            elsif ghost_state_vec="00010" then
