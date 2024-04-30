@@ -53,17 +53,17 @@ signal pacman_y_int_i     : integer range 0 to 480:=314;
 signal count_i          : integer;
 signal moving_i : boolean := moving;
 
-
 --Directional internal signals to keep pacman moving in a certain direction
 signal right_i : std_logic:='0';
 signal left_i : std_logic:='0';
 signal up_i : std_logic:='0';
 signal down_i : std_logic:='0';
+
 -- Vector is in order of right - left - up - down
 signal prev_direction : std_logic_vector (3 downto 0):="0000";
 signal new_direction : std_logic_vector (3 downto 0):="0000";
 
-
+--Internal signals to know if any ghost hit pac man
 signal pac_crash_right : std_logic :='0';
 signal pac_crash_left : std_logic :='0';
 signal pac_crash_up : std_logic :='0';
@@ -80,6 +80,7 @@ signal pixel_clk   : std_logic;
 constant rom_depth : natural := 29; --30
 constant rom_width : natural := 26;--27
 
+--Locations for the left and right corners of pac man truncated to fit in wall array
 signal pac_loc_x_left :integer range 0 to 30;
 signal pac_loc_y_left :integer range 0 to 30;
 signal pac_loc_x_right :integer range 0 to 30;
@@ -117,7 +118,7 @@ constant walls : wall_type :=(
                             "01111111111011011111111110",
                             "00000000000000000000000000"
                             );
-                            
+        --Internal signals for joystick motion so that the joy stick is only updated on clock pulses
           signal right : std_logic:='1';
           signal left : std_logic:='1';
           signal up : std_logic:='1';
@@ -131,18 +132,6 @@ begin
     --assign internals
     pacman_x_int_i <= pacman_x_int;
     pacman_y_int_i <= pacman_y_int;
-    
---    collision_i: entity work.navigation_check(Behavioral)
---    port map (  x_pos => pacman_x_int_i,
---                y_pos => pacman_y_int_i,
---                right=>right,
---                left=> left,
---                up=> up,
---                down=> down,
---                clk=>clk, 
---                collision => pac_crash
---                );
-
     
     process(right, left, up, down) 
         begin        
@@ -259,4 +248,5 @@ begin
     pacman_y_int_out <= pacman_y_int_i;
     moving_out <= moving_i;
     death<=death_i;
+    
 end Behavioral;

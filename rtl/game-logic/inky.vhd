@@ -47,10 +47,11 @@ architecture Behavioral of inky is
 signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=314; 
 signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
-signal inky_y_int_i     : integer range 0 to 480:=202; 
+signal inky_y_int_i     : integer range 0 to 480:=188; 
 signal count_i          : integer;
 --where to move inky
-signal count_inky          : integer:=0;
+signal count_inky          : integer range 0 to 17:=0;
+
 signal moving_i : boolean := moving;
 --signal moving_i : boolean := moving;
 signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
@@ -149,66 +150,69 @@ begin
         begin
         if rising_edge(clk) then
             count_i <= count_i +1;
+            --Making inky stop moving if pac man has died 3 times
             if count_i = 2000000 then
                 count_i <= 0; --reset counter
                 
-                --Pinky Collision Check
+                --Inky Collision Check
             --Collision check right
-            --Calculating pinky's top left for moving right
-            inky_loc_x_right_lc<= (inky_x_int_i-124)/14;
-            inky_loc_y_right_lc<= (inky_y_int_i-6)/14;
-            --Calculating pinky's bototm right for moving right
-            inky_loc_x_right_rc<= (inky_x_int_i-124+2)/14;
-            inky_loc_y_right_rc<= (inky_y_int_i-6+13)/14;
-            if (walls(inky_loc_y_right_lc)(inky_loc_x_right_lc+1)='1' or walls(inky_loc_y_right_rc)(inky_loc_x_right_rc+1)='1') then
-                right_i<='0';
-            else
-                right_i<='1';
-            end if;  
+--            --Calculating pinky's top left for moving right
+--            inky_loc_x_right_lc<= (inky_x_int_i-124)/14;
+--            inky_loc_y_right_lc<= (inky_y_int_i-6)/14;
+--            --Calculating pinky's bototm right for moving right
+--            inky_loc_x_right_rc<= (inky_x_int_i-124+2)/14;
+--            inky_loc_y_right_rc<= (inky_y_int_i-6+13)/14;
+--            if (walls(inky_loc_y_right_lc)(inky_loc_x_right_lc+1)='1' or walls(inky_loc_y_right_rc)(inky_loc_x_right_rc+1)='1') then
+--                right_i<='0';
+--            else
+--                right_i<='1';
+--            end if;  
             
-            --Collision check left
-            --Calculating pinky's top left for moving left
-            inky_loc_x_left_lc<= (inky_x_int_i-124+11)/14;
-            inky_loc_y_left_lc<= (inky_y_int_i-6)/14;
-            --Calculating pinky's bototm right for moving left
-            inky_loc_x_left_rc<= (inky_x_int_i-124+13)/14;
-            inky_loc_y_left_rc<= (inky_y_int_i-6+13)/14;
-            if (walls(inky_loc_y_left_lc)(inky_loc_x_left_lc-1)='1' or  walls(inky_loc_y_left_rc)(inky_loc_x_left_rc-1)='1') then
-                left_i<='0';
-            else
-                left_i<='1';
-            end if;
+--            --Collision check left
+--            --Calculating pinky's top left for moving left
+--            inky_loc_x_left_lc<= (inky_x_int_i-124+11)/14;
+--            inky_loc_y_left_lc<= (inky_y_int_i-6)/14;
+--            --Calculating pinky's bototm right for moving left
+--            inky_loc_x_left_rc<= (inky_x_int_i-124+13)/14;
+--            inky_loc_y_left_rc<= (inky_y_int_i-6+13)/14;
+--            if (walls(inky_loc_y_left_lc)(inky_loc_x_left_lc-1)='1' or  walls(inky_loc_y_left_rc)(inky_loc_x_left_rc-1)='1') then
+--                left_i<='0';
+--            else
+--                left_i<='1';
+--            end if;
             
-            --Collision check up
-            --Calculating pinky's top left for moving up
-            inky_loc_x_up_lc<= (inky_x_int_i-124)/14;
-            inky_loc_y_up_lc<= (inky_y_int_i-6+11)/14;
-            --Calculating pinky's bototm right for moving up
-            inky_loc_x_up_rc<= (inky_x_int_i-124+13)/14;
-            inky_loc_y_up_rc<= (inky_y_int_i-6+13)/14;
-            if (walls(inky_loc_y_up_lc-1)(inky_loc_x_up_lc)='1' or walls(inky_loc_y_up_rc-1)(inky_loc_x_up_rc)='1') then
-                up_i<='0';
-            else
-                up_i<='1';
-            end if;        
+--            --Collision check up
+--            --Calculating pinky's top left for moving up
+--            inky_loc_x_up_lc<= (inky_x_int_i-124)/14;
+--            inky_loc_y_up_lc<= (inky_y_int_i-6+11)/14;
+--            --Calculating pinky's bototm right for moving up
+--            inky_loc_x_up_rc<= (inky_x_int_i-124+13)/14;
+--            inky_loc_y_up_rc<= (inky_y_int_i-6+13)/14;
+--            if (walls(inky_loc_y_up_lc-1)(inky_loc_x_up_lc)='1' or walls(inky_loc_y_up_rc-1)(inky_loc_x_up_rc)='1') then
+--                up_i<='0';
+--            else
+--                up_i<='1';
+--            end if;        
             
-            --Collision check Down
-            --Calculating pinky's top left for moving down
-            inky_loc_x_down_lc<= (inky_x_int_i-124)/14;
-            inky_loc_y_down_lc<= (inky_y_int_i-6)/14;
-            --Calculating pinky's bototm right for moving down
-            inky_loc_x_down_rc<= (inky_x_int_i-124+13)/14;
-            inky_loc_y_down_rc<= (inky_y_int_i-6+2)/14;
-            if (walls(inky_loc_y_down_lc+1)(inky_loc_x_down_lc)='1' or walls(inky_loc_y_down_rc+1)(inky_loc_x_down_rc)='1') then
-                down_i<='0';
-            else
-                down_i<='1';
-            end if;
+--            --Collision check Down
+--            --Calculating pinky's top left for moving down
+--            inky_loc_x_down_lc<= (inky_x_int_i-124)/14;
+--            inky_loc_y_down_lc<= (inky_y_int_i-6)/14;
+--            --Calculating pinky's bototm right for moving down
+--            inky_loc_x_down_rc<= (inky_x_int_i-124+13)/14;
+--            inky_loc_y_down_rc<= (inky_y_int_i-6+2)/14;
+--            if (walls(inky_loc_y_down_lc+1)(inky_loc_x_down_lc)='1' or walls(inky_loc_y_down_rc+1)(inky_loc_x_down_rc)='1') then
+--                down_i<='0';
+--            else
+--                down_i<='1';
+--            end if;
             
             --End Ghost COllision Logic
-                
+            
+            
                 --Prison state logic
             if ghost_state_vec="10000" then
+                count_inky<=0;
                 if prison_right='0' then
                     inky_x_int_i<=inky_x_int_i+1;
                     if inky_x_int_i >=334 then
@@ -225,8 +229,9 @@ begin
             elsif ghost_state_vec="01000" then
                 inky_x_int_i<=299;
                 inky_y_int_i<=146;
+                count_inky<=0;
             -- Chase state logic
-                elsif ghost_state_vec_i="00100" then
+                elsif ghost_state_vec_i="00100" or ghost_state_vec_i="00010" then
                     if count_inky = 0 then
                         if inky_x_int_i < 362 then
                             inky_x_int_i <= inky_x_int_i+1;
@@ -296,7 +301,7 @@ begin
                     elsif count_inky = 11 then
                         if inky_y_int_i > 6 then
                             inky_y_int_i <= inky_y_int_i-1;
-                        elsif inky_x_int_i <= 6 then
+                        elsif inky_y_int_i <= 6 then
                             count_inky <= count_inky+1;
                         end if;
                     elsif count_inky = 12 then
@@ -335,27 +340,7 @@ begin
                         elsif inky_y_int_i >= 146 then
                             count_inky <= 0;
                         end if;
-                    end if;
-                --scatter
-                elsif ghost_state_vec_i="00010" then 
-                    --Scattering to bot LEft corner
-                    if b_l_corner = '1' then
-                        inky_x_int_i<=inky_x_int_i+1;
-                        if down_i = '1' then
-                            inky_y_int_i<=inky_y_int_i+1;
-                            b_l_corner<='0';
-                        end if;
-                    elsif inky_y_int_i = 398 or down_i='0' then
-                    --do x hunting
-                        if inky_x_int_i > 124 and left_i = '1' then
-                            inky_x_int_i<=inky_x_int_i-1;
-                        end if; 
-                    elsif inky_y_int_i < 398 and down_i ='1' then
-                        inky_y_int_i<=inky_y_int_i+1;
-                    elsif down_i = '0' and left_i = '0' then
-                        inky_x_int_i<=inky_x_int_i+1;
-                        t_l_corner<='1';
-                    end if;    
+                    end if;   
                 end if;
                 
                 --Hard coding pinky border      
