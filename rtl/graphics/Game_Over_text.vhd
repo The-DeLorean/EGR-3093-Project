@@ -32,6 +32,7 @@ entity Game_Over_text is
      object_x, object_y : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
      letter             : in std_logic_vector (6 downto 0);
      death_int          : in integer range 0 to 4;
+     user_win           : IN std_logic;
      game_over_on       : out std_logic
      
      );
@@ -236,5 +237,5 @@ begin
             end case;
         end process;
         
-        game_over_on <= '1' when square_letter_on='1' and rom_bit='1' and death_int>=3 else '0';
+        game_over_on <= '1' when square_letter_on='1' and rom_bit='1' and (death_int>=3 or user_win='1') else '0';
 end Behavioral;

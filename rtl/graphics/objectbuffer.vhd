@@ -65,7 +65,7 @@ architecture rtl of objectbuffer is
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
 
     signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on, game_over_on_G, game_Over_on_A, game_Over_on_M, game_Over_on_E, game_Over_on_O, game_Over_on_V, game_Over_on_E1, game_Over_on_R, portal_on : std_logic;
-    signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, Pinky_rgb, Blinky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
+    signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, Pinky_rgb, Blinky_rgb, GhostGate_rgb, game_over_rgb: std_logic_vector(23 downto 0);
 
     --Coordinates of the Pac Man Lives
     signal stillpacman_x0 : std_logic_vector(OBJECT_SIZE-1 downto 0):= std_logic_vector(to_unsigned(130, OBJECT_SIZE));
@@ -155,6 +155,7 @@ architecture rtl of objectbuffer is
      object_x, object_y : in  std_logic_vector(OBJECT_SIZE-1 downto 0);
      letter             : in std_logic_vector (6 downto 0);
      death_int          : in integer range 0 to 4;
+     user_win           : IN std_logic;
      game_over_on          : out std_logic
      );
 end component;
@@ -195,6 +196,20 @@ end component;
     
     return n_ones;
     end function count_ones;
+    
+    --Function to count 1s in array
+    function count_score (score : std_logic_array_dots) return integer is
+    variable n_ones : integer := 0;
+    variable track   : std_logic_array_dots:=('1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1','1'); 
+    begin
+    for i in score'range loop
+        if score(i) = '1' and track(i)='1' then
+            n_ones := n_ones + 1;
+            track(i):='0';
+        end if;
+    end loop;
+    return n_ones;
+    end function count_score;
 
 begin
     
@@ -244,14 +259,14 @@ begin
     
 --Drawing game Over
     --Wont be on until deat_int=3
-    G: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>g_x, object_y=>game_over_y, letter=>  "1000000", death_int=>death_int, game_Over_on=>game_Over_on_G);
-    A: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>A_x, object_y=>game_over_y, letter=>  "0100000", death_int=>death_int, game_Over_on=>game_Over_on_A);
-    M: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>M_x, object_y=>game_over_y, letter=>  "0010000", death_int=>death_int, game_Over_on=>game_Over_on_M);
-    E0: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, game_Over_on=>game_Over_on_E);
-    O: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>O_x, object_y=>game_over_y, letter=>  "0000100", death_int=>death_int, game_Over_on=>game_Over_on_O);
-    V: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>V_x, object_y=>game_over_y, letter=>  "0000010", death_int=>death_int, game_Over_on=>game_Over_on_V);
-    E1: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x_1, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, game_Over_on=>game_Over_on_E1);
-    R: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>R_x, object_y=>game_over_y, letter=> "0000001", death_int=>death_int, game_Over_on=>game_Over_on_R);
+    G: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>g_x, object_y=>game_over_y, letter=>  "1000000", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_G);
+    A: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>A_x, object_y=>game_over_y, letter=>  "0100000", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_A);
+    M: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>M_x, object_y=>game_over_y, letter=>  "0010000", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_M);
+    E0: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_E);
+    O: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>O_x, object_y=>game_over_y, letter=>  "0000100", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_O);
+    V: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>V_x, object_y=>game_over_y, letter=>  "0000010", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_V);
+    E1: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>E_x_1, object_y=>game_over_y, letter=> "0001000", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_E1);
+    R: Game_Over_text port map(pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>R_x, object_y=>game_over_y, letter=> "0000001", death_int=>death_int, user_win=>user_win, game_Over_on=>game_Over_on_R);
 
 -- DRAW MOVING PACKMAN *************
     --Always visible
@@ -324,7 +339,7 @@ begin
             --Drawing Game over bit
             elsif game_over_on_G='1' or game_over_on_A='1' or game_over_on_M='1' or game_over_on_E='1' or game_over_on_O='1' or game_over_on_V='1' or game_over_on_E1='1' or game_over_on_R='1' then
                     --Making game over Red
-                    rgb<= blinky_rgb;
+                    rgb<= game_over_rgb;
             end if;
         end if;
     end process;
@@ -332,22 +347,23 @@ begin
     
     dot_eaten <= count_ones(score_out_arr);
     user_win<= '1' when dot_eaten=dot_num else '0';
+    game_over_rgb<= x"FF000F" when user_win='0' else x"FFd700";
 
     --Keeping track of score
-    process
-    begin
-     wait on score_out_arr;
-     dot_score: for i in 0 to dot_num - 1 loop
-            if (score_out_arr(i)='1' and score_out_arr_i(i)='1') then
-                score_out_i <= score_out_i+1;
-                score_out_arr_i(i)<='0';
-             end if;
-        end loop dot_score;
+--    process
+--    begin
+--     wait on score_out_arr;
+--     dot_score: for i in 0 to dot_num - 1 loop
+--            if (score_out_arr(i)='1' and score_out_arr_i(i)='1') then
+--                score_out_i <= score_out_i+1;
+--                score_out_arr_i(i)<='0';
+--             end if;
+--        end loop dot_score;
         
-    end process;
+--    end process;
     
-    score_out <= score_out_i;
-
+    score_out_i <= score_out_i + count_score(score_out_arr);
+    score_out <=score_out_i;
     
     --Making Pac man Disapear after he dies.
     process

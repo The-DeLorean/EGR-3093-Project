@@ -30,16 +30,16 @@ set_property -dict {PACKAGE_PIN F1 IOSTANDARD LVCMOS33} [get_ports led_up]
 set_property -dict {PACKAGE_PIN F2 IOSTANDARD LVCMOS33} [get_ports led_down]
 
 #Input Pins for external joystick buttons
-#set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports left_raw]
-#set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports right_raw]
-#set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports down_raw]
-#set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
+set_property -dict {PACKAGE_PIN P5 IOSTANDARD LVCMOS33} [get_ports left_raw]
+set_property -dict {PACKAGE_PIN R5 IOSTANDARD LVCMOS33} [get_ports right_raw]
+set_property -dict {PACKAGE_PIN R6 IOSTANDARD LVCMOS33} [get_ports down_raw]
+set_property -dict {PACKAGE_PIN T6 IOSTANDARD LVCMOS33} [get_ports up_raw]
 #******
 #changed L/R/U/D (pins P5/R5/R6/T6) to onboard switches for testing purposes
-set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports left_raw]
-set_property -dict {PACKAGE_PIN K2 IOSTANDARD LVCMOS33} [get_ports right_raw]
-set_property -dict {PACKAGE_PIN L1 IOSTANDARD LVCMOS33} [get_ports down_raw]
-set_property -dict {PACKAGE_PIN M1 IOSTANDARD LVCMOS33} [get_ports up_raw]
+#set_property -dict {PACKAGE_PIN K1 IOSTANDARD LVCMOS33} [get_ports left_raw]
+#set_property -dict {PACKAGE_PIN K2 IOSTANDARD LVCMOS33} [get_ports right_raw]
+#set_property -dict {PACKAGE_PIN L1 IOSTANDARD LVCMOS33} [get_ports down_raw]
+#set_property -dict {PACKAGE_PIN M1 IOSTANDARD LVCMOS33} [get_ports up_raw]
 #******
 
 #On board button for score counter
