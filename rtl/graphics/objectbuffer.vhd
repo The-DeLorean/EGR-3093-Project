@@ -1,7 +1,6 @@
 -- author: Kyle Dramov, 2024
 -- description: object buffer that holds the objects to display
 --    object locations can be controlled from upper level
---    example contains a wall, a rectanble box and a round ball
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -350,20 +349,20 @@ begin
     game_over_rgb<= x"FF000F" when user_win='0' else x"FFd700";
 
     --Keeping track of score
---    process
---    begin
---     wait on score_out_arr;
---     dot_score: for i in 0 to dot_num - 1 loop
---            if (score_out_arr(i)='1' and score_out_arr_i(i)='1') then
---                score_out_i <= score_out_i+1;
---                score_out_arr_i(i)<='0';
---             end if;
---        end loop dot_score;
+    process
+    begin
+     wait on score_out_arr;
+     dot_score: for i in 0 to dot_num - 1 loop
+            if (score_out_arr(i)='1' and score_out_arr_i(i)='1') then
+                score_out_i <= score_out_i+1;
+                score_out_arr_i(i)<='0';
+             end if;
+        end loop dot_score;
         
---    end process;
+    end process;
     
-    score_out_i <= score_out_i + count_score(score_out_arr);
-    score_out <=score_out_i;
+    --score_out_i <= score_out_i + count_score(score_out_arr);
+    --score_out <=score_out_i;
     
     --Making Pac man Disapear after he dies.
     process
