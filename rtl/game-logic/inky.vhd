@@ -318,6 +318,7 @@ begin
                             inky_y_int_i <= inky_y_int_i+1;
                         elsif inky_y_int_i >= 146 then
                             count_inky <= 0;
+                    end if;
                 --scatter
                 elsif ghost_state_vec_i="00010" then 
                     --Scattering to bot LEft corner
