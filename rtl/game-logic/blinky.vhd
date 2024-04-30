@@ -204,7 +204,7 @@ begin
             
             
             --Prison state
-            if ghost_state_vec="10000" then\
+            if ghost_state_vec="10000" then
                 count_blinky <= 0;
                 if prison_right='1' then
                     blinky_x_int_i<=blinky_x_int_i+1;
