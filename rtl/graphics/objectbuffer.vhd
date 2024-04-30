@@ -63,7 +63,7 @@ architecture rtl of objectbuffer is
     -- signals that holds the x, y coordinates
     signal pix_x, pix_y: unsigned (OBJECT_SIZE-1 downto 0);
 
-    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on, game_over_on_G, game_Over_on_A, game_Over_on_M, game_Over_on_E, game_Over_on_O, game_Over_on_V, game_Over_on_E1, game_Over_on_R : std_logic;
+    signal Border_on0, Border_on1, Border_on2, Border_on3, box_on, PacMan_on, Inky_on, Clyde_on, Pinky_on, Blinky_on, stillPacMan_on0, stillPacMan_on1, stillPacMan_on2, GhostGate_on, game_over_on_G, game_Over_on_A, game_Over_on_M, game_Over_on_E, game_Over_on_O, game_Over_on_V, game_Over_on_E1, game_Over_on_R, portal_on : std_logic;
     signal Border_rgb, box_rgb, PacMan_rgb, Clyde_rgb, Inky_rgb, Pinky_rgb, Blinky_rgb, GhostGate_rgb: std_logic_vector(23 downto 0);
 
     --Coordinates of the Pac Man Lives
@@ -192,6 +192,10 @@ begin
     Border_on3 <= '1' when WALL_X_L0<=pix_x and pix_x<=WALL_X_R1 and pix_y <= WALL_Y_B3 and WALL_Y_T3 <= pix_y  else '0';
     --The Border Color
     Border_rgb <= x"0000FF"; -- blue
+    
+    --portal openening
+    portal_on <= '1' when (WALL_X_L0 <=pix_x and pix_x<= WALL_X_R0 and pix_y <= 202  and 188 <= pix_y) or (WALL_X_L1 <=pix_x and pix_x<= WALL_X_R1 and pix_y <= 202  and 188 <= pix_y) else '0';
+
 
     --Drawing PAC MAN Maze
     Walls: for i in 0 to wall_num-1 generate
@@ -239,7 +243,7 @@ begin
     --Always visible
     Clyde: GhostDraw port map (pixel_x=> pixel_x, pixel_y=> pixel_y, object_x=>clyde_x, object_y=>clyde_y, Ghost_on=>Clyde_on);
     --Clyde's Color
-    Clyde_rgb <= x"FFB852";   -- orange
+    Clyde_rgb <= x"FF7F50";   -- orange
     
     --Drawing Inky
     --Always visible
@@ -294,6 +298,9 @@ begin
                 rgb<= Pinky_rgb;
             elsif PacMan_on='1' then
                 rgb <= PacMan_rgb;
+            elsif portal_on ='1' then
+                rgb <= x"88e23b";
+                
             --Drawing Game over bit
             elsif game_over_on_G='1' or game_over_on_A='1' or game_over_on_M='1' or game_over_on_E='1' or game_over_on_O='1' or game_over_on_V='1' or game_over_on_E1='1' or game_over_on_R='1' then
                     --Making game over Red
@@ -301,26 +308,7 @@ begin
             end if;
         end if;
     end process;
-    
---    --score process
---    process(pacman_x_int, pacman_y_int)
---    begin
---        --try wait statement here?
---        temp <= 0;
---        dot_score: for i in 0 to dot_num - 1 loop
---            if (score_out_arr(i)='1' and score_out_arr_i(i)='0') then
---                temp <= temp + 1;
---                --score_out_i <= score_out_i+1;
---                score_out_arr_i(i)<='0';
---            end if;
---        end loop dot_score;
-        
---        score_out_i <= temp;
---    end process;
-    
---    --score_out <= temp;    
---    score_out <= score_out_i;
-    
+
     --Keeping track of score
     process
     begin

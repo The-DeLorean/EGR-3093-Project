@@ -39,7 +39,7 @@ architecture Behavioral of inky is
  --internal signals
 signal pacman_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
 signal pacman_y_int_i     : integer range 0 to 480:=314; 
-signal inky_x_int_i     : integer range 0 to 640:=299; -- starting coordinates (240,340)
+signal inky_x_int_i     : integer range 0 to 640:=306; -- starting coordinates (240,340)
 signal inky_y_int_i     : integer range 0 to 480:=188; 
 signal count_i          : integer;
 --where to move inky
@@ -50,7 +50,7 @@ signal ghost_state_vec_i   : std_logic_vector(4 downto 0);
 
 
 --Signal to move ghost back and forth in prison
-signal prison_right : std_logic:='0';
+signal prison_right : std_logic:='1';
 
 begin
     --assign internals
@@ -69,18 +69,18 @@ begin
                 --Prison state logic
             if ghost_state_vec="10000" then
                 count_inky<=0;
-                if prison_right='0' then
+                if prison_right='1' then
                     inky_x_int_i<=inky_x_int_i+1;
                     if inky_x_int_i >=334 then
-                        prison_right<='1';
+                        prison_right<='0';
                     end if;
                 else
                     inky_x_int_i<=inky_x_int_i-1;
                     if inky_x_int_i <=264 then
-                        prison_right<='0';
+                        prison_right<='1';
                     end if;
                 end if;
-                inky_y_int_i<=202;
+                inky_y_int_i<=188;
             -- Escape state
             elsif ghost_state_vec="01000" then
                 inky_x_int_i<=299;
